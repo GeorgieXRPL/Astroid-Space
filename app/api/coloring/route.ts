@@ -26,6 +26,7 @@ import { checkDisplayName } from '../../lib/contentFilter';
 import {
   enforceJsonBodyLimit,
   queueFullResponse,
+  validationErrorResponse,
   COLORING_JSON_BODY_LIMIT,
 } from '../../lib/requestGuards';
 import { verifyImageMagicBytes } from '../../lib/imageBytes';
@@ -35,12 +36,22 @@ import { COLORING_UPLOADS_ENABLED } from '../../lib/featureFlags';
 /** ~1.4MB string ≈ 1MB binary, leaving headroom for the data URL prefix */
 const MAX_IMAGE_LENGTH = 1_400_000;
 
+/** See app/api/stars/name/route.ts for the rationale. */
+const UNSAFE_NAME_CHARS = /[<>\u0000-\u001F\u007F]/;
+
 const submitSchema = z.object({
   artistName: z
     .string()
     .min(1, 'Tell us the artist name (first name is fine).')
     .max(48, 'Name must be 48 characters or fewer.')
-    .regex(/^[\p{L}\p{N} '\-_.]+$/u, 'Name contains invalid characters'),
+    .refine(
+      (s) => /[\p{L}\p{N}]/u.test(s),
+      'Artist name needs at least one letter or number.'
+    )
+    .refine(
+      (s) => !UNSAFE_NAME_CHARS.test(s),
+      'Artist name cannot contain < > or line breaks.'
+    ),
   age: z.number().int().min(0).max(120).optional(),
   imageDataUrl: z
     .string()
@@ -104,12 +115,7 @@ export async function POST(req: NextRequest) {
   }
 
   const parsed = submitSchema.safeParse(body);
-  if (!parsed.success) {
-    return NextResponse.json(
-      { error: 'Validation failed', issues: parsed.error.issues },
-      { status: 400 }
-    );
-  }
+  if (!parsed.success) return validationErrorResponse(parsed.error);
 
   const nameCheck = checkDisplayName(parsed.data.artistName);
   if (!nameCheck.ok) {

@@ -13,17 +13,30 @@ import { checkContent, checkDisplayName } from '../../lib/contentFilter';
 import {
   enforceJsonBodyLimit,
   queueFullResponse,
+  validationErrorResponse,
   DEFAULT_JSON_BODY_LIMIT,
 } from '../../lib/requestGuards';
+
+/** See app/api/stars/name/route.ts for the rationale on these patterns. */
+const UNSAFE_NAME_CHARS = /[<>\u0000-\u001F\u007F]/;
+const UNSAFE_PROSE_CHARS = /[<>\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/;
 
 const wishSchema = z.object({
   text: z
     .string()
     .min(2, 'Your wish needs a few more words.')
-    .max(180, 'Wishes are limited to 180 characters.'),
+    .max(180, 'Wishes are limited to 180 characters.')
+    .refine(
+      (s) => !UNSAFE_PROSE_CHARS.test(s),
+      'Wish cannot contain < > or unusual control characters.'
+    ),
   from: z
     .string()
     .max(48, 'Name must be 48 characters or fewer.')
+    .refine(
+      (s) => s.length === 0 || !UNSAFE_NAME_CHARS.test(s),
+      'Your name cannot contain < > or line breaks.'
+    )
     .optional(),
 });
 
@@ -75,12 +88,7 @@ export async function POST(req: NextRequest) {
   }
 
   const parsed = wishSchema.safeParse(body);
-  if (!parsed.success) {
-    return NextResponse.json(
-      { error: 'Validation failed', issues: parsed.error.issues },
-      { status: 400 }
-    );
-  }
+  if (!parsed.success) return validationErrorResponse(parsed.error);
 
   const textCheck = checkContent(parsed.data.text);
   if (!textCheck.ok) {

@@ -20,6 +20,7 @@ import { checkContent, checkDisplayName } from '../../lib/contentFilter';
 import {
   enforceJsonBodyLimit,
   queueFullResponse,
+  validationErrorResponse,
   DEFAULT_JSON_BODY_LIMIT,
 } from '../../lib/requestGuards';
 
@@ -114,12 +115,7 @@ export async function POST(req: NextRequest) {
   }
 
   const parsed = nominationSchema.safeParse(body);
-  if (!parsed.success) {
-    return NextResponse.json(
-      { error: 'Validation failed', issues: parsed.error.issues },
-      { status: 400 }
-    );
-  }
+  if (!parsed.success) return validationErrorResponse(parsed.error);
 
   // Content filter charity name + reason + nominator name.
   const nameCheck = checkContent(parsed.data.charityName);

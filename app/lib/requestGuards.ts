@@ -11,6 +11,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import type { ZodError } from 'zod';
 import { PendingQueueFullError } from './storage';
 
 /** Generous defaults - individual routes can pass a smaller cap. */
@@ -53,4 +54,25 @@ export function queueFullResponse(err: PendingQueueFullError): NextResponse {
     },
     { status: 503, headers: { 'Retry-After': '3600' } }
   );
+}
+
+/**
+ * Turn a Zod parse failure into a 400 the user can actually understand.
+ *
+ * The previous pattern returned `{ error: 'Validation failed' }`, which
+ * left users staring at a useless message after typing "Liv's Star" with
+ * a curly apostrophe. We now surface the first issue verbatim alongside
+ * the field path so the UI can render something like:
+ *
+ *   "Name must be 48 characters or fewer (name)"
+ *
+ * The full `issues` array stays in the body for clients that want to
+ * highlight individual fields; the top-level `error` is the human line.
+ */
+export function validationErrorResponse(err: ZodError): NextResponse {
+  const first = err.issues[0];
+  const field = first?.path && first.path.length > 0 ? first.path.join('.') : null;
+  const base = first?.message ?? 'Some of the values you entered are not valid.';
+  const error = field ? `${base} (${field})` : base;
+  return NextResponse.json({ error, issues: err.issues }, { status: 400 });
 }

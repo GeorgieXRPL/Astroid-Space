@@ -32,18 +32,58 @@ import { checkContent, checkDisplayName } from '../../../lib/contentFilter';
 import {
   enforceJsonBodyLimit,
   queueFullResponse,
+  validationErrorResponse,
   DEFAULT_JSON_BODY_LIMIT,
 } from '../../../lib/requestGuards';
 
+/**
+ * Reject only what's actually unsafe to display: HTML angle brackets
+ * (XSS surface) and ASCII control characters (NULL, line breaks, DEL).
+ * Everything else - smart quotes, commas, ampersands, accents, hearts,
+ * emoji, em-dashes pasted from elsewhere - is fair game in a star name.
+ *
+ * The previous strict allow-list (`[\p{L}\p{N} '\-_.]+`) silently
+ * rejected the curly apostrophe iOS keyboards type by default, which
+ * meant "Liv's Star" looked normal but failed validation. Don't go back.
+ */
+const UNSAFE_NAME_CHARS = /[<>\u0000-\u001F\u007F]/;
+
+/**
+ * Same idea, but allow tab/LF/CR so dedications can have line breaks.
+ * (Names are single-line so they use UNSAFE_NAME_CHARS instead.)
+ */
+const UNSAFE_PROSE_CHARS = /[<>\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/;
+
 const nameSchema = z.object({
-  designation: z.string().refine(isValidDesignation, 'Invalid designation'),
+  designation: z.string().refine(isValidDesignation, 'Pick a star from the field first.'),
   name: z
     .string()
-    .min(1, 'Name is required')
-    .max(48, 'Name must be 48 characters or fewer')
-    .regex(/^[\p{L}\p{N} '\-_.]+$/u, 'Name contains invalid characters'),
-  dedication: z.string().max(140).optional(),
-  namedBy: z.string().max(48).optional(),
+    .min(1, 'Give your star a name.')
+    .max(48, 'Name must be 48 characters or fewer.')
+    .refine(
+      (s) => /[\p{L}\p{N}]/u.test(s),
+      'Name needs at least one letter or number.'
+    )
+    .refine(
+      (s) => !UNSAFE_NAME_CHARS.test(s),
+      'Name cannot contain < > or line breaks.'
+    ),
+  dedication: z
+    .string()
+    .max(140, 'Dedication is limited to 140 characters.')
+    .refine(
+      (s) => s.length === 0 || !UNSAFE_PROSE_CHARS.test(s),
+      'Dedication cannot contain < > or unusual control characters.'
+    )
+    .optional(),
+  namedBy: z
+    .string()
+    .max(48, 'Your name must be 48 characters or fewer.')
+    .refine(
+      (s) => s.length === 0 || !UNSAFE_NAME_CHARS.test(s),
+      'Your name cannot contain < > or line breaks.'
+    )
+    .optional(),
 });
 
 export async function POST(req: NextRequest) {
@@ -80,12 +120,7 @@ export async function POST(req: NextRequest) {
   }
 
   const parsed = nameSchema.safeParse(body);
-  if (!parsed.success) {
-    return NextResponse.json(
-      { error: 'Validation failed', issues: parsed.error.issues },
-      { status: 400 }
-    );
-  }
+  if (!parsed.success) return validationErrorResponse(parsed.error);
 
   const { designation, name, dedication, namedBy } = parsed.data;
 

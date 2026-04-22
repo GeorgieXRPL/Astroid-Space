@@ -19,6 +19,7 @@ import { z } from 'zod';
 import { namedStarStore } from '../../../lib/storage';
 import { isValidDesignation } from '../../../lib/stars';
 import { ensureMinDelay, isAuthorizedRequest } from '../../../lib/adminAuth';
+import { validationErrorResponse } from '../../../lib/requestGuards';
 
 const schema = z.object({
   designation: z.string().refine(isValidDesignation, 'Invalid designation'),
@@ -56,12 +57,7 @@ export async function POST(req: NextRequest) {
   }
 
   const parsed = schema.safeParse(body);
-  if (!parsed.success) {
-    return NextResponse.json(
-      { error: 'Validation failed', issues: parsed.error.issues },
-      { status: 400 }
-    );
-  }
+  if (!parsed.success) return validationErrorResponse(parsed.error);
 
   const updated = await namedStarStore.setStatus(parsed.data.designation, parsed.data.status);
   if (!updated) {

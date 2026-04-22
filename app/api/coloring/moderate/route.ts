@@ -16,6 +16,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { coloringSubmissionStore } from '../../../lib/storage';
 import { ensureMinDelay, isAuthorizedRequest } from '../../../lib/adminAuth';
+import { validationErrorResponse } from '../../../lib/requestGuards';
 
 const schema = z.object({
   id: z.string().min(1),
@@ -52,12 +53,7 @@ export async function POST(req: NextRequest) {
   }
 
   const parsed = schema.safeParse(body);
-  if (!parsed.success) {
-    return NextResponse.json(
-      { error: 'Validation failed', issues: parsed.error.issues },
-      { status: 400 }
-    );
-  }
+  if (!parsed.success) return validationErrorResponse(parsed.error);
 
   const updated = await coloringSubmissionStore.setStatus(parsed.data.id, parsed.data.status);
   if (!updated) {
