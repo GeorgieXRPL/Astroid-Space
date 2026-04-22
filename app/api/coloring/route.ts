@@ -30,6 +30,7 @@ import {
 } from '../../lib/requestGuards';
 import { verifyImageMagicBytes } from '../../lib/imageBytes';
 import { processImageDataUrl, runContentModeration } from '../../lib/imageProcessor';
+import { COLORING_UPLOADS_ENABLED } from '../../lib/featureFlags';
 
 /** ~1.4MB string ≈ 1MB binary, leaving headroom for the data URL prefix */
 const MAX_IMAGE_LENGTH = 1_400_000;
@@ -63,6 +64,16 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  if (!COLORING_UPLOADS_ENABLED) {
+    return NextResponse.json(
+      {
+        error:
+          'Coloring uploads are temporarily disabled while we finish setting up image moderation. Download the printable for now and check back soon.',
+      },
+      { status: 503, headers: { 'Retry-After': '86400' } }
+    );
+  }
+
   const tooBig = enforceJsonBodyLimit(req, COLORING_JSON_BODY_LIMIT);
   if (tooBig) return tooBig;
 

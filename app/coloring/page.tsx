@@ -24,7 +24,7 @@ export default function ColoringPage() {
       <ColoringStudio />
 
       <div className="mt-10 text-center text-xs font-mono text-white/30 tracking-widest uppercase">
-        Light moderation · Only the artist&apos;s first name is shown · Max 1MB image
+        Human moderation · Only the artist&apos;s first name is shown · Max 1MB image
       </div>
     </div>
   );

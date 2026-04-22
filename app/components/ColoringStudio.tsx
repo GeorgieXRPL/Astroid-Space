@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { HONEYPOT_FIELD } from '../lib/honeypot';
+import { COLORING_UPLOADS_ENABLED } from '../lib/featureFlags';
 
 interface Submission {
   id: string;
@@ -138,7 +139,39 @@ export function ColoringStudio() {
           </div>
         </div>
 
-        {/* Submit */}
+        {/* Submit — gated behind a feature flag while we finish image moderation. */}
+        {!COLORING_UPLOADS_ENABLED ? (
+          <div className="glass-panel-bright p-6 sm:p-8 space-y-4 flex flex-col">
+            <div className="eyebrow text-ember">Step 2 · Coming soon</div>
+            <h2 className="font-display text-2xl text-white">
+              Uploads opening shortly
+            </h2>
+            <p className="text-white/70 text-sm leading-relaxed">
+              We&apos;re finishing the moderation pipeline that keeps the gallery
+              safe — especially since this is a place for kids. While we close
+              that out, please download the page, color it offline, and share
+              your masterpiece on socials. Tag us and we&apos;ll feature the
+              best ones once submissions reopen.
+            </p>
+            <ul className="text-xs font-mono text-white/50 space-y-1.5 leading-relaxed pt-1">
+              <li>· Print, color, and keep it on your fridge today</li>
+              <li>· Snap a photo and tag <span className="text-cosmos">@AstroidSpace</span> on X</li>
+              <li>· Submissions reopen once the gallery is fully moderated</li>
+            </ul>
+            <div className="pt-4 mt-auto border-t border-white/5">
+              <a
+                href="/liv-drawing.jpg"
+                target="_blank"
+                rel="noopener noreferrer"
+                download="astroid-coloring-page.jpg"
+                className="btn-primary w-full justify-center"
+              >
+                Download the printable
+                <span aria-hidden>↓</span>
+              </a>
+            </div>
+          </div>
+        ) : (
         <form onSubmit={submit} className="glass-panel-bright p-6 sm:p-8 space-y-5">
           {/* Honeypot — see lib/honeypot.ts */}
           <div aria-hidden="true" className="absolute -left-[10000px] top-auto w-px h-px overflow-hidden">
@@ -230,6 +263,7 @@ export function ColoringStudio() {
             </button>
           </div>
         </form>
+        )}
       </div>
 
       {/* Gallery */}
