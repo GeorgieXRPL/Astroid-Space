@@ -78,7 +78,7 @@ export async function GET(req: NextRequest) {
   const limit = Math.min(parseInt(searchParams.get('limit') ?? '60', 10) || 60, 200);
   const offset = Math.max(parseInt(searchParams.get('offset') ?? '0', 10) || 0, 0);
 
-  const items = charityNominationStore.list({ limit, offset, status: 'approved' });
+  const items = await charityNominationStore.list({ limit, offset, status: 'approved' });
 
   return NextResponse.json({ items, limit, offset });
 }
