@@ -47,9 +47,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ==================== CONTRACT ==================== */}
-      <ContractBanner />
-
       {/* ==================== MASCOT ==================== */}
       <section className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
@@ -103,6 +100,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ==================== CONTRACT ==================== */}
+      <ContractBanner />
 
       {/* ==================== THINGS TO DO ==================== */}
       <section className="relative max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
