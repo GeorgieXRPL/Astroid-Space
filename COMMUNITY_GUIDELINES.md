@@ -1,0 +1,178 @@
+# Astroid - Community Guidelines & Response Playbook
+
+This file is the canonical source for how the team and community talk about
+Astroid online, especially in relation to St. Jude / ALSAC. The on-site
+version lives at [`/guidelines`](https://astroid.space/guidelines).
+
+If you ever need to copy/paste a pinned post, a reply, or a community
+correction, pull from this file so the language stays consistent.
+
+---
+
+## 1. The truth, one paragraph
+
+Astroid is **not** partnered with, sponsored by, endorsed by, or affiliated
+with St. Jude Children's Research Hospital or ALSAC. ALSAC provided a public
+Solana wallet that receives our automated 25% pump.fun creator-fee
+donations. That is the entire scope of our interaction.
+
+Use this paragraph verbatim wherever the relationship needs to be described
+on or off the site. Don't paraphrase it - the wording was deliberate.
+
+---
+
+## 2. X / Twitter pinned post
+
+Copy/paste exactly:
+
+```
+For our community - please read.
+
+Astroid was made FOR Liv. St. Jude was her chosen charity. ALSAC kindly
+provided a wallet for our 25% on-chain donations.
+
+We are NOT partnered with, sponsored by, or endorsed by St. Jude or ALSAC.
+
+DO tag @Astroid_Sol, share the CA, share the live wallet on Solscan.
+DO NOT tag @StJude on price posts or claim partnership.
+
+Full guidelines: astroid.space/guidelines
+```
+
+After posting, **pin it** to the @Astroid_Sol profile so it's the first
+thing visitors see.
+
+---
+
+## 3. Telegram pinned message
+
+Telegram has no character limit, so use the longer form:
+
+```
+Welcome to Astroid - please read this once before chatting.
+
+Astroid was made FOR Liv, in honor of her strength. St. Jude was the
+charity she chose. ALSAC (St. Jude's fundraising arm) kindly provided a
+public Solana wallet for our automated 25% pump.fun creator-fee donations.
+
+That is the entire scope of our relationship with St. Jude. We are NOT
+partnered with, sponsored by, or endorsed by them.
+
+How you can help us protect this:
+
+DO:
+- Tag @Astroid_Sol on X
+- Share the contract address: 8NwtzwGm4CV8Hm4fJXR69ac1MxDYuSaN3A9HVyikpump
+- Share the live charity wallet on Solscan
+- Tell Liv's story honestly
+
+DO NOT:
+- Tag @StJude on price/pump/moonshot posts
+- Screenshot St. Jude or ALSAC staff likes / replies as "proof of partnership"
+- Claim Astroid is "backed by" or "partnered with" St. Jude
+- Use St. Jude's logo or branding
+
+Full guidelines: https://astroid.space/guidelines
+Report misleading claims: security@astroid.space
+```
+
+---
+
+## 4. Response template (when bad screenshots circulate)
+
+When a post falsely claims partnership / endorsement and starts getting
+traction, reply publicly and promptly from @Astroid_Sol:
+
+```
+Thanks for the love, but to be clear: St. Jude has not endorsed Astroid
+and we are not partnered with them. ALSAC provided a wallet for our
+automated 25% on-chain donations. We're a community honoring Liv -
+please don't misrepresent St. Jude.
+
+Full context: astroid.space/guidelines
+```
+
+Notes for the responder:
+
+- **Reply, don't quote-tweet.** Quote-tweeting amplifies the original
+  misleading post. A reply corrects it without giving it more reach.
+- **Don't like the misleading post**, even if the tone is friendly. A like
+  from @Astroid_Sol on a post claiming partnership is harder to explain to
+  ALSAC than the original community post.
+- **Reply within an hour** if you can. The longer a misleading post sits
+  uncorrected, the more it looks like the project condones it.
+- **Don't argue.** State the truth, link the guidelines page, move on. If
+  the user keeps pushing, mute. Don't escalate.
+
+---
+
+## 5. When to email Marc at ALSAC
+
+Send Marc a short, factual note when:
+
+- A misleading post hits >1,000 likes / retweets
+- A news outlet, newsletter, or influencer with >50k reach picks up a false
+  partnership claim
+- A coordinated campaign emerges (multiple accounts pushing the same
+  misleading framing)
+
+Do **not** email him for every individual misleading tweet - that becomes
+noise and burns goodwill.
+
+Template email:
+
+```
+Subject: Heads up - misleading partnership claim circulating
+
+Hi Marc,
+
+Quick flag - a post claiming Astroid is partnered with St. Jude is
+gaining traction here: [link].
+
+We've corrected it publicly here: [link to our reply], reinforced our
+community guidelines [link to /guidelines], and asked the original poster
+to remove it.
+
+Wanted you to hear it from us first. Let me know if you'd like any
+additional action from our side.
+
+Thanks,
+[Your name]
+```
+
+---
+
+## 6. Things to never say (about the project)
+
+These phrasings have caused trouble for other charity-adjacent crypto
+projects. Avoid them in any official Astroid communication:
+
+- "Buy $ASTROID to donate to St. Jude" - structurally false; trading isn't
+  donating
+- "Every transaction helps the kids" - too direct a causal link between
+  buying and charitable impact
+- "Official charity coin of [anything]" - we're not anyone's official
+  anything
+- "Partnered with St. Jude" / "Backed by St. Jude" / "St. Jude approved" -
+  none of these are true
+- "Not a security" - we don't make legal classifications about ourselves
+- Price predictions / floor commitments / "this will pump"
+
+---
+
+## 7. Internal note - why we wrote this
+
+ALSAC monitors how their name is used online and has revoked donation
+wallets from other crypto projects whose communities consistently
+misrepresented the relationship. We'd rather have a small, honest stream of
+donations going to St. Jude for years than a viral moment that ends the
+wallet next week.
+
+This file plus the on-site `/guidelines` page plus the strengthened
+disclaimer in the footer constitute the team's "due diligence" record. If
+ALSAC ever asks "what's your governance around this?" you can hand them
+this file and the linked page in 30 seconds.
+
+---
+
+_Last reviewed: see git log for `COMMUNITY_GUIDELINES.md`._

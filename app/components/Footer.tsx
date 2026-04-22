@@ -66,6 +66,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/guidelines" className="text-white/60 hover:text-white">
+                  Community guidelines
+                </Link>
+              </li>
+              <li>
                 <a
                   href={siteConfig.social.twitter}
                   target="_blank"
@@ -108,16 +113,33 @@ export function Footer() {
           <span className="text-cosmos/70">Saltaire Protocol</span>
           <span className="opacity-50 italic">(coming soon)</span>
         </div>
-        <div className="pt-4 mt-4 border-t border-white/5 text-[11px] text-white/30 leading-relaxed max-w-3xl">
-          Astroid is not affiliated with, endorsed by, or partnered with St. Jude
-          Children&apos;s Research Hospital, ALSAC, or any other charity listed on this
-          site. The recipient wallet on the{' '}
-          <Link href="/charity" className="text-white/50 hover:text-white">
-            Charity page
-          </Link>{' '}
-          was provided by ALSAC for on-chain donations. We do not solicit donations
-          on behalf of any charity. No portion of the token&apos;s price or any user
-          action constitutes a charitable contribution by the user.
+        <div className="pt-4 mt-4 border-t border-white/5 text-[11px] text-white/30 leading-relaxed max-w-3xl space-y-2">
+          <p>
+            Astroid is not affiliated with, endorsed by, or partnered with St. Jude
+            Children&apos;s Research Hospital, ALSAC, or any other charity listed on this
+            site. The recipient wallet on the{' '}
+            <Link href="/charity" className="text-white/50 hover:text-white">
+              Charity page
+            </Link>{' '}
+            was provided by ALSAC for on-chain donations. We do not solicit donations
+            on behalf of any charity. No portion of the token&apos;s price or any user
+            action constitutes a charitable contribution by the user.
+          </p>
+          <p>
+            Anyone claiming Astroid is partnered with, sponsored by, or endorsed by
+            St. Jude or ALSAC is mistaken. Please see our{' '}
+            <Link href="/guidelines" className="text-white/50 hover:text-white">
+              community guidelines
+            </Link>{' '}
+            and report misleading claims to{' '}
+            <a
+              href="mailto:security@astroid.space?subject=Misleading%20partnership%20claim"
+              className="text-white/50 hover:text-white"
+            >
+              security@astroid.space
+            </a>
+            .
+          </p>
         </div>
       </div>
     </footer>
