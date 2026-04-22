@@ -3,12 +3,33 @@
  * sensible fallbacks so the site renders even before env is filled in.
  */
 
+const DEFAULT_SITE_URL = 'https://astroid.space';
+
+/**
+ * Normalise the configured site URL so a missing scheme (e.g. `astroid.space`
+ * pasted into an env var by mistake) doesn't crash `new URL(...)` at build
+ * time. We prefer https, fall back to the default if the value is unusable.
+ */
+function resolveSiteUrl(): string {
+  const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (!raw) return DEFAULT_SITE_URL;
+
+  const candidate = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+  try {
+    const u = new URL(candidate);
+    if (u.protocol !== 'http:' && u.protocol !== 'https:') return DEFAULT_SITE_URL;
+    return u.origin;
+  } catch {
+    return DEFAULT_SITE_URL;
+  }
+}
+
 export const siteConfig = {
   name: 'Astroid',
   tagline: 'The Space Shiba Inu',
   description:
     'A charity-first meme coin built around a kid\'s drawing. 25% of pump.fun creator fees auto-route to a children\'s charity.',
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://astroid.space',
+  url: resolveSiteUrl(),
 
   // Mascot creator credit
   mascotCreator: 'Liv',
