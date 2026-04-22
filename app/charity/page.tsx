@@ -3,7 +3,8 @@ import { CharityNominationForm } from '../components/CharityNominationForm';
 import { CharityNominationsList } from '../components/CharityNominationsList';
 
 export const metadata = {
-  title: 'Charity',
+  // Title intentionally omitted: page falls through to the layout default
+  // ("Astroid · Starlike") so the tab stays brand-only here.
   description:
     'Live, on-chain transparency for every cent flowing to charity. 25% of pump.fun creator fees auto-route at the source - we never custody.',
 };
