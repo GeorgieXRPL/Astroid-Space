@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { HeroScene } from './components/HeroScene';
 import { StatsBar } from './components/StatsBar';
+import { ContractBanner } from './components/ContractBanner';
 
 export default function HomePage() {
   return (
@@ -45,6 +46,9 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ==================== CONTRACT ==================== */}
+      <ContractBanner />
 
       {/* ==================== MASCOT ==================== */}
       <section className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-28">
