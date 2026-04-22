@@ -8,7 +8,7 @@ interface NameAStarPageProps {
 export const metadata = {
   title: 'Name a Star · Astroid',
   description:
-    'Pick a star, give it a name, get a free certificate. No wallet, no account, no payment. The naming is forever.',
+    'Pick a star, give it a name, get a free certificate. No account, no payment. The naming is forever.',
 };
 
 export default async function NameAStarPage({ searchParams }: NameAStarPageProps) {
@@ -33,7 +33,7 @@ export default async function NameAStarPage({ searchParams }: NameAStarPageProps
       </Suspense>
 
       <div className="mt-8 text-center text-xs font-mono text-white/30 tracking-widest uppercase">
-        Free · No payment · No wallet · No account
+        Free · No payment · No account
       </div>
     </div>
   );

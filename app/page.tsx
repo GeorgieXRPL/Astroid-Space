@@ -28,7 +28,7 @@ export default function HomePage() {
               (star) + <em>-oid</em> (like). 25% of every pump.fun creator fee
               auto-routes on-chain to a children&apos;s charity wallet — no
               human in the loop. Name a star, write a wish, color in Astroid
-              the Space Shiba. No wallet, ever.
+              the Space Shiba.
             </p>
             <div className="flex flex-wrap items-center gap-3">
               <Link href="/name-a-star" className="btn-primary">
@@ -123,7 +123,7 @@ export default function HomePage() {
         <div className="text-center mb-16">
           <div className="eyebrow mb-3">Things to do here</div>
           <h2 className="font-display text-3xl sm:text-5xl font-bold text-white tracking-tight">
-            Free, kid-safe, no wallet.{' '}
+            Free and kid-safe.{' '}
             <span className="text-white/50">Pick one.</span>
           </h2>
         </div>
@@ -219,7 +219,7 @@ export default function HomePage() {
             <span aria-hidden>→</span>
           </Link>
           <div className="mt-6 text-xs font-mono text-white/30 tracking-widest uppercase">
-            Free · No wallet required · The name is forever
+            Free · The name is forever
           </div>
         </div>
       </section>

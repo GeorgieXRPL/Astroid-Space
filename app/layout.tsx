@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: 'Astroid — Starlike. Drawn by a kid. Helping kids.',
   description:
-    'Astroid (starlike) is a charity-first project where a kid-drawn Space Shiba Inu helps fund children. Name a star, write a wish, color in Astroid — no wallet required.',
+    'Astroid (starlike) is a charity-first project where a kid-drawn Space Shiba Inu helps fund children. Name a star, write a wish, color in Astroid.',
   keywords: [
     'Astroid',
     'starlike',
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Astroid — Starlike. Drawn by a kid. Helping kids.',
     description:
-      'A charity-first project. 25% of pump.fun creator fees auto-route to a children\'s charity. Name a star free, no wallet required.',
+      'A charity-first project. 25% of pump.fun creator fees auto-route to a children\'s charity. Name a star free.',
     type: 'website',
     images: ['/liv-drawing.jpg'],
   },

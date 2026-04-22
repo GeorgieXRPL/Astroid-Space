@@ -8,7 +8,7 @@ Live at **[astroid.space](https://astroid.space)**.
 
 Astroid is the official site for the $ASTROID Solana token. The whole point is to turn community activity into real-world impact for kids:
 
-- **Name a star** — anyone can name one of the visible stars in the sky for free, write a short message, and download a printable certificate. No wallet required.
+- **Name a star** — anyone can name one of the visible stars in the sky for free, write a short message, and download a printable certificate.
 - **Color the Astroid** — print Liv's drawing, color it, and (once the moderation pipeline is live) submit your version for the gallery.
 - **Wish wall** — leave a short, public wish in the sky.
 - **Charity transparency** — 25% of pump.fun creator fees auto-route on-chain to a wallet provided by ALSAC for St. Jude Children's Research Hospital. The wallet balance is fetched live from the Solana RPC and shown on `/charity` with a Solscan link, so anyone can verify in real time.

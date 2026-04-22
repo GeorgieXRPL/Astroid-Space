@@ -17,7 +17,7 @@ export function Footer() {
             </div>
             <p className="text-sm text-white/50 max-w-md leading-relaxed">
               A charity-first project built around a kid&apos;s drawing. Every transaction
-              helps fund real-world impact for children. No wallet required.
+              helps fund real-world impact for children.
             </p>
           </div>
 

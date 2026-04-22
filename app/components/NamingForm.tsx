@@ -277,7 +277,7 @@ export function NamingForm({ initialDesignation }: NamingFormProps) {
       {/* Submit */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-white/5">
         <div className="text-xs text-white/40 font-mono">
-          Free · No wallet · No account · Sign your name or leave it blank
+          Free · No account · Sign your name or leave it blank
         </div>
         <button
           type="submit"

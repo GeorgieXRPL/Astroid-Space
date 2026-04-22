@@ -16,8 +16,8 @@ export default function WishesPage() {
         </h1>
         <p className="text-white/60 max-w-xl mx-auto leading-relaxed">
           One sentence. For someone, for the world, for nothing in particular. Wishes
-          are reviewed before they appear so the wall stays kind. No wallet, no
-          account, no email needed.
+          are reviewed before they appear so the wall stays kind. No account
+          or email needed.
         </p>
       </div>
 

@@ -134,7 +134,7 @@ export default function AboutPage() {
             </li>
           </ul>
           <p>
-            All free, all wallet-free. Sign your name or leave it blank — your
+            All free. Sign your name or leave it blank — your
             call. The naming, the wish, and the coloring all stay forever — the
             project is the artifact people leave behind.
           </p>
