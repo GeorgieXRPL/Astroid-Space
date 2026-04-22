@@ -27,10 +27,18 @@ export function Nav() {
               </div>
             </div>
             <div className="flex flex-col leading-none">
-              <span className="font-display text-base font-semibold tracking-tight text-white">
-                Astroid
-              </span>
-              <span className="text-[9px] font-mono uppercase tracking-[0.2em] text-cosmos/70">
+              <div className="flex items-center gap-1.5">
+                <span className="font-display text-base font-semibold tracking-tight text-white">
+                  Astroid
+                </span>
+                <span
+                  className="font-mono text-[9px] uppercase tracking-[0.18em] text-ember/90 border border-ember/40 rounded px-1.5 py-[1px] leading-none"
+                  title="Beta — site is still being worked on"
+                >
+                  beta
+                </span>
+              </div>
+              <span className="text-[9px] font-mono uppercase tracking-[0.2em] text-cosmos/70 mt-0.5">
                 For Liv · starlike
               </span>
             </div>
