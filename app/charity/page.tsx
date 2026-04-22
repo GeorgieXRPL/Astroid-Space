@@ -15,7 +15,7 @@ export default function CharityPage() {
       <div className="text-center mb-12">
         <div className="eyebrow mb-3">Transparency</div>
         <h1 className="font-display text-4xl sm:text-6xl font-bold text-white tracking-tight mb-4">
-          Every wei. <span className="text-white/50">On-chain.</span>
+          Every lamport. <span className="text-white/50">On-chain.</span>
         </h1>
         <p className="text-white/60 max-w-xl mx-auto leading-relaxed">
           We don&apos;t custody donations. 25% of pump.fun creator fees

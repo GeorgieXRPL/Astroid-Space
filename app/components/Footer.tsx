@@ -87,6 +87,12 @@ export function Footer() {
             Not financial advice · Naming a star is free
           </div>
         </div>
+
+        <div className="pt-4 flex items-center justify-center gap-2 text-[11px] font-mono text-white/30 tracking-wider">
+          <span className="opacity-60">Powered by</span>
+          <span className="text-cosmos/70">Saltaire Protocol</span>
+          <span className="opacity-50 italic">(coming soon)</span>
+        </div>
         <div className="pt-4 mt-4 border-t border-white/5 text-[11px] text-white/30 leading-relaxed max-w-3xl">
           Astroid is not affiliated with, endorsed by, or partnered with St. Jude
           Children&apos;s Research Hospital, ALSAC, or any other charity listed on this
