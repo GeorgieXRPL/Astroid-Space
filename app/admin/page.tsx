@@ -14,7 +14,7 @@ import { Dashboard } from './Dashboard';
 import { LoginForm } from './LoginForm';
 
 export const metadata = {
-  title: 'Moderation · Astroid',
+  title: 'Moderation',
   description: 'Internal moderation queue.',
   robots: { index: false, follow: false },
 };

@@ -19,7 +19,10 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
-  title: 'Astroid - Starlike. Drawn by a kid. Helping kids.',
+  title: {
+    default: 'Astroid · Starlike',
+    template: '%s · Astroid · Starlike',
+  },
   description:
     'Astroid (starlike) is a charity-first project where a kid-drawn Space Shiba Inu helps fund children. Name a star, write a wish, color in Astroid.',
   keywords: [

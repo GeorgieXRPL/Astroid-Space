@@ -3,7 +3,7 @@ import { CharityNominationForm } from '../components/CharityNominationForm';
 import { CharityNominationsList } from '../components/CharityNominationsList';
 
 export const metadata = {
-  title: 'Charity · Astroid',
+  title: 'Charity',
   description:
     'Live, on-chain transparency for every cent flowing to charity. 25% of pump.fun creator fees auto-route at the source - we never custody.',
 };

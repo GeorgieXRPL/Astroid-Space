@@ -1,7 +1,7 @@
 import { WishWall } from '../components/WishWall';
 
 export const metadata = {
-  title: 'Wish Wall · Astroid',
+  title: 'Wish Wall',
   description:
     'A short message - for someone, for the world, for nothing in particular. Light moderation, then your wish floats on the Astroid Wish Wall.',
 };

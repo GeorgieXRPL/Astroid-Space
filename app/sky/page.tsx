@@ -4,7 +4,7 @@ import { HeroScene } from '../components/HeroScene';
 import { namedStarStore } from '../lib/storage';
 
 export const metadata = {
-  title: 'The Sky · Astroid',
+  title: 'The Sky',
   description:
     'Every named star in the Astroid sky. Names, dedications, and live status - names are forever.',
 };

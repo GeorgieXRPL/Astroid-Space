@@ -1,7 +1,7 @@
 import { ColoringStudio } from '../components/ColoringStudio';
 
 export const metadata = {
-  title: 'Color Astroid · Astroid',
+  title: 'Coloring',
   description:
     'Print Liv\'s drawing of Astroid the Space Shiba Inu, color it in, and send it back to be featured in the gallery.',
 };

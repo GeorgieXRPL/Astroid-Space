@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export const metadata = {
-  title: 'About · Astroid',
+  title: 'About',
   description:
     'The story behind Astroid the Space Shiba Inu - a character drawn by Liv, turned into a charity-first project for kids. Astroid means starlike.',
 };

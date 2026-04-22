@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { FRIENDS, FRIEND_CATEGORY_LABELS, type FriendCategory } from '../lib/friends';
 
 export const metadata = {
-  title: 'Friends Across the Sky · Astroid',
+  title: 'Friends Across the Sky',
   description:
     'We\'re Astroid (starlike). We celebrate Liv\'s original artwork of Astroid and every other project pointing kids at the stars. Different journeys, same sky.',
 };

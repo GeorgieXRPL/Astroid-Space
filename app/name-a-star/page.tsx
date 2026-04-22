@@ -6,7 +6,7 @@ interface NameAStarPageProps {
 }
 
 export const metadata = {
-  title: 'Name a Star · Astroid',
+  title: 'Name a Star',
   description:
     'Pick a star, give it a name, get a free certificate. No account, no payment. The naming is forever.',
 };
