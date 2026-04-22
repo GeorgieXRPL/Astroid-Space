@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { siteConfig } from '../lib/config';
+import { TokenAddress } from './TokenAddress';
 
 export function Footer() {
   return (
@@ -78,7 +79,9 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="pt-6 border-t border-white/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-white/40">
+        <TokenAddress />
+
+        <div className="pt-6 mt-6 border-t border-white/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-white/40">
           <div>
             <span className="font-mono">© {new Date().getFullYear()} Astroid.</span>{' '}
             <span>Mascot drawn by Liv. All rights reserved.</span>
