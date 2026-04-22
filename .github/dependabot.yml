@@ -1,0 +1,72 @@
+# Dependabot keeps our dependency tree patched without manual chasing.
+# https://docs.github.com/en/code-security/dependabot
+#
+# Strategy:
+#   - Security updates: auto-PR daily, all ecosystems.
+#   - Version updates: weekly (Mondays), grouped to minimise PR noise,
+#     and only minor/patch by default. Major bumps still get their own
+#     PR so we can read the changelog and test deliberately.
+#
+# When a PR lands here:
+#   1. Glance at the changelog excerpt Dependabot pastes into the body.
+#   2. Watch CI run (typecheck + build).
+#   3. Merge if green; for visual deps (three.js, drei, postprocessing),
+#      pull the branch locally and confirm the StarMap still renders.
+
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 5
+    groups:
+      next-stack:
+        patterns:
+          - "next"
+          - "react"
+          - "react-dom"
+          - "@types/react*"
+        update-types:
+          - "minor"
+          - "patch"
+      three-stack:
+        patterns:
+          - "three"
+          - "@react-three/*"
+          - "@types/three"
+        update-types:
+          - "minor"
+          - "patch"
+      tooling:
+        patterns:
+          - "typescript"
+          - "eslint*"
+          - "@typescript-eslint/*"
+          - "tailwindcss"
+          - "postcss*"
+          - "autoprefixer"
+        update-types:
+          - "minor"
+          - "patch"
+      runtime:
+        patterns:
+          - "zod"
+          - "@solana/*"
+        update-types:
+          - "minor"
+          - "patch"
+    ignore:
+      # Major bumps land in their own PR with full changelog visibility.
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-major"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
