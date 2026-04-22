@@ -64,6 +64,11 @@ export default function HomePage() {
                 a name patch, and a small mission logo.
               </p>
               <p>
+                <span className="text-white">The drawing has been to space.</span>{' '}
+                It&apos;s the original blueprint — every illustration, sticker, and pixel
+                of Astroid traces back to this single piece of paper.
+              </p>
+              <p>
                 We thought it was perfect. So we built a project around it — and made
                 sure that whatever value it created, kids would benefit.
               </p>
@@ -93,8 +98,17 @@ export default function HomePage() {
                   priority
                 />
               </div>
-              <div className="text-center mt-4 text-xs font-mono text-white/40 tracking-widest uppercase">
-                Original artwork by Liv
+              <div className="mt-4 flex flex-col items-center gap-2">
+                <div className="text-xs font-mono text-white/40 tracking-widest uppercase">
+                  Original artwork by Liv
+                </div>
+                <div
+                  className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-cosmos/30 bg-cosmos/5 text-[10px] font-mono uppercase tracking-[0.18em] text-cosmos/90"
+                  title="The original drawing has been flown to space"
+                >
+                  <span aria-hidden className="w-1 h-1 rounded-full bg-cosmos animate-pulse" />
+                  <span>Flown in space · Original blueprint</span>
+                </div>
               </div>
             </div>
           </div>
