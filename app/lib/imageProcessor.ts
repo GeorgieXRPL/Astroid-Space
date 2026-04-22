@@ -3,29 +3,29 @@
  *
  * What can go wrong with a user-uploaded image, and how we defend:
  *
- *   1. POLYGLOT FILES — a file that's a valid PNG AND a valid HTML
+ *   1. POLYGLOT FILES - a file that's a valid PNG AND a valid HTML
  *      document, depending on which parser reads it. Some browsers
  *      MIME-sniff the body and execute the HTML. Defense: re-encode
  *      the image through sharp. The output bytes are deterministic
  *      and contain only image data.
  *
- *   2. EXIF / IPTC / XMP METADATA — phone uploads commonly contain GPS
+ *   2. EXIF / IPTC / XMP METADATA - phone uploads commonly contain GPS
  *      coordinates of the kid's bedroom. Defense: sharp's pipeline
  *      strips all metadata by default unless we explicitly opt back in.
  *
  *   3. EMBEDDED COLOR PROFILES with malformed ICC blobs that crash
  *      legacy decoders. Defense: re-encode strips ICC unless we ask.
  *
- *   4. DECOMPRESSION BOMBS — a 1KB PNG that decodes to 50000x50000
+ *   4. DECOMPRESSION BOMBS - a 1KB PNG that decodes to 50000x50000
  *      pixels and OOMs the server. Defense: sharp returns a metadata
  *      object with width/height BEFORE doing pixel work; we reject
  *      anything over the dimensional limit.
  *
- *   5. SVG-AS-PNG — file mislabeled as PNG but is actually SVG with
+ *   5. SVG-AS-PNG - file mislabeled as PNG but is actually SVG with
  *      <script>. Already blocked by magic-byte check, but sharp would
  *      also fail to decode it as PNG.
  *
- *   6. ADULT / VIOLENT / EXTREMIST IMAGERY — sharp can't help here.
+ *   6. ADULT / VIOLENT / EXTREMIST IMAGERY - sharp can't help here.
  *      That's a content moderation problem and needs a model. We
  *      expose a hook (`runContentModeration`) that callers can plug
  *      a service into. Default impl is a no-op (rely on human review).
@@ -44,7 +44,7 @@ const WEBP_QUALITY = 82;
 export type ProcessedImage = {
   /** Re-encoded image as raw bytes, ready to upload to storage. */
   bytes: Buffer;
-  /** Final mime type — always image/webp post-processing. */
+  /** Final mime type - always image/webp post-processing. */
   mimeType: 'image/webp';
   /** Output dimensions. */
   width: number;
@@ -85,7 +85,7 @@ export async function processImageDataUrl(dataUrl: string): Promise<ProcessingRe
     return { ok: false, reason: 'The image is empty.' };
   }
 
-  // sharp() is lazy — calling .metadata() doesn't decode pixel data.
+  // sharp() is lazy - calling .metadata() doesn't decode pixel data.
   // We use it to inspect dimensions BEFORE committing to a decode that
   // could OOM us on a decompression bomb.
   let pipeline: sharp.Sharp;
@@ -163,13 +163,13 @@ export type ModerationDecision =
  *     captioning + a text classifier on the caption). Cheap, ships
  *     with the Cloudflare account.
  *
- *   - AWS Rekognition `DetectModerationLabels` — $1 per 1000 images,
+ *   - AWS Rekognition `DetectModerationLabels` - $1 per 1000 images,
  *     reliable, returns hierarchical labels (Explicit Nudity > etc.).
  *
- *   - Sightengine / Hive — purpose-built for this, tunable thresholds,
+ *   - Sightengine / Hive - purpose-built for this, tunable thresholds,
  *     ~$0.001 per image. Hive has a kids-content mode.
  *
- * The default implementation here returns `{ allow: true }` — meaning
+ * The default implementation here returns `{ allow: true }` - meaning
  * no automated check, all submissions still go through human review
  * (which is enforced by the `pending` status in the storage layer).
  */

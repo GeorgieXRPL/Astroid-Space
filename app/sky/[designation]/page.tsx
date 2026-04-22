@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: PageProps) {
       ? `${named.name} · ${designation} · Astroid`
       : `${designation} · Astroid`,
     description: named
-      ? `${designation} is named "${named.name}"${named.dedication ? ` — "${named.dedication}"` : ''}.`
+      ? `${designation} is named "${named.name}"${named.dedication ? ` - "${named.dedication}"` : ''}.`
       : `${designation} is currently unnamed in the Astroid sky. Name it free.`,
   };
 }
@@ -51,7 +51,7 @@ export default async function StarDetailPage({ params, searchParams }: PageProps
   // Public approved name (visible to everyone).
   const approvedNamed = record?.status === 'approved' ? record : null;
 
-  // Pending preview — only the namer (with their claim token) sees this.
+  // Pending preview - only the namer (with their claim token) sees this.
   const pendingForNamer =
     record?.status === 'pending' && providedClaim && providedClaim === record.claimToken
       ? record
@@ -147,7 +147,7 @@ export default async function StarDetailPage({ params, searchParams }: PageProps
                 {isPendingPreview && (
                   <div className="mb-6 px-4 py-3 rounded-md bg-ember/10 border border-ember/30 text-sm text-ember/90 leading-relaxed">
                     <strong className="block text-ember mb-1">
-                      ✓ Submitted — only you can see this preview.
+                      ✓ Submitted - only you can see this preview.
                     </strong>
                     A human is reviewing your name. Once approved (usually
                     within a day) it will appear publicly here and your

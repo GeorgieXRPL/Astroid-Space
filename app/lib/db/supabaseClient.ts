@@ -3,7 +3,7 @@
  *
  * We only ever talk to Supabase from server code. The secret key
  * (newer naming for what Supabase used to call "service_role") bypasses
- * RLS, which is exactly what we want — every read/write goes through
+ * RLS, which is exactly what we want - every read/write goes through
  * validated route handlers, and we'd rather not have a public RLS
  * surface to maintain.
  *
@@ -11,7 +11,7 @@
  * `sb_secret_...` strings both authenticate as the same role.
  *
  * This module throws on import if `SUPABASE_URL` and
- * `SUPABASE_SERVICE_ROLE_KEY` aren't set. That's fine — `pickBundle()`
+ * `SUPABASE_SERVICE_ROLE_KEY` aren't set. That's fine - `pickBundle()`
  * in `app/lib/storage.ts` only loads this module when the user has
  * opted into the Supabase backend via `STORAGE_BACKEND=supabase`.
  */
@@ -31,7 +31,7 @@ export function supabase(): SupabaseClient {
   }
   cached = createClient(url, key, {
     auth: {
-      // Server-side only — no auto session, no persistence needed.
+      // Server-side only - no auto session, no persistence needed.
       autoRefreshToken: false,
       persistSession: false,
     },

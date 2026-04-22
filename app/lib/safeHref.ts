@@ -7,7 +7,7 @@
  * the API (a seed file, a manual import) can't introduce a click-to-
  * execute javascript: link.
  *
- * Returns `null` for unsafe URLs — callers should render the value as
+ * Returns `null` for unsafe URLs - callers should render the value as
  * plain text or omit the link in that case.
  */
 export function safeHref(raw: string | null | undefined): string | null {

@@ -5,7 +5,7 @@ import { CharityNominationsList } from '../components/CharityNominationsList';
 export const metadata = {
   title: 'Charity · Astroid',
   description:
-    'Live, on-chain transparency for every cent flowing to charity. 25% of pump.fun creator fees auto-route at the source — we never custody.',
+    'Live, on-chain transparency for every cent flowing to charity. 25% of pump.fun creator fees auto-route at the source - we never custody.',
 };
 
 export default function CharityPage() {
@@ -37,8 +37,8 @@ export default function CharityPage() {
             St. Jude Children&apos;s Research Hospital
           </h3>
           <p className="text-sm text-white/70 leading-relaxed mb-4">
-            ALSAC — the fundraising and awareness organization for St. Jude
-            Children&apos;s Research Hospital — provided the Solana wallet
+            ALSAC - the fundraising and awareness organization for St. Jude
+            Children&apos;s Research Hospital - provided the Solana wallet
             above by email correspondence as an internally-supported St. Jude
             wallet for receiving on-chain transfers. 25% of every pump.fun
             creator fee auto-routes there at the protocol level on every
@@ -64,7 +64,7 @@ export default function CharityPage() {
             <p className="text-sm text-white/60 leading-relaxed">
               Pump.fun&apos;s creator fee is split 75 / 25 at the source. The
               25% wallet auto-routes on-chain to the ALSAC-provided St. Jude
-              wallet above. We never touch the 25% — the split happens on-chain,
+              wallet above. We never touch the 25% - the split happens on-chain,
               on every trade, automatically.
             </p>
           </div>
@@ -78,7 +78,7 @@ export default function CharityPage() {
               When another children&apos;s charity confirms a wallet and
               approves the routing in writing, they&apos;re added to a
               recurring on-chain split <em>from the 75% project wallet</em>
-              {' '}— the side that funds development. This does not reduce the
+              {' '}- the side that funds development. This does not reduce the
               25% routing to St. Jude. Per-charity portions are decided case
               by case at onboarding and disclosed publicly here once active.
             </p>
@@ -93,12 +93,12 @@ export default function CharityPage() {
 
       {/* ==================== COMMUNITY NOMINATIONS ==================== */}
       <div id="nominate" className="mt-20 space-y-6 scroll-mt-24">
-        <div className="section-divider">More charities — chosen by the community</div>
+        <div className="section-divider">More charities - chosen by the community</div>
 
         <div className="glass-panel p-6 sm:p-8">
           <p className="text-white/70 leading-relaxed text-sm">
             Beyond St. Jude, we&apos;re actively reaching out to other
-            children&apos;s charities — nominated by the community — to
+            children&apos;s charities - nominated by the community - to
             request permission to receive on-chain transfers from this
             protocol. Once a charity provides a wallet and approves the
             routing in writing, they&apos;re added to a recurring on-chain

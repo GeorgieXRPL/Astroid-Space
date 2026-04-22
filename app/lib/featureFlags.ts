@@ -5,14 +5,14 @@
  *
  * Toggling a flag requires a Vercel redeploy because NEXT_PUBLIC_ values
  * are inlined at build time. That's a deliberate trade-off for this
- * project — flags are flipped rarely and we'd rather avoid the runtime
+ * project - flags are flipped rarely and we'd rather avoid the runtime
  * roundtrip.
  */
 
 /**
  * Coloring submissions accept user-uploaded images. We keep this off by
  * default until automated image moderation (Cloudflare Workers AI / AWS
- * Rekognition / Sightengine / Hive — see IMAGE_MODERATION.md) is wired
+ * Rekognition / Sightengine / Hive - see IMAGE_MODERATION.md) is wired
  * up. Manual-review-only is workable for low traffic but does not scale,
  * and exposes moderators to whatever bad actors send.
  *

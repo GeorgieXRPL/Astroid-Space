@@ -49,7 +49,7 @@ researchers publicly with their permission. The same contact is in
 - **Image moderation is human-only**: the `runContentModeration()` hook
   in `app/lib/imageProcessor.ts` is a no-op stub. Until it's wired to a
   real classifier (Cloudflare Workers AI / AWS Rekognition /
-  Sightengine / Hive — see `IMAGE_MODERATION.md`), uploads stay disabled
+  Sightengine / Hive - see `IMAGE_MODERATION.md`), uploads stay disabled
   via `NEXT_PUBLIC_COLORING_UPLOADS_ENABLED=` (off by default).
 - **CSP `'unsafe-inline'`**: required by Next.js's runtime bootstrap and
   by some Tailwind utilities. We compensate with strict everywhere

@@ -5,7 +5,7 @@
  * claim token is never echoed.
  *
  * Optional `?claim=<token>` lets a namer view their own pending submission
- * — the rest of the world sees the star as unnamed until approval.
+ * - the rest of the world sees the star as unnamed until approval.
  */
 
 import { NextRequest, NextResponse } from 'next/server';

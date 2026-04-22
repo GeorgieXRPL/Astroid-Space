@@ -63,7 +63,7 @@ export function CharityNominationForm() {
 
   return (
     <form onSubmit={submit} className="glass-panel p-6 sm:p-8 space-y-5">
-      {/* Honeypot — see lib/honeypot.ts */}
+      {/* Honeypot - see lib/honeypot.ts */}
       <div aria-hidden="true" className="absolute -left-[10000px] top-auto w-px h-px overflow-hidden">
         <label htmlFor={`${HONEYPOT_FIELD}-nom`}>Website (leave empty)</label>
         <input
@@ -170,7 +170,7 @@ export function CharityNominationForm() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-4 border-t border-white/5">
         <div className="text-xs text-white/40 font-mono leading-relaxed max-w-md">
           Reviewed by a human. Confirmed charities are added to a recurring
-          on-chain split from the 75% project wallet — only after recipient
+          on-chain split from the 75% project wallet - only after recipient
           consent is obtained in writing.
         </div>
         <button

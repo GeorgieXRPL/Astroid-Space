@@ -44,7 +44,7 @@ const submitSchema = z.object({
   age: z.number().int().min(0).max(120).optional(),
   imageDataUrl: z
     .string()
-    .max(MAX_IMAGE_LENGTH, 'Image is too large — please save under 1MB.')
+    .max(MAX_IMAGE_LENGTH, 'Image is too large - please save under 1MB.')
     .regex(/^data:image\/(png|jpeg|jpg|webp);base64,[A-Za-z0-9+/=]+$/, 'Image must be a PNG, JPEG, or WebP data URL.'),
 });
 
@@ -135,7 +135,7 @@ export async function POST(req: NextRequest) {
   const decision = await runContentModeration(processed);
   if (!decision.allow) {
     return NextResponse.json(
-      // Deliberately vague — don't help adversaries calibrate.
+      // Deliberately vague - don't help adversaries calibrate.
       { error: 'Image flagged by automated review. Please try a different drawing.' },
       { status: 400 }
     );

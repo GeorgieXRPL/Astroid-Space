@@ -4,7 +4,7 @@
  * We add a hidden `website` input to every public form. Real humans never
  * see or fill it; many naive bots auto-fill anything that looks like a
  * name/email/website field. If the field arrives non-empty, the request
- * is rejected silently — we still return 201 so the bot doesn't learn it
+ * is rejected silently - we still return 201 so the bot doesn't learn it
  * was caught.
  *
  * `website` is the field name because it's a classic spam target across

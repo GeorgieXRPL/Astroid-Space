@@ -1,15 +1,15 @@
-# Astroid — your TODO list
+# Astroid - your TODO list
 
 Hi. This is the "do this in order, you can't get it wrong" list for
 launching the site. Each step is small. If a step says "wait", actually
-wait — DNS is slow.
+wait - DNS is slow.
 
 Time estimate from zero to live, doing one thing at a time: about 4 hours
 (most of that is waiting for DNS to propagate).
 
 ---
 
-## Stage 0 — things to have open
+## Stage 0 - things to have open
 
 - The `Astroid/` folder in your code editor (Cursor).
 - A terminal at the project root.
@@ -20,7 +20,7 @@ Time estimate from zero to live, doing one thing at a time: about 4 hours
 
 ---
 
-## Stage 1 — the email address (15 minutes + DNS wait)
+## Stage 1 - the email address (15 minutes + DNS wait)
 
 You need `security@astroid.space` to work because it's published in
 `/.well-known/security.txt`. The cheapest, cleanest option is
@@ -47,7 +47,7 @@ Once Cloudflare confirms your domain is active:
    **Email Routing** → **Get started**. Click **Add records and enable**.
 2. Click **Destination addresses** → **Add destination address**. Type
    the email address you actually read (e.g. your Gmail). Cloudflare
-   sends a verification email — click the link.
+   sends a verification email - click the link.
 3. Click **Routing rules** → **Create address**:
    - Custom address: `security`
    - Action: **Send to an email**
@@ -77,7 +77,7 @@ You're done with email.
 
 ---
 
-## Stage 2 — protect the domain itself (5 minutes)
+## Stage 2 - protect the domain itself (5 minutes)
 
 These records tell the world "only these certificate authorities can
 issue HTTPS certs for astroid.space, anyone else is lying."
@@ -90,7 +90,7 @@ In Cloudflare → **DNS** → **Records** → **Add record**, add THREE records:
 | CAA  | `astroid.space` | Flags `0`, Tag `issue`, Value `pki.goog`            | Allows Google Trust (Vercel uses this) |
 | CAA  | `astroid.space` | Flags `0`, Tag `iodef`, Value `mailto:security@astroid.space` | Email me if anyone tries to issue a cert outside this list |
 
-### ⏸ DEFERRED — finish DNSSEC after launch
+### ⏸ DEFERRED - finish DNSSEC after launch
 
 DNSSEC is two steps: enable signing at Cloudflare AND publish the DS record
 at Namecheap (your registrar). The Cloudflare side is done; the Namecheap
@@ -126,7 +126,7 @@ secure without it. Most major sites don't run it.
 
 ---
 
-## Stage 3 — generate your secret keys (2 minutes)
+## Stage 3 - generate your secret keys (2 minutes)
 
 You need two random secrets. Open a terminal and run these one at a
 time. Copy the output of each into your password manager **before
@@ -148,12 +148,12 @@ On Windows PowerShell:
 ```
 
 Label them in your password manager:
-- **Astroid ADMIN_TOKEN** — first value
-- **Astroid ADMIN_COOKIE_SECRET** — second value (must be DIFFERENT)
+- **Astroid ADMIN_TOKEN** - first value
+- **Astroid ADMIN_COOKIE_SECRET** - second value (must be DIFFERENT)
 
 ---
 
-## Stage 4 — set up the database (Supabase, 20 minutes)
+## Stage 4 - set up the database (Supabase, 20 minutes)
 
 The site currently keeps everything in memory, which means the moment
 the server restarts, every named star and wish disappears. We're going
@@ -164,7 +164,7 @@ to swap in Supabase (free Postgres database in the cloud).
 1. Go to https://supabase.com and sign up (free, GitHub login is
    easiest).
 2. Click **New project**. Name it `astroid`. Pick a strong DB password
-   (Supabase generates one — save it in your password manager labelled
+   (Supabase generates one - save it in your password manager labelled
    **Astroid SUPABASE DB PASSWORD**). Pick the region closest to where
    you'll deploy (probably `us-east-1` for Vercel default).
 3. Wait ~2 minutes for the project to provision.
@@ -194,15 +194,15 @@ to swap in Supabase (free Postgres database in the cloud).
 1. Left sidebar → **Project Settings** (gear icon) → **API Keys**
    (Supabase recently moved this from "API" to its own section).
 2. Copy **two** values into your password manager:
-   - **Astroid SUPABASE_URL** — the `Project URL` field (looks like
+   - **Astroid SUPABASE_URL** - the `Project URL` field (looks like
      `https://abcdefghij.supabase.co`).
-   - **Astroid SUPABASE_SERVICE_ROLE_KEY** — the **Secret key** (starts
+   - **Astroid SUPABASE_SERVICE_ROLE_KEY** - the **Secret key** (starts
      with `sb_secret_...`). Click the eye / Reveal icon to see the full
-     value. **Never paste this anywhere public — it bypasses all
+     value. **Never paste this anywhere public - it bypasses all
      security rules. Treat it like the master password to your data.**
 
    You can ignore the **Publishable key** (`sb_publishable_...`). Our
-   server-side code never uses it — only the secret key talks to
+   server-side code never uses it - only the secret key talks to
    Supabase, and the secret key bypasses RLS so we don't need a public
    one. (If you ever build a browser feature that hits Supabase
    directly, you'd grab the publishable key then.)
@@ -215,7 +215,7 @@ to swap in Supabase (free Postgres database in the cloud).
 
 ---
 
-## Stage 5 — deploy to Vercel (20 minutes)
+## Stage 5 - deploy to Vercel (20 minutes)
 
 ### 5.1 Push the code to GitHub
 
@@ -242,7 +242,7 @@ git push -u origin main
 2. Click **Add New** → **Project** → import your `astroid` repo.
 3. Framework: **Next.js** (auto-detected).
 4. Click **Environment Variables** and add **all of these** (paste from
-   password manager — make sure no trailing spaces):
+   password manager - make sure no trailing spaces):
 
    | Name                          | Value                                  |
    |-------------------------------|----------------------------------------|
@@ -273,27 +273,27 @@ git push -u origin main
 
 In a fresh browser tab, visit each of these and confirm they load:
 
-- https://astroid.space — front page with the 3D star field
-- https://astroid.space/sky — sky page
-- https://astroid.space/wishes — wish wall
-- https://astroid.space/coloring — coloring studio
-- https://astroid.space/charity — charity page
-- https://astroid.space/.well-known/security.txt — your security contact
-- https://astroid.space/robots.txt — should disallow `/admin`
-- https://astroid.space/sitemap.xml — list of public pages
-- https://astroid.space/admin — should show a login screen, NOT a
+- https://astroid.space - front page with the 3D star field
+- https://astroid.space/sky - sky page
+- https://astroid.space/wishes - wish wall
+- https://astroid.space/coloring - coloring studio
+- https://astroid.space/charity - charity page
+- https://astroid.space/.well-known/security.txt - your security contact
+- https://astroid.space/robots.txt - should disallow `/admin`
+- https://astroid.space/sitemap.xml - list of public pages
+- https://astroid.space/admin - should show a login screen, NOT a
   dashboard
 
 Try naming a star with a fake name like "Test Star". It should say
 "queued for review". Then go to `/admin`, paste your `ADMIN_TOKEN`, and
-you should see it in the queue. Approve it. Refresh `/sky` — your star
+you should see it in the queue. Approve it. Refresh `/sky` - your star
 should now show.
 
 ---
 
-## Stage 6 — turn on the safety nets (10 minutes)
+## Stage 6 - turn on the safety nets (10 minutes)
 
-### 6.1 Submit to HSTS preload (one-way decision — only do once you're sure)
+### 6.1 Submit to HSTS preload (one-way decision - only do once you're sure)
 
 This makes browsers refuse to ever load your site over plain HTTP. Once
 you submit, removing yourself takes weeks.
@@ -314,18 +314,18 @@ If anything's red, take a screenshot and ask me.
 
 ### 6.3 Bookmark these
 
-- `https://astroid.space/admin` — moderation queue (check daily for
+- `https://astroid.space/admin` - moderation queue (check daily for
   the first month, then weekly)
-- Cloudflare dashboard → Email Routing — see who's emailing you
-- Supabase dashboard → Table Editor → `rejection_log` — see what
+- Cloudflare dashboard → Email Routing - see who's emailing you
+- Supabase dashboard → Table Editor → `rejection_log` - see what
   the content filter caught
-- Vercel dashboard → Logs — see runtime errors
-- GitHub → Pull Requests — review Dependabot's weekly security
+- Vercel dashboard → Logs - see runtime errors
+- GitHub → Pull Requests - review Dependabot's weekly security
   patches and merge if CI is green
 
 ---
 
-## Stage 7 — what to do every day / week / month
+## Stage 7 - what to do every day / week / month
 
 ### Every day (first month, then weekly)
 
@@ -337,7 +337,7 @@ If anything's red, take a screenshot and ask me.
 - Look at GitHub Pull Requests for Dependabot updates. If CI is green
   and the changelog looks fine, merge.
 - Glance at Supabase usage in the dashboard. Free tier is 500MB DB +
-  1GB storage — plenty for the first year.
+  1GB storage - plenty for the first year.
 
 ### Every 90 days
 
@@ -364,18 +364,18 @@ If anything's red, take a screenshot and ask me.
 | Admin token leaked / suspect compromise | Stage 7 "every 90 days" steps, immediately. Then check the `rejection_log` and Supabase tables for anything odd. |
 | Email forwarder stops delivering | Cloudflare → Email Routing → check destination address still verified. Re-verify if needed. |
 | Got a security report email | Reply within 72 hours. Don't post the details publicly until you've fixed it. Credit the reporter (with their permission). |
-| Free tier limits hit | Supabase shows usage in the dashboard. If you're close, upgrade the project to the $25/month Pro plan. Vercel free is 100GB bandwidth/month — should be plenty. |
+| Free tier limits hit | Supabase shows usage in the dashboard. If you're close, upgrade the project to the $25/month Pro plan. Vercel free is 100GB bandwidth/month - should be plenty. |
 
 ---
 
 ## You don't need to do these unless you want to
 
-- **Add Cloudflare Turnstile** (CAPTCHA without the puzzles) — only if
+- **Add Cloudflare Turnstile** (CAPTCHA without the puzzles) - only if
   bot abuse becomes a real problem.
 - **Add a real image moderation API** (Cloudflare AI, AWS Rekognition,
-  Sightengine) — see `IMAGE_MODERATION.md` for instructions.
-- **Switch certificates from SVG to PDF** — only if people complain.
-- **Multilingual support** — only if you actually get non-English
+  Sightengine) - see `IMAGE_MODERATION.md` for instructions.
+- **Switch certificates from SVG to PDF** - only if people complain.
+- **Multilingual support** - only if you actually get non-English
   traffic.
 
 That's it. If you do everything in this file in order, the site is

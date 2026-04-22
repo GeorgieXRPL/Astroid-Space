@@ -4,7 +4,7 @@ import Link from 'next/link';
 export const metadata = {
   title: 'About · Astroid',
   description:
-    'The story behind Astroid the Space Shiba Inu — a character drawn by Liv, turned into a charity-first project for kids. Astroid means starlike.',
+    'The story behind Astroid the Space Shiba Inu - a character drawn by Liv, turned into a charity-first project for kids. Astroid means starlike.',
 };
 
 export default function AboutPage() {
@@ -52,8 +52,8 @@ export default function AboutPage() {
             logo patch on the chest. She signed it at the bottom.
           </p>
           <p>
-            That&apos;s the whole brand brief. Everything else — the website, the sky
-            of stars, the typography, the tone of voice — flows from those notes.
+            That&apos;s the whole brand brief. Everything else - the website, the sky
+            of stars, the typography, the tone of voice - flows from those notes.
           </p>
         </Section>
 
@@ -68,7 +68,7 @@ export default function AboutPage() {
             That&apos;s why this site is built around a sky of stars instead of a
             belt of rocks. We&apos;re not the asteroid plushie, we&apos;re not Asteroid
             Protocol, we&apos;re not any of the asteroid memecoins. We share the sky
-            with them — and we point our friends at them on the{' '}
+            with them - and we point our friends at them on the{' '}
             <Link href="/friends" className="text-cosmos hover:text-white">
               Friends page
             </Link>
@@ -93,7 +93,7 @@ export default function AboutPage() {
             </li>
             <li>
               We&apos;re also <strong className="text-white">reaching out to other
-              children&apos;s charities</strong> — nominated by the community — to
+              children&apos;s charities</strong> - nominated by the community - to
               request permission to route on-chain donations to them. Once a
               charity confirms in writing, they&apos;re added to a recurring
               on-chain split from the 75% project wallet. The 25% to St. Jude
@@ -116,7 +116,7 @@ export default function AboutPage() {
 
         <Section title="Why &lsquo;Name a Star&rsquo; (and a Wish Wall, and coloring)">
           <p>
-            We needed kid-friendly things for the site to <em>do</em> — things that
+            We needed kid-friendly things for the site to <em>do</em> - things that
             weren&apos;t a chart or a buy button. So:
           </p>
           <ul className="list-disc list-inside space-y-2 marker:text-cosmos">
@@ -126,7 +126,7 @@ export default function AboutPage() {
             </li>
             <li>
               A <strong className="text-white">Wish Wall</strong> for one-sentence wishes
-              — for someone, for the world, for nothing in particular.
+              - for someone, for the world, for nothing in particular.
             </li>
             <li>
               A <strong className="text-white">coloring page</strong>: print Liv&apos;s
@@ -134,8 +134,8 @@ export default function AboutPage() {
             </li>
           </ul>
           <p>
-            All free. Sign your name or leave it blank — your
-            call. The naming, the wish, and the coloring all stay forever — the
+            All free. Sign your name or leave it blank - your
+            call. The naming, the wish, and the coloring all stay forever - the
             project is the artifact people leave behind.
           </p>
         </Section>

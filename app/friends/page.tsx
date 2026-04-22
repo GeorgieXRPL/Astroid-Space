@@ -28,11 +28,11 @@ export default function FriendsPage() {
       <div className="text-center mb-16">
         <div className="eyebrow mb-3">Friends across the sky</div>
         <h1 className="font-display text-4xl sm:text-6xl font-bold text-white tracking-tight mb-4">
-          We&apos;re Astroid <span className="text-white/50">— starlike.</span>
+          We&apos;re Astroid <span className="text-white/50">- starlike.</span>
         </h1>
         <p className="text-white/60 max-w-2xl mx-auto leading-relaxed text-lg">
           We celebrate Liv&apos;s original artwork of Astroid, and every other
-          project — large or small — pointing kids at the stars. Different
+          project - large or small - pointing kids at the stars. Different
           journeys, same sky.
         </p>
       </div>
@@ -48,9 +48,9 @@ export default function FriendsPage() {
           carrying everything you point at it.
         </p>
         <p className="text-white/80 leading-relaxed">
-          We are the Astroid community — and we came first. We share the sky with
+          We are the Astroid community - and we came first. We share the sky with
           the asteroid plushie, Asteroid Protocol, and the other asteroid projects
-          out there. Different rocks, same orbit — we send them love.
+          out there. Different rocks, same orbit - we send them love.
         </p>
       </div>
 
@@ -147,8 +147,8 @@ export default function FriendsPage() {
                       More coming soon
                     </h3>
                     <p className="text-sm text-white/40 leading-relaxed mb-3">
-                      We&apos;re reaching out to more children&apos;s charities —
-                      nominated by the community — for permission to receive
+                      We&apos;re reaching out to more children&apos;s charities -
+                      nominated by the community - for permission to receive
                       on-chain donations. Suggest one and we&apos;ll do the
                       outreach.
                     </p>

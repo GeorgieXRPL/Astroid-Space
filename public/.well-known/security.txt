@@ -1,4 +1,4 @@
-# Astroid — Vulnerability Disclosure
+# Astroid - Vulnerability Disclosure
 # https://www.rfc-editor.org/rfc/rfc9116
 #
 # If you've found a security issue (XSS, auth bypass, data exposure,

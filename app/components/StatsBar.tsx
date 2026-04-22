@@ -42,12 +42,12 @@ export function StatsBar() {
     <div className="grid grid-cols-2 md:grid-cols-4 gap-px bg-white/5 border border-white/5 rounded-xl overflow-hidden">
       <Stat
         label="Stars Named"
-        value={stats ? stats.named.toLocaleString() : '—'}
+        value={stats ? stats.named.toLocaleString() : '-'}
         sub={stats ? `of ${stats.totalStars.toLocaleString()}` : ''}
       />
       <Stat
         label="Available"
-        value={stats ? stats.available.toLocaleString() : '—'}
+        value={stats ? stats.available.toLocaleString() : '-'}
         sub={stats ? `${stats.namedPercent}% claimed` : ''}
       />
       <Stat
@@ -65,7 +65,7 @@ export function StatsBar() {
         value={
           stats
             ? `${stats.wishesApproved + stats.coloringApproved}`
-            : '—'
+            : '-'
         }
         sub={
           stats

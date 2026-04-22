@@ -38,7 +38,7 @@ export function CharityNominationsList() {
         <p className="text-white/60 text-sm max-w-md mx-auto leading-relaxed">
           No community nominations approved yet. If there&apos;s a children&apos;s
           charity you love, suggest them above. We&apos;ll review and reach out
-          for written consent before any wallet is wired up — confirmed
+          for written consent before any wallet is wired up - confirmed
           charities are added to a recurring on-chain split from the 75%
           project wallet.
         </p>
@@ -91,7 +91,7 @@ function NominationCard({ nom }: { nom: Nomination }) {
         <p className="text-sm text-white/70 leading-relaxed mt-1">{nom.reason}</p>
       )}
       <div className="text-xs text-white/40 font-mono mt-auto pt-2 border-t border-white/5">
-        — {nom.nominatedBy || 'A friend of Astroid'} · {date}
+        - {nom.nominatedBy || 'A friend of Astroid'} · {date}
       </div>
     </div>
   );

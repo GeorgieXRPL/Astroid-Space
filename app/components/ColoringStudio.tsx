@@ -105,12 +105,12 @@ export function ColoringStudio() {
           </h2>
           <p className="text-white/60 text-sm leading-relaxed mb-5">
             Open the original drawing at full size, then print it on regular paper.
-            Crayons, markers, paint — anything goes.
+            Crayons, markers, paint - anything goes.
           </p>
           <div className="kid-art-frame max-w-xs mx-auto mb-5">
             <Image
               src="/liv-drawing.jpg"
-              alt="Astroid the Space Shiba Inu, drawn by Liv — the coloring template"
+              alt="Astroid the Space Shiba Inu, drawn by Liv - the coloring template"
               width={400}
               height={520}
               className="w-full h-auto rounded-sm"
@@ -139,7 +139,7 @@ export function ColoringStudio() {
           </div>
         </div>
 
-        {/* Submit — gated behind a feature flag while we finish image moderation. */}
+        {/* Submit - gated behind a feature flag while we finish image moderation. */}
         {!COLORING_UPLOADS_ENABLED ? (
           <div className="glass-panel-bright p-6 sm:p-8 space-y-4 flex flex-col">
             <div className="eyebrow text-ember">Step 2 · Coming soon</div>
@@ -148,7 +148,7 @@ export function ColoringStudio() {
             </h2>
             <p className="text-white/70 text-sm leading-relaxed">
               We&apos;re finishing the moderation pipeline that keeps the gallery
-              safe — especially since this is a place for kids. While we close
+              safe - especially since this is a place for kids. While we close
               that out, please download the page, color it offline, and share
               your masterpiece on socials. Tag us and we&apos;ll feature the
               best ones once submissions reopen.
@@ -173,7 +173,7 @@ export function ColoringStudio() {
           </div>
         ) : (
         <form onSubmit={submit} className="glass-panel-bright p-6 sm:p-8 space-y-5">
-          {/* Honeypot — see lib/honeypot.ts */}
+          {/* Honeypot - see lib/honeypot.ts */}
           <div aria-hidden="true" className="absolute -left-[10000px] top-auto w-px h-px overflow-hidden">
             <label htmlFor={`${HONEYPOT_FIELD}-coloring`}>Website (leave empty)</label>
             <input
@@ -203,7 +203,7 @@ export function ColoringStudio() {
             />
             {preview && (
               <div className="mt-4 relative aspect-square w-40 mx-auto rounded-md overflow-hidden border border-white/10">
-                {/* Preview a data URL — next/image refuses data URLs, use img */}
+                {/* Preview a data URL - next/image refuses data URLs, use img */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={preview} alt="Your drawing preview" className="w-full h-full object-cover" />
               </div>
@@ -237,7 +237,7 @@ export function ColoringStudio() {
               max={120}
               value={age}
               onChange={(e) => setAge(e.target.value)}
-              placeholder="—"
+              placeholder="-"
               className="w-32 bg-space-950 border border-white/10 focus:border-cosmos rounded-md px-4 py-3 text-white placeholder:text-white/30 outline-none transition-colors font-mono"
             />
           </div>

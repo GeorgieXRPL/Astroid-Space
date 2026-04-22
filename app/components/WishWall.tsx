@@ -69,7 +69,7 @@ export function WishWall() {
     <>
       {/* Submit form */}
       <form onSubmit={submit} className="glass-panel-bright p-6 sm:p-10 mb-10 space-y-6">
-        {/* Honeypot — see lib/honeypot.ts */}
+        {/* Honeypot - see lib/honeypot.ts */}
         <div aria-hidden="true" className="absolute -left-[10000px] top-auto w-px h-px overflow-hidden">
           <label htmlFor={`${HONEYPOT_FIELD}-wish`}>Website (leave empty)</label>
           <input
@@ -179,7 +179,7 @@ function WishCard({ wish }: { wish: Wish }) {
       <div className="text-cosmos text-lg leading-none">✦</div>
       <p className="text-white/85 leading-relaxed">{wish.text}</p>
       <div className="text-xs text-white/40 font-mono mt-auto pt-2 border-t border-white/5">
-        — {wish.from || 'A friend of Astroid'} · {date}
+        - {wish.from || 'A friend of Astroid'} · {date}
       </div>
     </div>
   );

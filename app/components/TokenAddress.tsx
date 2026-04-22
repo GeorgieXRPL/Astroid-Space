@@ -24,7 +24,7 @@ export function TokenAddress() {
       setTimeout(() => setCopied(false), 1800);
     } catch {
       // Some browsers / contexts (e.g. iframes without permission) reject
-      // the write. Fail quietly — users can still long-press the address.
+      // the write. Fail quietly - users can still long-press the address.
     }
   };
 
@@ -79,7 +79,7 @@ export function TokenAddress() {
           highly volatile, illiquid, often go to zero, and can be subject to
           coordinated price manipulation. Nothing on this site is financial,
           legal, or tax advice. Verify the contract address above on Solscan
-          before any transaction — scammers create fake tokens with similar
+          before any transaction - scammers create fake tokens with similar
           names. Only spend what you are fully prepared to lose. Astroid the
           project does not solicit purchases of the token, does not promise
           returns, and does not guarantee any future trading activity, charity

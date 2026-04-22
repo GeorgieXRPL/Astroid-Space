@@ -9,7 +9,7 @@
  *     Headers: x-admin-token  (or astroid_admin cookie)
  *     Body:    { designation: string, status: 'approved' | 'rejected' }
  *
- * Rejecting a name frees the star slot — see `namedStarStore.setStatus`.
+ * Rejecting a name frees the star slot - see `namedStarStore.setStatus`.
  *
  * Mirrors the wishes/coloring/charity-nominations moderation contract.
  */

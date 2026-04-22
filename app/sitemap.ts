@@ -2,7 +2,7 @@
  * @fileoverview Public sitemap.
  *
  * Lists every reader-facing route. The /admin surface is intentionally
- * absent — see app/robots.ts.
+ * absent - see app/robots.ts.
  *
  * Star detail pages (`/sky/[designation]`) are intentionally NOT enumerated
  * here: there are 200 procedurally-generated stars and exposing them all in

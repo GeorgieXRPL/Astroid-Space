@@ -9,7 +9,7 @@
  * to extend `script-src` / `connect-src` / `frame-src` accordingly.
  *
  * Note: Next 16 renamed the `middleware` file convention to `proxy`.
- * Same API, same matcher config — just a different filename.
+ * Same API, same matcher config - just a different filename.
  */
 
 import { NextResponse } from 'next/server';
@@ -56,7 +56,7 @@ export function proxy(req: NextRequest) {
   const res = NextResponse.next();
   const path = req.nextUrl.pathname;
 
-  // HSTS — tells browsers to only ever load us over HTTPS, including all
+  // HSTS - tells browsers to only ever load us over HTTPS, including all
   // subdomains. The `preload` directive lets us submit to the HSTS preload
   // list once we've held this header steady (https://hstspreload.org).
   // Only emit in production; localhost over http would otherwise break.

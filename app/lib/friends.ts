@@ -1,11 +1,11 @@
 /**
- * @fileoverview Friends Across the Sky — communities we respect.
+ * @fileoverview Friends Across the Sky - communities we respect.
  *
  * We're "Astroid" (starlike). We celebrate Liv's original artwork of
- * Astroid and every other project — large or small — pointing kids at
+ * Astroid and every other project - large or small - pointing kids at
  * the stars. Different journeys, same sky.
  *
- * This is a curated, hand-edited list — not a partnership program.
+ * This is a curated, hand-edited list - not a partnership program.
  * Submissions: open a PR.
  */
 

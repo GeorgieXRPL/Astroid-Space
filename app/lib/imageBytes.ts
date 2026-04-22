@@ -3,12 +3,12 @@
  *
  * The Zod schema only checks the data URL has the right *prefix*. An
  * attacker can claim `data:image/png;base64,...` and stuff in arbitrary
- * payload bytes — the browser will then sniff the body and may render
+ * payload bytes - the browser will then sniff the body and may render
  * something other than a PNG. We close that gap by decoding the first
  * dozen bytes and verifying they match the magic bytes for the type
  * the user claimed.
  *
- * We don't pull in `sharp` for this — it pulls native deps and we want
+ * We don't pull in `sharp` for this - it pulls native deps and we want
  * the audit surface tiny. Magic-byte sniffing is sufficient for the
  * "block obvious mismatches" use case.
  */
@@ -62,7 +62,7 @@ export function verifyImageMagicBytes(dataUrl: string): ImageVerification {
       if (!startsWith(MAGIC.jpeg)) return { ok: false, reason: 'Image declared JPEG but bytes do not match.' };
       break;
     case 'webp':
-      // RIFF????WEBP — bytes 0..3 = RIFF, 4..7 = file size, 8..11 = WEBP
+      // RIFF????WEBP - bytes 0..3 = RIFF, 4..7 = file size, 8..11 = WEBP
       if (!startsWith(MAGIC.webp_riff, 0) || !startsWith(MAGIC.webp_label, 8)) {
         return { ok: false, reason: 'Image declared WebP but bytes do not match.' };
       }

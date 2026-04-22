@@ -2,7 +2,7 @@
   "name": "astroid",
   "version": "0.1.0",
   "private": true,
-  "description": "Astroid (starlike) — a charity-first, kid-safe project where naming a star helps fund children.",
+  "description": "Astroid (starlike) - a charity-first, kid-safe project where naming a star helps fund children.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

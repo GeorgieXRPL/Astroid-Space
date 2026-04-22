@@ -3,7 +3,7 @@ import { WishWall } from '../components/WishWall';
 export const metadata = {
   title: 'Wish Wall · Astroid',
   description:
-    'A short message — for someone, for the world, for nothing in particular. Light moderation, then your wish floats on the Astroid Wish Wall.',
+    'A short message - for someone, for the world, for nothing in particular. Light moderation, then your wish floats on the Astroid Wish Wall.',
 };
 
 export default function WishesPage() {

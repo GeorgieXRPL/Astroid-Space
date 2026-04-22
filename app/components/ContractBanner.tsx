@@ -11,7 +11,7 @@ import { siteConfig, solscanAddress } from '../lib/config';
  * Renders nothing if `NEXT_PUBLIC_TOKEN_MINT` is unset, so the section is
  * cleanly hidden until the env var is populated in production.
  *
- * Visually tuned to read as "this is the official address" — heavy mono
+ * Visually tuned to read as "this is the official address" - heavy mono
  * weight, generous spacing, no decorative noise. Copy feedback is inline so
  * the user never doubts the click landed.
  */
@@ -41,7 +41,7 @@ export function ContractBanner() {
         </div>
 
         <div className="grid lg:grid-cols-[1fr_auto] gap-4 items-center">
-          {/* Address — huge, selectable, copyable */}
+          {/* Address - huge, selectable, copyable */}
           <button
             type="button"
             onClick={onCopy}
@@ -85,7 +85,7 @@ export function ContractBanner() {
           <span className="font-mono uppercase tracking-widest text-ember/80 text-[10px] mr-1">
             Verify before trading
           </span>
-          Scammers create fake tokens with similar names — always confirm the
+          Scammers create fake tokens with similar names - always confirm the
           address on Solscan matches the one shown above. Meme coins are highly
           volatile and can go to zero. Not financial advice.
         </p>

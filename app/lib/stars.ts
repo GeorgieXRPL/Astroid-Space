@@ -2,7 +2,7 @@
  * @fileoverview Stars: types and procedural generation.
  *
  * Astroid means "starlike" (Greek ἀστήρ + -οειδής). The 3D field is a
- * shell of stars you can name — distinct from the asteroid coin / asteroid
+ * shell of stars you can name - distinct from the asteroid coin / asteroid
  * plushie / Asteroid Protocol communities, who orbit close but in their
  * own lane.
  *
@@ -22,7 +22,7 @@ export interface Star {
   id: string;
   /** Index within the field (0-based) */
   index: number;
-  /** Spectral class — cosmetic only, drives color/glow */
+  /** Spectral class - cosmetic only, drives color/glow */
   spectrum: StarSpectrum;
   /** Position in 3D space (celestial-shell distribution) */
   position: [number, number, number];
@@ -51,7 +51,7 @@ export interface NamedStar {
   /**
    * Moderation state. New names land as `pending`; an admin must approve
    * before the name shows on the public site or appears in the certificate.
-   * Pending submissions still claim the slot — admin reject frees it back.
+   * Pending submissions still claim the slot - admin reject frees it back.
    */
   status: 'pending' | 'approved' | 'rejected';
   /** True if the content filter flagged the submission for human attention. */
@@ -59,7 +59,7 @@ export interface NamedStar {
 }
 
 /**
- * Spectrum styling. Cool, painterly, planetarium-grade — not arcadey.
+ * Spectrum styling. Cool, painterly, planetarium-grade - not arcadey.
  * Emissive values intentionally high; these are stars, they emit light.
  */
 export const STAR_STYLES: Record<
@@ -125,7 +125,7 @@ function mulberry32(seed: number): () => number {
 const SPECTRA: StarSpectrum[] = ['white-dwarf', 'blue-giant', 'yellow', 'red-giant', 'pulsar'];
 
 /**
- * Star spectrum frequencies — biased toward white/yellow stars (most common
+ * Star spectrum frequencies - biased toward white/yellow stars (most common
  * in real life), with rarer giants and pulsars for visual interest.
  */
 const SPECTRUM_WEIGHTS: Array<[StarSpectrum, number]> = [
@@ -158,7 +158,7 @@ export function generateStarField(seed = 42): Star[] {
   const stars: Star[] = [];
 
   // Inner / outer radial bounds for the disk. The wide range is what makes
-  // the field feel "vast" — stars genuinely sit at different depths.
+  // the field feel "vast" - stars genuinely sit at different depths.
   const R_MIN = 4;
   const R_MAX = 60;
 
@@ -169,7 +169,7 @@ export function generateStarField(seed = 42): Star[] {
     const theta = rand() * Math.PI * 2;
 
     // Radial: cube-root weighting biases toward the inner volume so the
-    // density per unit volume stays roughly constant — without it, the
+    // density per unit volume stays roughly constant - without it, the
     // outer shell would visually swamp the close stars.
     const radius = R_MIN + Math.pow(rand(), 0.6) * (R_MAX - R_MIN);
 
@@ -183,7 +183,7 @@ export function generateStarField(seed = 42): Star[] {
     const y = yJitter;
     const z = radius * Math.sin(theta);
 
-    // Apparent size compensates partially for distance — close stars are
+    // Apparent size compensates partially for distance - close stars are
     // bigger and brighter, but distant ones don't disappear entirely.
     // 0.04 floor + scaling that drops with sqrt(radius) keeps far stars
     // legible while letting near stars feel close.
@@ -204,7 +204,7 @@ export function generateStarField(seed = 42): Star[] {
   return stars;
 }
 
-/** Memoized field — computed once on first call */
+/** Memoized field - computed once on first call */
 let _cachedField: Star[] | null = null;
 export function getStarField(): Star[] {
   if (!_cachedField) {
@@ -225,7 +225,7 @@ export function isValidDesignation(designation: string): boolean {
 /**
  * Generate a short random claim token. Returned to the client at name-time
  * and stored in localStorage so the namer can re-find their star.
- * NOT a security token — it's a recovery key, not an auth credential.
+ * NOT a security token - it's a recovery key, not an auth credential.
  */
 export function generateClaimToken(): string {
   // 16 hex chars ≈ 64 bits of entropy. Plenty for collision avoidance.

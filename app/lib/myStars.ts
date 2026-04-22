@@ -41,7 +41,7 @@ function writeAll(records: MyStarRecord[]): void {
   try {
     window.localStorage.setItem(KEY, JSON.stringify(records));
   } catch {
-    // Quota exceeded or storage disabled — not fatal
+    // Quota exceeded or storage disabled - not fatal
   }
 }
 

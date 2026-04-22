@@ -4,8 +4,8 @@
  * One static `ADMIN_TOKEN` env var protects every admin surface. Two ways
  * to authenticate, both equivalent:
  *
- *   1. **Header** (`x-admin-token`) — for `curl` / scripts.
- *   2. **Cookie** (`astroid_admin`) — set by `POST /api/admin/login` after
+ *   1. **Header** (`x-admin-token`) - for `curl` / scripts.
+ *   2. **Cookie** (`astroid_admin`) - set by `POST /api/admin/login` after
  *      a successful token submission, used by the `/admin` UI.
  *
  * Comparisons are timing-safe (`crypto.timingSafeEqual`). Failed attempts

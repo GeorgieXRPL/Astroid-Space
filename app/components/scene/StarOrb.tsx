@@ -33,7 +33,7 @@ interface StarOrbProps {
 /* -------------------------------------------------------------------------- */
 
 /**
- * 3D simplex noise — Ashima Arts / Ian McEwan, public domain.
+ * 3D simplex noise - Ashima Arts / Ian McEwan, public domain.
  * Used by the fragment shader to produce convection-cell granulation.
  */
 const SIMPLEX_NOISE = /* glsl */ `
@@ -126,7 +126,7 @@ void main() {
   // Camera looks down -Z in view space, so the +Z axis points back to it.
   float ndotv = clamp(dot(nrm, vec3(0.0, 0.0, 1.0)), 0.0, 1.0);
 
-  // Limb darkening — stars are dimmer at the edge.
+  // Limb darkening - stars are dimmer at the edge.
   float limb = pow(ndotv, uLimbStrength);
 
   // Two octaves of fBm at different scales for fine + coarse granulation.
@@ -139,7 +139,7 @@ void main() {
   vec3 col = mix(uCool, uMid, smoothstep(0.15, 0.55, gran));
   col = mix(col, uHot, smoothstep(0.6, 0.95, gran));
 
-  // Limb darkening applied as a multiplier — never fully zero, so the edge
+  // Limb darkening applied as a multiplier - never fully zero, so the edge
   // still glows in the chromosphere tone.
   col *= 0.45 + limb * 0.75;
 
@@ -389,7 +389,7 @@ function Corona({
 
   return (
     <group>
-      {/* Diffraction spikes — the unmistakable "real telescope photo" cue. */}
+      {/* Diffraction spikes - the unmistakable "real telescope photo" cue. */}
       <sprite ref={spikeRef} scale={spikeScale}>
         <spriteMaterial
           map={spikeTex}
@@ -415,7 +415,7 @@ function Corona({
         />
       </sprite>
 
-      {/* Inner tight corona — sells the chromosphere edge */}
+      {/* Inner tight corona - sells the chromosphere edge */}
       <sprite ref={innerRef} scale={innerScale}>
         <spriteMaterial
           map={haloTex}

@@ -9,9 +9,9 @@
  * Key realism / scale moves:
  * - Stars are billboarded additive sprites (radial gradient texture). With
  *   bloom, they read as luminous points instead of opaque marbles.
- * - The named-star field is volumetric — radii from ~4 to ~60 units, biased
+ * - The named-star field is volumetric - radii from ~4 to ~60 units, biased
  *   toward an equatorial disk. Distance gives natural parallax.
- * - In hero mode the camera doesn't orbit a centre — it drifts forward
+ * - In hero mode the camera doesn't orbit a centre - it drifts forward
  *   through the field with subtle bob and roll, like a slow probe.
  * - In interactive mode you can pan + zoom out far (max distance 100) so
  *   the field reads as a place, not a fishbowl.
@@ -34,7 +34,7 @@ interface StarMapProps {
   namedDesignations?: Set<string>;
   /** Optional designation to focus camera on initially */
   focusedDesignation?: string;
-  /** Click handler — defaults to navigating to /sky/[designation] */
+  /** Click handler - defaults to navigating to /sky/[designation] */
   onStarClick?: (star: Star) => void;
   /** Disable user interaction (for hero scenes) */
   interactive?: boolean;
@@ -67,7 +67,7 @@ interface StarTextures {
  * A radial gradient sprite, white-on-transparent. Tinted at draw time via
  * material color so we only need one texture for all star colors.
  *
- * @param sharpness — exponent applied to the falloff. Higher = tighter core.
+ * @param sharpness - exponent applied to the falloff. Higher = tighter core.
  */
 function makeRadialTexture(size: number, sharpness: number): THREE.Texture {
   const canvas = document.createElement('canvas');
@@ -98,7 +98,7 @@ function makeRadialTexture(size: number, sharpness: number): THREE.Texture {
 }
 
 /**
- * 4-point diffraction spike — the "+" pattern your eye uses to recognise a
+ * 4-point diffraction spike - the "+" pattern your eye uses to recognise a
  * bright star in a photograph. White, transparent, additive.
  */
 function makeSpikeTexture(size: number): THREE.Texture {
@@ -134,7 +134,7 @@ function makeSpikeTexture(size: number): THREE.Texture {
 
 /**
  * A noisy, soft cloud texture for the Milky Way band and large nebulae.
- * Built from layered low-frequency value noise — good enough to break up
+ * Built from layered low-frequency value noise - good enough to break up
  * the visual without shipping any image assets.
  */
 function makeCloudTexture(size: number): THREE.Texture {
@@ -325,7 +325,7 @@ function DustField({ texture, count = 600 }: { texture: THREE.Texture; count?: n
 
   useFrame((_, delta) => {
     if (!ref.current) return;
-    // Slow swirl — gives the dust a sense of being agitated by motion.
+    // Slow swirl - gives the dust a sense of being agitated by motion.
     ref.current.rotation.y += delta * 0.02;
     ref.current.rotation.x += delta * 0.008;
   });
@@ -340,7 +340,7 @@ function DustField({ texture, count = 600 }: { texture: THREE.Texture; count?: n
 /**
  * Slowly drifts the camera along a smooth path through the field, with
  * subtle bob and roll. Enabled only when interactive is false (i.e. on
- * hero sections) — interactive mode hands control to OrbitControls.
+ * hero sections) - interactive mode hands control to OrbitControls.
  */
 function CameraDrift({ enabled }: { enabled: boolean }) {
   const { camera } = useThree();
@@ -366,7 +366,7 @@ function CameraDrift({ enabled }: { enabled: boolean }) {
 
     camera.position.set(x, y, z);
     // Look slightly ahead of motion direction for the "explorer cockpit"
-    // feel — gives the parallax direction more coherence.
+    // feel - gives the parallax direction more coherence.
     const look = new THREE.Vector3(
       Math.cos(t * speed + 0.3) * (r + 2),
       Math.sin(t * speed * 0.7 + 0.2) * 1.0,
@@ -406,7 +406,7 @@ function StarPoint({
   const style = STAR_STYLES[star.spectrum];
   const isHighlighted = isNamed || hovered || isFocused;
 
-  // Sprite scales — multiplied each frame by twinkle/pulse.
+  // Sprite scales - multiplied each frame by twinkle/pulse.
   const coreScale = useMemo(() => star.size * 4.0, [star.size]);
   const haloScale = useMemo(
     () => star.size * 12 * style.haloScale * (isNamed ? 1.6 : 1),
@@ -620,10 +620,10 @@ export function StarMap({
             toneMappingExposure: 1.2,
           }}
         >
-          {/* Lighting: deliberately minimal — stars are emissive themselves. */}
+          {/* Lighting: deliberately minimal - stars are emissive themselves. */}
           <ambientLight intensity={0.18} />
 
-          {/* Galactic plane band — long soft tinted cloud */}
+          {/* Galactic plane band - long soft tinted cloud */}
           <GalacticBand texture={textures.nebula} />
 
           {/* Distant nebula colour wash so the void isn't pure black */}
@@ -659,7 +659,7 @@ export function StarMap({
             speed={0.55}
           />
 
-          {/* Foreground dust — strong parallax cue when camera moves */}
+          {/* Foreground dust - strong parallax cue when camera moves */}
           <DustField texture={textures.dust} count={500} />
 
           <StarGroup

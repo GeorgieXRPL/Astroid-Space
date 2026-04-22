@@ -1,5 +1,5 @@
 /**
- * @fileoverview POST /api/admin/logout — clears the admin session cookie.
+ * @fileoverview POST /api/admin/logout - clears the admin session cookie.
  */
 
 import { NextResponse } from 'next/server';

@@ -6,13 +6,13 @@ import { namedStarStore } from '../lib/storage';
 export const metadata = {
   title: 'The Sky · Astroid',
   description:
-    'Every named star in the Astroid sky. Names, dedications, and live status — names are forever.',
+    'Every named star in the Astroid sky. Names, dedications, and live status - names are forever.',
 };
 
 export const dynamic = 'force-dynamic';
 
 export default async function SkyPage() {
-  // Highlight only approved names in the live scene — pending submissions
+  // Highlight only approved names in the live scene - pending submissions
   // shouldn't tint the sky until a moderator approves them.
   const approved = await namedStarStore.list({ status: 'approved', limit: 1000 });
   const namedSet = new Set(approved.map((n) => n.designation));

@@ -1,4 +1,4 @@
-# Image moderation — what we do, and how to add more
+# Image moderation - what we do, and how to add more
 
 This document explains every layer of defense for user-uploaded
 images on `/coloring`, from cheap-and-already-on to expensive-and-optional.
@@ -8,16 +8,16 @@ images on `/coloring`, from cheap-and-already-on to expensive-and-optional.
 Every coloring upload passes through this pipeline before it touches
 storage:
 
-1. **Honeypot field check** — silently drop bot uploads.
-2. **Per-IP rate limit** — 5 uploads per IP per day.
-3. **Body-size guard** — request rejected at 1.7MB Content-Length
+1. **Honeypot field check** - silently drop bot uploads.
+2. **Per-IP rate limit** - 5 uploads per IP per day.
+3. **Body-size guard** - request rejected at 1.7MB Content-Length
    before we allocate the body.
-4. **Format whitelist** — Zod regex restricts to PNG / JPEG / WebP
+4. **Format whitelist** - Zod regex restricts to PNG / JPEG / WebP
    data URLs.
-5. **Magic-byte verification** — first bytes must match the declared
+5. **Magic-byte verification** - first bytes must match the declared
    format (`app/lib/imageBytes.ts`). Closes the "PNG label, malicious
    payload" trick.
-6. **sharp re-encoding** — `app/lib/imageProcessor.ts`:
+6. **sharp re-encoding** - `app/lib/imageProcessor.ts`:
    - Reads dimensions WITHOUT decoding pixels (catches decompression
      bombs cheaply).
    - Rejects animated images.
@@ -28,14 +28,14 @@ storage:
    - Re-encodes as WebP at quality 82.
    - Output is deterministic, structurally valid, and free of any
      hidden payload that might have been concatenated to the original.
-7. **Pending-queue cap** — global cap of 100 pending submissions; any
+7. **Pending-queue cap** - global cap of 100 pending submissions; any
    more get a polite 503.
-8. **Human moderation** — every submission is `status: 'pending'`
+8. **Human moderation** - every submission is `status: 'pending'`
    until a human approves it in `/admin`. Nothing displays publicly
    without approval.
 
 That covers structural attacks and metadata leakage. **It does NOT
-catch adult / violent / extremist imagery** — for that you need a
+catch adult / violent / extremist imagery** - for that you need a
 content classifier model. We added a hook for one, see below.
 
 ## Adding an automated content classifier
@@ -155,7 +155,7 @@ Worth it if traffic ever justifies the spend.
 ## Tuning advice
 
 - **Start strict.** A false reject just shows "queued for review" to
-  the user — they don't know it was auto-rejected. A false approve
+  the user - they don't know it was auto-rejected. A false approve
   shows kids something they shouldn't see. Bias toward strict.
 - **Log every auto-rejection.** Add an entry to `rejection_log` with
   the categories returned by the classifier. Helps you tune thresholds.

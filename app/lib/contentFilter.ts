@@ -3,30 +3,30 @@
  *
  * Two layers:
  *
- * 1. **Blocklist** — a small, deliberately curated list of obvious slurs
+ * 1. **Blocklist** - a small, deliberately curated list of obvious slurs
  *    and offensive terms. Matched with word-boundary regex against a
  *    normalised version of the input (lowercased, leetspeak-folded,
  *    punctuation collapsed, repeated letters squeezed). This catches the
  *    common bypass tricks (`f4ck`, `f.u.c.k`, `fuuuck`) without becoming
  *    a Scunthorpe machine.
  *
- * 2. **Heuristics** — too-long links, all-caps shouting, mass repeated
+ * 2. **Heuristics** - too-long links, all-caps shouting, mass repeated
  *    chars, obvious spam markers ("buy now", "free crypto"). These don't
  *    necessarily reject; they raise a "suspicious" flag the moderator
  *    queue can sort by.
  *
  * NOT a complete solution. Every rejected submission also goes to a human
- * moderation queue — this is just the first cheap pass to keep the public
+ * moderation queue - this is just the first cheap pass to keep the public
  * site clean and the queue manageable.
  */
 
 /**
- * Curated blocklist. Deliberately small and conservative — long lists
+ * Curated blocklist. Deliberately small and conservative - long lists
  * cause false positives ("Scunthorpe problem"). Slurs and the most common
  * scam markers only. Add to this list with care.
  */
 const BLOCKLIST = [
-  // Slurs (strict — never appropriate, especially on a kid-facing site)
+  // Slurs (strict - never appropriate, especially on a kid-facing site)
   'nigger', 'nigga', 'faggot', 'fag', 'tranny', 'retard', 'retarded',
   'kike', 'spic', 'chink', 'gook', 'wetback', 'coon',
   // CSAM-adjacent / sexual-of-minors red flags
@@ -72,7 +72,7 @@ export interface ContentCheckResult {
   ok: boolean;
   /** Hard-fail reason; safe to show to the user verbatim. */
   reason?: string;
-  /** Soft signal — content is allowed but worth highlighting in moderation. */
+  /** Soft signal - content is allowed but worth highlighting in moderation. */
   suspicious?: boolean;
   /** Words/phrases matched, useful for the admin UI. */
   matched?: string[];
@@ -108,7 +108,7 @@ export function checkContent(raw: string): ContentCheckResult {
     };
   }
 
-  // Soft signals — don't reject, just flag for moderator attention.
+  // Soft signals - don't reject, just flag for moderator attention.
   const suspicious =
     /https?:\/\//i.test(raw) ||
     /\b(buy|sell|moon|airdrop|degen|10x|100x|pump|dump|whale|presale)\b/i.test(raw) ||
@@ -119,7 +119,7 @@ export function checkContent(raw: string): ContentCheckResult {
 
 /**
  * Validate a display name (a "from" / "namedBy" / "artistName" field).
- * Same rules as a long body, plus stricter character class — names
+ * Same rules as a long body, plus stricter character class - names
  * shouldn't contain URLs, @-handles, or excessive punctuation.
  */
 export function checkDisplayName(raw: string): ContentCheckResult {

@@ -23,7 +23,7 @@ export function NamingForm({ initialDesignation }: NamingFormProps) {
   const [name, setName] = useState('');
   const [dedication, setDedication] = useState('');
   const [namedBy, setNamedBy] = useState('');
-  // Honeypot — humans don't see this field. Bots fill anything that looks
+  // Honeypot - humans don't see this field. Bots fill anything that looks
   // like an input. Server rejects when this is non-empty.
   const [honeypot, setHoneypot] = useState('');
   const [submitting, setSubmitting] = useState(false);
@@ -231,7 +231,7 @@ export function NamingForm({ initialDesignation }: NamingFormProps) {
           id="dedication"
           value={dedication}
           onChange={(e) => setDedication(e.target.value)}
-          placeholder="A short message — for someone special, in someone's memory, or just because."
+          placeholder="A short message - for someone special, in someone's memory, or just because."
           maxLength={140}
           rows={3}
           className="w-full bg-space-950 border border-white/10 focus:border-cosmos rounded-md px-4 py-3 text-white placeholder:text-white/30 outline-none transition-colors resize-none"

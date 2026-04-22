@@ -26,7 +26,7 @@ export default function HomePage() {
             <p className="text-lg text-white/70 leading-relaxed max-w-xl mb-8">
               <em className="not-italic text-white">Astroid</em>, from Greek <em>ἀστήρ</em>{' '}
               (star) + <em>-oid</em> (like). 25% of every pump.fun creator fee
-              auto-routes on-chain to a children&apos;s charity wallet — no
+              auto-routes on-chain to a children&apos;s charity wallet - no
               human in the loop. Name a star, write a wish, color in Astroid
               the Space Shiba.
             </p>
@@ -59,17 +59,17 @@ export default function HomePage() {
             </h2>
             <div className="space-y-4 text-white/70 text-base leading-relaxed mb-8">
               <p>
-                Liv drew Astroid one afternoon. Not as a logo — just as a character she
+                Liv drew Astroid one afternoon. Not as a logo - just as a character she
                 wanted to exist. A Shiba Inu in a SpaceX helmet, with very fluffy ears,
                 a name patch, and a small mission logo.
               </p>
               <p>
                 <span className="text-white">The drawing has been to space.</span>{' '}
-                It&apos;s the original blueprint — every illustration, sticker, and pixel
+                It&apos;s the original blueprint - every illustration, sticker, and pixel
                 of Astroid traces back to this single piece of paper.
               </p>
               <p>
-                We thought it was perfect. So we built a project around it — and made
+                We thought it was perfect. So we built a project around it - and made
                 sure that whatever value it created, kids would benefit.
               </p>
             </div>
@@ -139,7 +139,7 @@ export default function HomePage() {
           <ActionCard
             tag="02"
             title="Write a wish"
-            description="A short message — for someone, for the world, for nothing in particular. Light moderation, then it floats on the Wish Wall."
+            description="A short message - for someone, for the world, for nothing in particular. Light moderation, then it floats on the Wish Wall."
             href="/wishes"
             cta="Add a wish"
           />
@@ -162,7 +162,7 @@ export default function HomePage() {
           </h2>
           <p className="text-white/60 max-w-xl mx-auto mt-5 leading-relaxed">
             No team discretion. No manual forwarding. Just pump.fun&apos;s built-in
-            75 / 25 creator-fee split — and you can read the wallet balance in
+            75 / 25 creator-fee split - and you can read the wallet balance in
             real time on the charity page.
           </p>
         </div>
@@ -172,7 +172,7 @@ export default function HomePage() {
             tag="On-chain · automatic"
             title="Pump.fun creator fees"
             split="75 / 25"
-            description="Every trade on pump.fun pays a creator fee. The split happens at the source — 25% auto-routes on-chain to a Solana wallet provided by ALSAC for St. Jude Children's Research Hospital. Verifiable on every trade."
+            description="Every trade on pump.fun pays a creator fee. The split happens at the source - 25% auto-routes on-chain to a Solana wallet provided by ALSAC for St. Jude Children's Research Hospital. Verifiable on every trade."
             href="/charity"
             cta="View the wallet"
           />
@@ -188,13 +188,13 @@ export default function HomePage() {
         <div className="glass-panel p-8 sm:p-12 text-center">
           <div className="eyebrow mb-3">Friends across the sky</div>
           <h2 className="font-display text-2xl sm:text-4xl font-bold text-white tracking-tight mb-4">
-            We&apos;re Astroid <span className="text-white/50">— starlike.</span>
+            We&apos;re Astroid <span className="text-white/50">- starlike.</span>
             <br />
             We celebrate the others.
           </h2>
           <p className="text-white/60 max-w-xl mx-auto mb-6 leading-relaxed">
             The asteroid plushie, Asteroid Protocol, B612 Foundation, and every project
-            pointing kids at the sky — different rocks, same orbit.
+            pointing kids at the sky - different rocks, same orbit.
           </p>
           <Link href="/friends" className="btn-secondary">
             Visit our friends

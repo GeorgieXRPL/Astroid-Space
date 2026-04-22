@@ -16,7 +16,7 @@ export default function ColoringPage() {
         </h1>
         <p className="text-white/60 max-w-xl mx-auto leading-relaxed">
           Print the original drawing and color it in, or make your own Astroid
-          from scratch — then submit your version. We feature approved drawings
+          from scratch - then submit your version. We feature approved drawings
           in the gallery below.
         </p>
       </div>

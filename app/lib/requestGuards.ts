@@ -13,7 +13,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PendingQueueFullError } from './storage';
 
-/** Generous defaults — individual routes can pass a smaller cap. */
+/** Generous defaults - individual routes can pass a smaller cap. */
 export const DEFAULT_JSON_BODY_LIMIT = 16 * 1024; // 16 KB for plain JSON
 export const COLORING_JSON_BODY_LIMIT = 1_700_000; // ~1.7 MB to fit base64 image + envelope
 
@@ -22,7 +22,7 @@ export const COLORING_JSON_BODY_LIMIT = 1_700_000; // ~1.7 MB to fit base64 imag
  * Use as: `const tooBig = enforceJsonBodyLimit(req, LIMIT); if (tooBig) return tooBig;`
  *
  * If Content-Length is missing (chunked / streaming), we let the request
- * through — Next will still validate the parsed shape downstream, and
+ * through - Next will still validate the parsed shape downstream, and
  * non-Vercel platforms typically enforce their own ingress caps.
  */
 export function enforceJsonBodyLimit(req: NextRequest, limit: number): NextResponse | null {
@@ -43,13 +43,13 @@ export function enforceJsonBodyLimit(req: NextRequest, limit: number): NextRespo
 
 /**
  * Map a PendingQueueFullError to a polite 503. The hint of 1h is
- * deliberately vague — moderators usually clear the queue faster.
+ * deliberately vague - moderators usually clear the queue faster.
  */
 export function queueFullResponse(err: PendingQueueFullError): NextResponse {
   return NextResponse.json(
     {
       error:
-        "Our review queue is full right now. Please try again in a little while — we're getting through it as fast as we can.",
+        "Our review queue is full right now. Please try again in a little while - we're getting through it as fast as we can.",
     },
     { status: 503, headers: { 'Retry-After': '3600' } }
   );

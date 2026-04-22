@@ -1,10 +1,10 @@
 -- =============================================================================
--- Astroid — Supabase schema
+-- Astroid - Supabase schema
 -- =============================================================================
 --
 -- Paste this whole file into Supabase Dashboard → SQL Editor → New query →
 -- Run. The CREATE statements are idempotent (IF NOT EXISTS) so re-running is
--- safe. RLS policies are deny-by-default — only the service role bypasses
+-- safe. RLS policies are deny-by-default - only the service role bypasses
 -- them, which is exactly what our server-side API uses.
 --
 -- After running this, also create a Storage bucket called `coloring`:

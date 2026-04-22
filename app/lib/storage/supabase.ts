@@ -1,14 +1,14 @@
 /**
  * @fileoverview Supabase storage backend.
  *
- * Mirrors the in-memory backend exactly — same store shapes, same
+ * Mirrors the in-memory backend exactly - same store shapes, same
  * capacity caps, same TTL eviction. Differences:
  *
  *  - Persistent across deploys / cold starts.
  *  - Coloring images go to Supabase Storage (the `coloring` bucket)
  *    rather than living as inline data URLs in the database.
  *  - Rejection log is a real table you can query in the dashboard.
- *  - Pending sweep is opportunistic (runs before each insert) — for
+ *  - Pending sweep is opportunistic (runs before each insert) - for
  *    high traffic, schedule it as a Supabase cron job too.
  */
 
@@ -302,7 +302,7 @@ const sbWishStore: WishStore = {
       if (error) throw error;
       if (!data) return null;
       const wish = rowToWish(data);
-      await logRejection('wish', `"${wish.text.slice(0, 60)}"${wish.from ? ` — ${wish.from}` : ''}`);
+      await logRejection('wish', `"${wish.text.slice(0, 60)}"${wish.from ? ` - ${wish.from}` : ''}`);
       return { ...wish, status };
     }
     const { data, error } = await supabase()
@@ -370,7 +370,7 @@ const sbColoringStore: ColoringStore = {
       status: input.status,
     });
     if (error) {
-      // Insert failed — clean up the upload so we don't orphan it.
+      // Insert failed - clean up the upload so we don't orphan it.
       await supabase().storage.from(COLORING_BUCKET).remove([path]).catch(() => {});
       throw error;
     }
@@ -406,7 +406,7 @@ const sbColoringStore: ColoringStore = {
       if (error) throw error;
       if (!data) return null;
       const submission = rowToColoring(data);
-      // Best-effort image cleanup — if the storage delete fails, we
+      // Best-effort image cleanup - if the storage delete fails, we
       // still log the rejection. The orphaned file can be swept later.
       if (data.storage_path) {
         await supabase()
@@ -414,7 +414,7 @@ const sbColoringStore: ColoringStore = {
           .remove([data.storage_path])
           .catch(() => {});
       }
-      await logRejection('coloring', `${submission.id} — ${submission.artistName}`);
+      await logRejection('coloring', `${submission.id} - ${submission.artistName}`);
       return { ...submission, status };
     }
 
@@ -501,7 +501,7 @@ const sbNominationStore: CharityNominationStore = {
       if (error) throw error;
       if (!data) return null;
       const nom = rowToNomination(data);
-      await logRejection('nomination', `${nom.charityName}${nom.nominatedBy ? ` — ${nom.nominatedBy}` : ''}`);
+      await logRejection('nomination', `${nom.charityName}${nom.nominatedBy ? ` - ${nom.nominatedBy}` : ''}`);
       return { ...nom, status };
     }
     const { data, error } = await supabase()

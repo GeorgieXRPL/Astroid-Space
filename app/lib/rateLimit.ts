@@ -3,7 +3,7 @@
  *
  * MVP: process-local Map keyed by `${bucket}:${ip}`. Suitable for a single
  * Node process (e.g. one Vercel region). On serverless, each cold start
- * resets the table — for production, swap this module for Upstash Redis
+ * resets the table - for production, swap this module for Upstash Redis
  * or Vercel KV behind the same `consume()` signature.
  *
  * Why a sliding window: bursty bots and slow trickles both look like abuse,
@@ -37,15 +37,15 @@ export interface RateLimitResult {
  * publicly, so it's the strictest).
  */
 export const RATE_LIMITS = {
-  /** POST /api/stars/name — public surface, scarce 200-star pool. */
+  /** POST /api/stars/name - public surface, scarce 200-star pool. */
   starName: { limit: 3, windowMs: 24 * 60 * 60 * 1000 }, // 3 / day
-  /** POST /api/wishes — moderated, but flooding the queue is bad UX. */
+  /** POST /api/wishes - moderated, but flooding the queue is bad UX. */
   wish: { limit: 8, windowMs: 60 * 60 * 1000 }, // 8 / hour
-  /** POST /api/coloring — 1 MB per upload, expensive. */
+  /** POST /api/coloring - 1 MB per upload, expensive. */
   coloring: { limit: 5, windowMs: 24 * 60 * 60 * 1000 }, // 5 / day
-  /** POST /api/charity-nominations — moderated. */
+  /** POST /api/charity-nominations - moderated. */
   nomination: { limit: 5, windowMs: 24 * 60 * 60 * 1000 }, // 5 / day
-  /** POST /api/admin/login — brute-force defence. */
+  /** POST /api/admin/login - brute-force defence. */
   adminLogin: { limit: 8, windowMs: 60 * 60 * 1000 }, // 8 / hour
 } as const satisfies Record<string, Bucket>;
 
@@ -99,7 +99,7 @@ export function consume(bucketName: RateLimitName, ip: string): RateLimitResult 
  * confirmed to overwrite these headers at the edge).
  *
  * Priority order (most-trusted first):
- *   1. `cf-connecting-ip`   (Cloudflare — only set by their edge)
+ *   1. `cf-connecting-ip`   (Cloudflare - only set by their edge)
  *   2. `true-client-ip`     (Akamai / Cloudflare Enterprise)
  *   3. `x-real-ip`          (most reverse proxies)
  *   4. `x-forwarded-for`    (de-facto standard; first hop is the client)

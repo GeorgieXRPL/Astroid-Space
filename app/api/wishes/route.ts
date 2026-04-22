@@ -28,7 +28,7 @@ const wishSchema = z.object({
 });
 
 function newWishId(): string {
-  // 12 hex chars = 48 bits — plenty for collision avoidance at MVP scale
+  // 12 hex chars = 48 bits - plenty for collision avoidance at MVP scale
   const bytes = new Uint8Array(6);
   crypto.getRandomValues(bytes);
   return 'wish_' + Array.from(bytes).map((b) => b.toString(16).padStart(2, '0')).join('');
@@ -107,7 +107,7 @@ export async function POST(req: NextRequest) {
     throw err;
   }
 
-  // Don't echo the id — we don't want clients enumerating pending wishes.
+  // Don't echo the id - we don't want clients enumerating pending wishes.
   return NextResponse.json(
     {
       ok: true,

@@ -74,7 +74,7 @@ export function Dashboard() {
     try {
       const res = await fetch(url, { credentials: 'same-origin' });
       if (res.status === 401) {
-        // Cookie expired — bounce back to the login form.
+        // Cookie expired - bounce back to the login form.
         router.refresh();
         return;
       }
@@ -152,7 +152,7 @@ export function Dashboard() {
                 </p>
               )}
               <div className="text-xs text-white/40 font-mono">
-                — {s.namedBy || 'anonymous'} · {fmtDate(s.namedAt)}
+                - {s.namedBy || 'anonymous'} · {fmtDate(s.namedAt)}
                 {s.suspicious && (
                   <span className="ml-2 px-1.5 py-0.5 rounded bg-ember/10 border border-ember/30 text-ember normal-case">
                     flagged
@@ -186,7 +186,7 @@ export function Dashboard() {
             <div key={w.id} className="glass-panel p-4 space-y-3">
               <p className="text-white/90 leading-relaxed">{w.text}</p>
               <div className="text-xs text-white/40 font-mono">
-                — {w.from || 'anonymous'} · {fmtDate(w.createdAt)}
+                - {w.from || 'anonymous'} · {fmtDate(w.createdAt)}
               </div>
               <ApproveReject
                 onApprove={() =>
@@ -261,7 +261,7 @@ export function Dashboard() {
                 const url = safeHref(n.charityUrl);
                 if (!url) {
                   return n.charityUrl ? (
-                    <div className="text-xs text-rose-400 truncate" title="Unsafe URL — refusing to render as a link.">
+                    <div className="text-xs text-rose-400 truncate" title="Unsafe URL - refusing to render as a link.">
                       ⚠ unsafe URL: {n.charityUrl}
                     </div>
                   ) : null;
@@ -281,7 +281,7 @@ export function Dashboard() {
                 <p className="text-sm text-white/80 leading-relaxed">{n.reason}</p>
               )}
               <div className="text-xs text-white/40 font-mono">
-                — {n.nominatedBy || 'anonymous'} · {fmtDate(n.createdAt)}
+                - {n.nominatedBy || 'anonymous'} · {fmtDate(n.createdAt)}
               </div>
               <ApproveReject
                 onApprove={() =>

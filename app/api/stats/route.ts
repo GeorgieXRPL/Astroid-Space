@@ -1,6 +1,6 @@
 /**
  * @fileoverview GET /api/stats
- * Aggregate site stats — stars in field, total named, etc.
+ * Aggregate site stats - stars in field, total named, etc.
  */
 
 import { NextResponse } from 'next/server';

@@ -3,7 +3,7 @@
  *
  * Process-local Maps with HMR-safe global stashing. Useful for local
  * development and any deploy small enough that a restart wiping data
- * is acceptable. NOT suitable for production — use the Supabase
+ * is acceptable. NOT suitable for production - use the Supabase
  * backend (`STORAGE_BACKEND=supabase`) for that.
  */
 
@@ -164,7 +164,7 @@ const memWishStore: WishStore = {
     if (!w) return null;
     if (status === 'rejected') {
       wishesStore.delete(id);
-      logRejection('wish', `"${w.text.slice(0, 60)}"${w.from ? ` — ${w.from}` : ''}`);
+      logRejection('wish', `"${w.text.slice(0, 60)}"${w.from ? ` - ${w.from}` : ''}`);
       return { ...w, status };
     }
     const updated: Wish = { ...w, status };
@@ -219,7 +219,7 @@ const memColoringStore: ColoringStore = {
     if (!s) return null;
     if (status === 'rejected') {
       coloringStore.delete(id);
-      logRejection('coloring', `${s.id} — ${s.artistName}`);
+      logRejection('coloring', `${s.id} - ${s.artistName}`);
       return { ...s, status };
     }
     const updated: ColoringSubmission = { ...s, status };
@@ -261,7 +261,7 @@ const memNominationStore: CharityNominationStore = {
     if (!n) return null;
     if (status === 'rejected') {
       nominationsStore.delete(id);
-      logRejection('nomination', `${n.charityName}${n.nominatedBy ? ` — ${n.nominatedBy}` : ''}`);
+      logRejection('nomination', `${n.charityName}${n.nominatedBy ? ` - ${n.nominatedBy}` : ''}`);
       return { ...n, status };
     }
     const updated: CharityNomination = { ...n, status };

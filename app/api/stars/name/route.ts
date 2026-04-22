@@ -2,7 +2,7 @@
  * @fileoverview POST /api/stars/name
  *
  * Submits a name for a star. The submission is queued for human moderation
- * (status: 'pending'). It claims the slot — no one else can claim the same
+ * (status: 'pending'). It claims the slot - no one else can claim the same
  * designation while it's pending. If a moderator rejects the submission,
  * the slot becomes available again.
  *
@@ -11,11 +11,11 @@
  *
  * Anti-abuse layers, in order:
  *
- *   1. Honeypot (`website` field) — silently drop bot traffic
- *   2. Per-IP rate limit (3 / day) — limit damage from a single source
- *   3. Zod schema — length + character class
- *   4. Profanity / blocklist — kid-facing site, kept clean before queueing
- *   5. Pending status — public site never shows un-reviewed names
+ *   1. Honeypot (`website` field) - silently drop bot traffic
+ *   2. Per-IP rate limit (3 / day) - limit damage from a single source
+ *   3. Zod schema - length + character class
+ *   4. Profanity / blocklist - kid-facing site, kept clean before queueing
+ *   5. Pending status - public site never shows un-reviewed names
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
   }
 
-  // Honeypot — silently accept and discard so the bot doesn't learn it was
+  // Honeypot - silently accept and discard so the bot doesn't learn it was
   // caught. Returning 201 is intentional.
   if (isHoneypotTriggered(body)) {
     return NextResponse.json(
