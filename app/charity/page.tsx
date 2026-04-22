@@ -32,7 +32,7 @@ export default function CharityPage() {
         <div className="section-divider">Recipient</div>
 
         <div className="glass-panel-bright p-6 sm:p-8">
-          <div className="eyebrow mb-2">Confirmed by ALSAC</div>
+          <div className="eyebrow mb-2">Wallet provided by ALSAC</div>
           <h3 className="font-display text-xl text-white mb-3">
             St. Jude Children&apos;s Research Hospital
           </h3>
