@@ -23,24 +23,47 @@ on or off the site. Don't paraphrase it - the wording was deliberate.
 
 ## 2. X / Twitter pinned post
 
-Copy/paste exactly:
+Short and direct - the page does the heavy lifting. Copy/paste exactly:
 
 ```
-For our community - please read.
+A quick note for our community.
 
-Astroid was made FOR Liv. St. Jude was her chosen charity. ALSAC kindly
-provided a wallet for our 25% on-chain donations.
+Astroid is not partnered with, sponsored by, or endorsed by St. Jude or
+ALSAC. They kindly provided a wallet for our 25% on-chain donations -
+that's the whole relationship.
 
-We are NOT partnered with, sponsored by, or endorsed by St. Jude or ALSAC.
-
-DO tag @Astroid_Sol, share the CA, share the live wallet on Solscan.
-DO NOT tag @StJude on price posts or claim partnership.
-
-Full guidelines: astroid.space/guidelines
+Please read before posting about us: astroid.space/guidelines
 ```
+
+That's ~250 characters with line breaks - safely under the 280 limit on
+free accounts.
 
 After posting, **pin it** to the @Astroid_Sol profile so it's the first
-thing visitors see.
+thing visitors see, and consider quote-replying with the Telegram link.
+
+### Optional alt versions
+
+If you want a slightly warmer opener for the pinned slot:
+
+```
+For our community, please read once.
+
+Astroid isn't partnered with or endorsed by St. Jude or ALSAC - they
+kindly provided a wallet for our 25% on-chain donations and that's it.
+
+How to post responsibly: astroid.space/guidelines
+```
+
+Or, if you want the bluntest possible version (best for boosting after a
+misleading post goes viral):
+
+```
+Astroid is not partnered with St. Jude or ALSAC. ALSAC provided a
+donation wallet - that's the entire relationship. Anything else is
+incorrect.
+
+astroid.space/guidelines
+```
 
 ---
 

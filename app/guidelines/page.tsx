@@ -28,8 +28,8 @@ export default function GuidelinesPage() {
       <section className="glass-panel-bright p-6 sm:p-8 mb-8">
         <div className="eyebrow mb-3">The truth, in one paragraph</div>
         <p className="text-white/80 leading-relaxed">
-          Astroid is <strong className="text-white">not</strong> partnered
-          with, sponsored by, endorsed by, or affiliated with St. Jude
+          Astroid is <strong className="text-white">not</strong>{' '}
+          partnered with, sponsored by, endorsed by, or affiliated with St. Jude
           Children&apos;s Research Hospital or ALSAC. ALSAC provided a public
           Solana wallet that receives our automated 25% pump.fun creator-fee
           donations. That is the entire scope of our interaction. Anyone who
@@ -97,9 +97,9 @@ export default function GuidelinesPage() {
           <li className="flex gap-3">
             <span className="text-ember font-mono text-sm pt-0.5">×</span>
             <span>
-              Tag <strong className="text-white">@StJude</strong> on price,
-              pump, moonshot, or trading posts. They are a children&apos;s
-              hospital, not a degen ticker.
+              Tag <strong className="text-white">@StJude</strong>{' '}
+              on price, pump, moonshot, or trading posts. They are a
+              children&apos;s hospital, not a degen ticker.
             </span>
           </li>
           <li className="flex gap-3">
