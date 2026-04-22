@@ -57,6 +57,15 @@ export const siteConfig = {
     telegram:
       process.env.NEXT_PUBLIC_TELEGRAM_URL ?? 'https://t.me/astroidcto',
   },
+
+  // Inbound email addresses. Each is a Cloudflare Email Routing forwarder.
+  // Centralised so a typo in a mailto link can never silently send mail
+  // into the void; bind everything off `siteConfig.emails.*`.
+  emails: {
+    hello: 'hello@astroid.space',
+    support: 'support@astroid.space',
+    security: 'security@astroid.space',
+  },
 } as const;
 
 export type SiteConfig = typeof siteConfig;

@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { siteConfig } from '../lib/config';
 
 export const metadata = {
   title: 'About',
@@ -182,6 +183,17 @@ export default function AboutPage() {
           <Link href="/charity" className="btn-secondary">
             See the charity wallet
           </Link>
+        </div>
+
+        <div className="mt-10 text-sm text-white/45 leading-relaxed">
+          Just want to say hi, partner, or write something for press?{' '}
+          <a
+            href={`mailto:${siteConfig.emails.hello}`}
+            className="text-cosmos hover:text-white"
+          >
+            {siteConfig.emails.hello}
+          </a>
+          .
         </div>
       </div>
     </div>

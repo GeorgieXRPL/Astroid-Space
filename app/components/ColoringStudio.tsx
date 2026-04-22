@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { HONEYPOT_FIELD } from '../lib/honeypot';
 import { COLORING_UPLOADS_ENABLED } from '../lib/featureFlags';
+import { siteConfig } from '../lib/config';
 
 interface Submission {
   id: string;
@@ -155,8 +156,17 @@ export function ColoringStudio() {
             </p>
             <ul className="text-xs font-mono text-white/50 space-y-1.5 leading-relaxed pt-1">
               <li>· Print, color, and keep it on your fridge today</li>
-                  <li>· Snap a photo and tag <span className="text-cosmos">@Astroid_Sol</span> on X</li>
+              <li>· Snap a photo and tag <span className="text-cosmos">@Astroid_Sol</span> on X</li>
               <li>· Submissions reopen once the gallery is fully moderated</li>
+              <li>
+                · Trouble printing or want to send a drawing in early?{' '}
+                <a
+                  href={`mailto:${siteConfig.emails.support}?subject=Coloring%20page`}
+                  className="text-cosmos hover:text-white"
+                >
+                  {siteConfig.emails.support}
+                </a>
+              </li>
             </ul>
             <div className="pt-4 mt-auto border-t border-white/5">
               <a

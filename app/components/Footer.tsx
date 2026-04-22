@@ -96,6 +96,46 @@ export function Footer() {
           </div>
         </div>
 
+        {/* ==================== CONTACT STRIP ==================== */}
+        <div className="pt-6 mt-2 border-t border-white/5">
+          <div className="telemetry-label mb-3">Get in touch</div>
+          <div className="grid sm:grid-cols-3 gap-3 sm:gap-6">
+            <a
+              href={`mailto:${siteConfig.emails.hello}`}
+              className="group block"
+            >
+              <div className="font-mono text-xs text-white/75 group-hover:text-white break-all">
+                {siteConfig.emails.hello}
+              </div>
+              <div className="text-[11px] text-white/40 mt-1">
+                General, press &amp; partnerships
+              </div>
+            </a>
+            <a
+              href={`mailto:${siteConfig.emails.support}`}
+              className="group block"
+            >
+              <div className="font-mono text-xs text-white/75 group-hover:text-white break-all">
+                {siteConfig.emails.support}
+              </div>
+              <div className="text-[11px] text-white/40 mt-1">
+                Star naming &amp; coloring help
+              </div>
+            </a>
+            <a
+              href={`mailto:${siteConfig.emails.security}`}
+              className="group block"
+            >
+              <div className="font-mono text-xs text-white/75 group-hover:text-white break-all">
+                {siteConfig.emails.security}
+              </div>
+              <div className="text-[11px] text-white/40 mt-1">
+                Vulnerability reports &amp; abuse
+              </div>
+            </a>
+          </div>
+        </div>
+
         <TokenAddress />
 
         <div className="pt-6 mt-6 border-t border-white/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-white/40">
@@ -133,10 +173,10 @@ export function Footer() {
             </Link>{' '}
             and report misleading claims to{' '}
             <a
-              href="mailto:security@astroid.space?subject=Misleading%20partnership%20claim"
+              href={`mailto:${siteConfig.emails.security}?subject=Misleading%20partnership%20claim`}
               className="text-white/50 hover:text-white"
             >
-              security@astroid.space
+              {siteConfig.emails.security}
             </a>
             .
           </p>

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { siteConfig } from '../lib/config';
 
 export const metadata = {
   title: 'Community Guidelines',
@@ -173,10 +174,10 @@ export default function GuidelinesPage() {
             <span className="text-cosmos mr-2">02</span>
             Send the post to{' '}
             <a
-              href="mailto:security@astroid.space?subject=Misleading%20partnership%20claim"
+              href={`mailto:${siteConfig.emails.security}?subject=Misleading%20partnership%20claim`}
               className="text-cosmos hover:text-white"
             >
-              security@astroid.space
+              {siteConfig.emails.security}
             </a>{' '}
             so we can address it directly
           </li>
@@ -187,10 +188,10 @@ export default function GuidelinesPage() {
       <div className="mt-10 text-center text-xs font-mono text-white/30 tracking-widest uppercase">
         Last updated {new Date().toISOString().slice(0, 10)} ·{' '}
         <a
-          href="mailto:security@astroid.space"
+          href={`mailto:${siteConfig.emails.security}`}
           className="hover:text-white"
         >
-          security@astroid.space
+          {siteConfig.emails.security}
         </a>
       </div>
     </div>

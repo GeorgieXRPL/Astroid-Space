@@ -1,5 +1,6 @@
 import { Suspense } from 'react';
 import { NamingForm } from '../components/NamingForm';
+import { siteConfig } from '../lib/config';
 
 interface NameAStarPageProps {
   searchParams: Promise<{ designation?: string }>;
@@ -34,6 +35,16 @@ export default async function NameAStarPage({ searchParams }: NameAStarPageProps
 
       <div className="mt-8 text-center text-xs font-mono text-white/30 tracking-widest uppercase">
         Free · No payment · No account
+      </div>
+
+      <div className="mt-4 text-center text-xs text-white/40">
+        Trouble with a name, or need to update one?{' '}
+        <a
+          href={`mailto:${siteConfig.emails.support}?subject=Star%20naming%20help`}
+          className="text-cosmos hover:text-white"
+        >
+          {siteConfig.emails.support}
+        </a>
       </div>
     </div>
   );
