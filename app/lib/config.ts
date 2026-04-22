@@ -49,10 +49,13 @@ export const siteConfig = {
   charityName: process.env.NEXT_PUBLIC_CHARITY_NAME ?? 'Our charity partner',
   charityUrl: process.env.NEXT_PUBLIC_CHARITY_URL ?? '',
 
-  // Social
+  // Social. Defaults are the live handles; env vars let you rotate without
+  // a code change (e.g. if a handle is ever rebranded or temporarily locked).
   social: {
-    twitter: 'https://x.com/',
-    telegram: 'https://t.me/',
+    twitter:
+      process.env.NEXT_PUBLIC_TWITTER_URL ?? 'https://x.com/Astroid_Sol',
+    telegram:
+      process.env.NEXT_PUBLIC_TELEGRAM_URL ?? 'https://t.me/astroidcto',
   },
 } as const;
 

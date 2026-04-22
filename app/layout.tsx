@@ -46,6 +46,8 @@ export const metadata: Metadata = {
     title: 'Astroid — Starlike. Drawn by a kid. Helping kids.',
     description: 'A charity-first project built around a kid\'s drawing.',
     images: ['/liv-drawing.jpg'],
+    site: '@Astroid_Sol',
+    creator: '@Astroid_Sol',
   },
 };
 

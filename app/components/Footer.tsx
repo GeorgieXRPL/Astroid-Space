@@ -70,9 +70,21 @@ export function Footer() {
                   href={siteConfig.social.twitter}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-white/60 hover:text-white"
+                  className="text-white/60 hover:text-white inline-flex items-center gap-1.5"
                 >
-                  X (Twitter)
+                  <span>X (Twitter)</span>
+                  <span aria-hidden className="text-white/30 text-[10px]">↗</span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href={siteConfig.social.telegram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/60 hover:text-white inline-flex items-center gap-1.5"
+                >
+                  <span>Telegram</span>
+                  <span aria-hidden className="text-white/30 text-[10px]">↗</span>
                 </a>
               </li>
             </ul>

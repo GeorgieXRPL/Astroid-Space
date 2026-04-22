@@ -155,7 +155,7 @@ export function ColoringStudio() {
             </p>
             <ul className="text-xs font-mono text-white/50 space-y-1.5 leading-relaxed pt-1">
               <li>· Print, color, and keep it on your fridge today</li>
-              <li>· Snap a photo and tag <span className="text-cosmos">@AstroidSpace</span> on X</li>
+                  <li>· Snap a photo and tag <span className="text-cosmos">@Astroid_Sol</span> on X</li>
               <li>· Submissions reopen once the gallery is fully moderated</li>
             </ul>
             <div className="pt-4 mt-auto border-t border-white/5">
