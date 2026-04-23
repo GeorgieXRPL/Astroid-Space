@@ -16,7 +16,7 @@ export default function HomePage() {
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 pb-32 min-h-[80vh] flex flex-col">
           <div className="flex-1 flex flex-col justify-center max-w-2xl">
-            <div className="eyebrow mb-4">A charity-first project · est. 2025</div>
+            <div className="eyebrow mb-4">A charity-first project · est. 2026</div>
             <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.05] mb-6">
               Astroid.{' '}
               <span className="block text-white/60 mt-2">
