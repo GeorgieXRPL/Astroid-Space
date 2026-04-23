@@ -38,7 +38,7 @@ export default function AboutPage() {
         <div className="text-center mt-5">
           <div className="font-display text-lg text-white">Astroid the Space Shiba Inu</div>
           <div className="text-xs font-mono text-white/40 tracking-widest uppercase mt-1">
-            Original artwork · Liv · 2025
+            Original artwork · Liv · 2024
           </div>
         </div>
       </div>
