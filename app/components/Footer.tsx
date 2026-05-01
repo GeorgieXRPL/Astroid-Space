@@ -44,6 +44,11 @@ export function Footer() {
                   Color Astroid
                 </Link>
               </li>
+              <li>
+                <Link href="/games" className="text-white/60 hover:text-white">
+                  Mini-games
+                </Link>
+              </li>
             </ul>
           </div>
 

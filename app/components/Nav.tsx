@@ -8,6 +8,7 @@ const navItems = [
   { href: '/sky', label: 'The Sky' },
   { href: '/wishes', label: 'Wishes' },
   { href: '/coloring', label: 'Color' },
+  { href: '/games', label: 'Games' },
   { href: '/charity', label: 'Charity' },
   { href: '/learn', label: 'Learn' },
   { href: '/friends', label: 'Friends' },
