@@ -24,6 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: '/wishes', priority: 0.7, changeFrequency: 'daily' },
     { path: '/coloring', priority: 0.7, changeFrequency: 'weekly' },
     { path: '/charity', priority: 0.7, changeFrequency: 'weekly' },
+    { path: '/learn', priority: 0.6, changeFrequency: 'monthly' },
     { path: '/friends', priority: 0.5, changeFrequency: 'monthly' },
     { path: '/about', priority: 0.5, changeFrequency: 'monthly' },
   ];

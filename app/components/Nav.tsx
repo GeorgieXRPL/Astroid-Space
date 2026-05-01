@@ -9,6 +9,7 @@ const navItems = [
   { href: '/wishes', label: 'Wishes' },
   { href: '/coloring', label: 'Color' },
   { href: '/charity', label: 'Charity' },
+  { href: '/learn', label: 'Learn' },
   { href: '/friends', label: 'Friends' },
   { href: '/about', label: 'About' },
 ];

@@ -61,6 +61,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/learn" className="text-white/60 hover:text-white">
+                  Space School
+                </Link>
+              </li>
+              <li>
                 <Link href="/friends" className="text-white/60 hover:text-white">
                   Friends across the sky
                 </Link>
