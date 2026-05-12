@@ -83,35 +83,46 @@ export default function AboutPage() {
             What if the trading activity that naturally happens around a meme coin were
             wired, at the source, to do real-world good?
           </p>
-          <p>So we wired one simple utility lane into the project:</p>
+          <p>So we wired the creator-fee split this way:</p>
           <ul className="list-disc list-inside space-y-2 marker:text-cosmos">
             <li>
               <strong className="text-white">25% of pump.fun creator fees</strong>{' '}
-              auto-route on-chain to a Solana wallet provided by ALSAC for{' '}
-              <strong className="text-white">St. Jude Children&apos;s Research Hospital</strong>.
-              We never touch the funds. The split happens at the protocol level,
-              automatically, on every trade.
+              auto-route at fee-claim time through{' '}
+              <strong className="text-white">donate.gg</strong> - a service that
+              delivers crypto donations to verified 501(c)(3) charities - on to{' '}
+              <strong className="text-white">
+                St. Jude Children&apos;s Research Hospital
+              </strong>
+              . We never touch the funds. donate.gg sweeps the receiving wallet,
+              converts to USDC, and forwards to St. Jude.
             </li>
             <li>
-              We&apos;re also <strong className="text-white">reaching out to other
-              children&apos;s charities</strong> - nominated by the community - to
-              request permission to route on-chain donations to them. Once a
-              charity confirms in writing, they&apos;re added to a recurring
-              on-chain split from the 75% project wallet. The 25% to St. Jude
-              is not affected by additional charities being added.
+              <strong className="text-white">10%</strong> routes to a separate
+              wallet reserved for a future, community-nominated children&apos;s
+              charity. Funds accumulate there until a recipient confirms the
+              routing in writing.
+            </li>
+            <li>
+              <strong className="text-white">65%</strong> funds project
+              operations and community-voted activities - keeping the project
+              running and letting the community direct extra efforts beyond the
+              charity portions.
             </li>
           </ul>
           <p>
-            Verify the live wallet balance, see the recipient details, or
-            nominate a charity on the{' '}
+            Verify the live wallets, see the recipient details, or nominate a
+            charity on the{' '}
             <Link href="/charity" className="text-cosmos hover:text-white">
               Charity page
             </Link>
             .
           </p>
           <p className="text-xs text-white/40">
-            Astroid is not affiliated with, endorsed by, or partnered with
-            St. Jude or ALSAC. We do not solicit donations on their behalf.
+            Astroid is not affiliated with, endorsed by, or partnered with St.
+            Jude, ALSAC, or donate.gg. donate.gg is an arms-length routing
+            service; the inclusion of St. Jude as the named beneficiary
+            reflects donate.gg delivering funds to that charity, not a
+            relationship with Astroid.
           </p>
         </Section>
 

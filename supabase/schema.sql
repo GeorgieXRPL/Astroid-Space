@@ -86,6 +86,29 @@ CREATE TABLE IF NOT EXISTS public.rejection_log (
 CREATE INDEX IF NOT EXISTS rejection_log_at_idx ON public.rejection_log (rejected_at DESC);
 
 -- ---------------------------------------------------------------------------
+-- Wallet inflow cache
+--
+-- Tracks lifetime credits to a charity-bound wallet so we can show an
+-- honest "donations to date" number even for pass-through wallets that
+-- get swept on a schedule (e.g. donate.gg-controlled intake addresses).
+--
+-- Lifecycle: read on every charity-totals request; refreshed by the
+-- server when the row is older than ~1 hour. The row stores a
+-- monotonically-increasing total plus the most-recent signature seen,
+-- so subsequent refreshes only ask the RPC for *new* signatures.
+--
+-- Bigint for lamports because 1 SOL == 1e9 lamports - any non-trivial
+-- balance overflows a 32-bit int quickly.
+-- ---------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS public.wallet_inflow_cache (
+  address         TEXT PRIMARY KEY,
+  lamports        BIGINT NOT NULL DEFAULT 0,
+  tx_count        INTEGER NOT NULL DEFAULT 0,
+  last_signature  TEXT,
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+-- ---------------------------------------------------------------------------
 -- Row-level security: deny everything to anon/authenticated.
 -- The server uses the secret key (sb_secret_..., formerly service_role),
 -- which bypasses RLS, so the API continues to work. Anyone hitting
@@ -96,6 +119,7 @@ ALTER TABLE public.wishes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.coloring_submissions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.charity_nominations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.rejection_log ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.wallet_inflow_cache ENABLE ROW LEVEL SECURITY;
 
 -- No CREATE POLICY statements: with RLS enabled and no policies present,
 -- queries from anything other than the secret key return zero rows.

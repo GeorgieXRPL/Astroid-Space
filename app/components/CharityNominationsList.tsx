@@ -39,8 +39,8 @@ export function CharityNominationsList() {
           No community nominations approved yet. If there&apos;s a children&apos;s
           charity you love, suggest them above. We&apos;ll review and reach out
           for written consent before any wallet is wired up - confirmed
-          charities are added to a recurring on-chain split from the 75%
-          project wallet.
+          charities are considered as the recipient of the 10% future-charity
+          wallet.
         </p>
       </div>
     );

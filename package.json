@@ -5,6 +5,8 @@
   "description": "Astroid (starlike) - a charity-first, kid-safe project where naming a star helps fund children.",
   "scripts": {
     "dev": "next dev",
+    "dev:v4": "next dev --hostname 127.0.0.1 --port 3000",
+    "dev:network": "next dev --hostname 0.0.0.0 --port 3000",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

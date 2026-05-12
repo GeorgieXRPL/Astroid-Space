@@ -11,7 +11,7 @@ Astroid is the official site for the $ASTROID Solana token. The whole point is t
 - **Name a star** - anyone can name one of the visible stars in the sky for free, write a short message, and download a printable certificate.
 - **Color the Astroid** - print Liv's drawing, color it, and (once the moderation pipeline is live) submit your version for the gallery.
 - **Wish wall** - leave a short, public wish in the sky.
-- **Charity transparency** - 25% of pump.fun creator fees auto-route on-chain to a wallet provided by ALSAC for St. Jude Children's Research Hospital. The wallet balance is fetched live from the Solana RPC and shown on `/charity` with a Solscan link, so anyone can verify in real time.
+- **Charity transparency** - 25% of pump.fun creator fees auto-route at fee-claim time through donate.gg (an arms-length service for crypto donations to verified 501(c)(3) charities) on to St. Jude Children's Research Hospital. 10% routes to a separate wallet held for a future, community-nominated children's charity. 65% funds project operations and community-voted activities. Lifetime on-chain inflow is fetched from the Solana RPC and shown on `/charity` with a Solscan link, so anyone can verify in real time. The original ALSAC-provided wallet is preserved (frozen) on `/charity` as a permanent record of donations made before the routing change.
 
 ## The mascot
 
