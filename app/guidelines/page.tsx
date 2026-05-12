@@ -19,9 +19,10 @@ export default function GuidelinesPage() {
         </h1>
         <p className="text-white/60 max-w-xl mx-auto leading-relaxed">
           Astroid was made FOR Liv, in honor of her strength. St. Jude was her
-          chosen charity. ALSAC kindly provided a wallet for our 25% on-chain
-          donation flow. That&apos;s the relationship - and it&apos;s a
-          relationship we want to keep for years.
+          chosen charity. 25% of pump.fun creator fees auto-route through
+          donate.gg - an arms-length routing service for crypto donations to
+          verified charities - on to St. Jude. That&apos;s the relationship -
+          and it&apos;s a relationship we want to keep for years.
         </p>
       </div>
 
@@ -31,11 +32,13 @@ export default function GuidelinesPage() {
         <p className="text-white/80 leading-relaxed">
           Astroid is <strong className="text-white">not</strong>{' '}
           partnered with, sponsored by, endorsed by, or affiliated with St. Jude
-          Children&apos;s Research Hospital or ALSAC. ALSAC provided a public
-          Solana wallet that receives our automated 25% pump.fun creator-fee
-          donations. That is the entire scope of our interaction. Anyone who
-          tells you otherwise - including screenshots of social-media likes
-          framed as &ldquo;proof&rdquo; - is mistaken.
+          Children&apos;s Research Hospital, ALSAC, or donate.gg. 25% of
+          pump.fun creator fees auto-route at claim time through donate.gg - a
+          service that delivers crypto donations to verified 501(c)(3)
+          charities - on to St. Jude. That is the entire scope of our
+          interaction with these organisations. Anyone who tells you otherwise
+          - including screenshots of social-media likes framed as
+          &ldquo;proof&rdquo; - is mistaken.
         </p>
       </section>
 
@@ -131,9 +134,9 @@ export default function GuidelinesPage() {
             <span className="text-ember font-mono text-sm pt-0.5">×</span>
             <span>
               Tell anyone that buying $ASTROID is &ldquo;donating to St.
-              Jude.&rdquo; A portion of trading fees auto-routes to a wallet
-              ALSAC provided. That is structurally different from a
-              charitable donation by the buyer.
+              Jude.&rdquo; A portion of creator fees auto-routes through
+              donate.gg to St. Jude at fee-claim time. That is structurally
+              different from a charitable donation made by the buyer.
             </span>
           </li>
         </ul>
@@ -144,15 +147,16 @@ export default function GuidelinesPage() {
         <div className="eyebrow mb-3">Why this matters</div>
         <div className="space-y-3 text-white/70 leading-relaxed text-sm">
           <p>
-            ALSAC monitors how their name is used online. If our community
-            consistently misrepresents the relationship - even with the best
-            of intentions - they have every right to revoke the donation
-            wallet. We&apos;ve seen other crypto projects lose charity
-            relationships exactly this way.
+            ALSAC monitors how their name is used online. donate.gg vets the
+            projects whose flows it routes. If our community consistently
+            misrepresents the relationship - even with the best of intentions
+            - either side has every right to cut the routing. We&apos;ve seen
+            other crypto projects lose charity relationships exactly this
+            way.
           </p>
           <p>
             We&apos;d rather have a small, honest stream of donations going to
-            St. Jude for years than a viral moment that ends the wallet next
+            St. Jude for years than a viral moment that ends the routing next
             week. So would Liv.
           </p>
         </div>

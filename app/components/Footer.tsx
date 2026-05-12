@@ -166,18 +166,21 @@ export function Footer() {
         <div className="pt-4 mt-4 border-t border-white/5 text-[11px] text-white/30 leading-relaxed max-w-3xl space-y-2">
           <p>
             Astroid is not affiliated with, endorsed by, or partnered with St. Jude
-            Children&apos;s Research Hospital, ALSAC, or any other charity listed on this
-            site. The recipient wallet on the{' '}
+            Children&apos;s Research Hospital, ALSAC, donate.gg, or any other
+            organisation listed on this site. 25% of pump.fun creator fees auto-route
+            at fee-claim time through donate.gg - an arms-length service for crypto
+            donations to verified 501(c)(3) charities - on to St. Jude. See the{' '}
             <Link href="/charity" className="text-white/50 hover:text-white">
               Charity page
             </Link>{' '}
-            was provided by ALSAC for on-chain donations. We do not solicit donations
-            on behalf of any charity. No portion of the token&apos;s price or any user
+            for the live wallets, the legacy wallet kept visible as a permanent
+            record, and the rest of the fee split. We do not solicit donations on
+            behalf of any charity. No portion of the token&apos;s price or any user
             action constitutes a charitable contribution by the user.
           </p>
           <p>
             Anyone claiming Astroid is partnered with, sponsored by, or endorsed by
-            St. Jude or ALSAC is mistaken. Please see our{' '}
+            St. Jude, ALSAC, or donate.gg is mistaken. Please see our{' '}
             <Link href="/guidelines" className="text-white/50 hover:text-white">
               community guidelines
             </Link>{' '}

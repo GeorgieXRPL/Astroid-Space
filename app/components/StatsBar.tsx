@@ -13,7 +13,8 @@ interface Stats {
 
 interface DonationTotals {
   configured: boolean;
-  totalSol: number;
+  /** Sum across legacy + active charity wallets, in SOL. */
+  totalCharitySol: number;
 }
 
 export function StatsBar() {
@@ -54,10 +55,10 @@ export function StatsBar() {
         label="Donated to Charity"
         value={
           donations?.configured
-            ? `${donations.totalSol.toFixed(4)} SOL`
+            ? `${donations.totalCharitySol.toFixed(4)} SOL`
             : 'Pending setup'
         }
-        sub={donations?.configured ? 'live on-chain' : 'configure wallet'}
+        sub={donations?.configured ? 'legacy + active' : 'configure wallet'}
         accent={donations?.configured}
       />
       <Stat

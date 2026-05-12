@@ -24,11 +24,11 @@ export default function HomePage() {
               </span>
             </h1>
             <p className="text-lg text-white/70 leading-relaxed max-w-xl mb-8">
-              <em className="not-italic text-white">Astroid</em>, from Greek <em>ἀστήρ</em>{' '}
-              (star) + <em>-oid</em> (like). 25% of every pump.fun creator fee
-              auto-routes on-chain to a children&apos;s charity wallet - no
-              human in the loop. Name a star, write a wish, color in Astroid
-              the Space Shiba.
+              <em className="not-italic text-white">Astroid</em>, from Greek{' '}
+              <em>ἀστήρ</em> (star) + <em>-oid</em> (like). 25% of pump.fun
+              creator fees auto-route through donate.gg to St. Jude
+              Children&apos;s Research Hospital - no human in the loop. Name
+              a star, write a wish, color in Astroid the Space Shiba.
             </p>
             <div className="flex flex-wrap items-center gap-3">
               <Link href="/name-a-star" className="btn-primary">
@@ -158,12 +158,13 @@ export default function HomePage() {
         <div className="text-center mb-16">
           <div className="eyebrow mb-3">How charity works</div>
           <h2 className="font-display text-3xl sm:text-5xl font-bold text-white tracking-tight">
-            One source. <span className="text-white/50">One charity wallet.</span>
+            One source.{' '}
+            <span className="text-white/50">Three transparent lanes.</span>
           </h2>
           <p className="text-white/60 max-w-xl mx-auto mt-5 leading-relaxed">
-            No team discretion. No manual forwarding. Just pump.fun&apos;s built-in
-            75 / 25 creator-fee split - and you can read the wallet balance in
-            real time on the charity page.
+            No team discretion. No manual forwarding. pump.fun creator fees
+            split at fee-claim time and you can read every wallet on the
+            charity page in real time.
           </p>
         </div>
 
@@ -171,14 +172,18 @@ export default function HomePage() {
           <UtilityCard
             tag="On-chain · automatic"
             title="Pump.fun creator fees"
-            split="75 / 25"
-            description="Every trade on pump.fun pays a creator fee. The split happens at the source - 25% auto-routes on-chain to a Solana wallet provided by ALSAC for St. Jude Children's Research Hospital. Verifiable on every trade."
+            split="25 / 10 / 65"
+            description="When fees are claimed, 25% routes through donate.gg to St. Jude Children's Research Hospital, 10% to a wallet held for a future community-nominated children's charity, and 65% to community + operations. Every wallet is public and verifiable."
             href="/charity"
-            cta="View the wallet"
+            cta="View the wallets"
           />
           <p className="mt-4 text-center text-xs font-mono text-white/30 tracking-wider uppercase max-w-md mx-auto">
-            Astroid is not affiliated with or endorsed by St. Jude or ALSAC.
-            See <a href="/charity" className="text-white/50 hover:text-white">/charity</a> for details.
+            Astroid is not affiliated with or endorsed by St. Jude, ALSAC, or
+            donate.gg. See{' '}
+            <a href="/charity" className="text-white/50 hover:text-white">
+              /charity
+            </a>{' '}
+            for details.
           </p>
         </div>
       </section>

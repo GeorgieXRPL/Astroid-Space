@@ -6,9 +6,10 @@
  *
  * IMPORTANT: a nomination is *not* a routing decision. We will only
  * actually route on-chain donations to a nominated charity after writing
- * to them and obtaining recipient consent (per ALSAC's pattern with
- * St. Jude). The public list exists so the community can see which
- * charities have been suggested and which we're still working on.
+ * to them and obtaining recipient consent (the same pattern donate.gg
+ * uses to verify charities for crypto donations). The public list exists
+ * so the community can see which charities have been suggested and which
+ * we're still working on.
  */
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -156,7 +157,7 @@ export async function POST(req: NextRequest) {
     {
       ok: true,
       message:
-        "Thank you. We'll review your nomination and reach out to the charity for written consent before they're added to the on-chain split from the 75% project wallet.",
+        "Thank you. We'll review your nomination and reach out to the charity for written consent before any routing is enabled - they would be considered as the recipient of the 10% future-charity wallet (or a fresh split funded from the community-and-operations side).",
       nominationId: nomination.id,
     },
     { status: 201 }

@@ -95,7 +95,7 @@ export const ASTROID_LORE_QUIZ: Quiz = {
       ],
       correctId: 'b',
       explanation:
-        "St. Jude was Liv's chosen charity. ALSAC - the fundraising organisation for St. Jude - provided the Solana wallet that the 25% routes to. The split happens on-chain, automatically, on every trade.",
+        "St. Jude was Liv's chosen charity. The 25% routes through donate.gg - a service that delivers crypto donations to verified charities - on to St. Jude. The Astroid project never custody-holds the funds.",
     },
     {
       id: 'lore-alsac',
@@ -111,7 +111,7 @@ export const ASTROID_LORE_QUIZ: Quiz = {
       ],
       correctId: 'b',
       explanation:
-        "ALSAC stands for the American Lebanese Syrian Associated Charities. They handle fundraising and awareness for St. Jude Children's Research Hospital. They are the ones who provided the Solana wallet that the 25% donation flow routes to.",
+        "ALSAC stands for the American Lebanese Syrian Associated Charities. They handle fundraising and awareness for St. Jude Children's Research Hospital. Astroid is not partnered with or endorsed by ALSAC - donations are routed by donate.gg, a third-party service, on to St. Jude.",
     },
     {
       id: 'lore-routing',
@@ -121,13 +121,14 @@ export const ASTROID_LORE_QUIZ: Quiz = {
         { id: 'b', label: 'When the team manually sends it' },
         {
           id: 'c',
-          label: 'On every single trade, automatically, on-chain',
+          label:
+            'Automatically at fee-claim time, via donate.gg, on to St. Jude',
         },
         { id: 'd', label: 'When fees pile up to 100 SOL' },
       ],
       correctId: 'c',
       explanation:
-        "On every trade, the protocol splits the creator fee 75/25 at the source. The 25% goes straight to the wallet ALSAC provided. We never touch it - which is the whole point. You can verify it on the charity page.",
+        "When pump.fun creator fees are claimed, 25% routes through donate.gg - an arms-length service for crypto donations to verified charities - on to St. Jude. The Astroid project never custody-holds the funds. You can verify it on the charity page.",
     },
     {
       id: 'lore-free',
@@ -164,13 +165,30 @@ export const ASTROID_LORE_QUIZ: Quiz = {
         {
           id: 'c',
           label:
-            'No - ALSAC just provided a wallet for on-chain donations',
+            'No - donations are routed through donate.gg, a third-party service',
         },
         { id: 'd', label: 'Yes, but only the team knows about it' },
       ],
       correctId: 'c',
       explanation:
-        'Astroid is NOT partnered with, sponsored by, or endorsed by St. Jude or ALSAC. ALSAC simply provided a Solana wallet for on-chain donations. That is the whole relationship - and we keep it that way on purpose so it lasts.',
+        'Astroid is NOT partnered with, sponsored by, or endorsed by St. Jude, ALSAC, or donate.gg. donate.gg is an arms-length service that delivers crypto donations to verified 501(c)(3) charities; the inclusion of St. Jude as the named beneficiary reflects donate.gg delivering funds to that charity, not a relationship with Astroid.',
+    },
+    {
+      id: 'lore-split',
+      prompt: 'How are pump.fun creator fees split for Astroid?',
+      choices: [
+        { id: 'a', label: '50% St. Jude / 50% project' },
+        {
+          id: 'b',
+          label:
+            '25% St. Jude (via donate.gg) / 10% future charity / 65% community + ops',
+        },
+        { id: 'c', label: '100% to St. Jude on every trade' },
+        { id: 'd', label: '25% to charity / 75% to the team' },
+      ],
+      correctId: 'b',
+      explanation:
+        'The split is 25% / 10% / 65%. The 25% routes through donate.gg to St. Jude. The 10% sits in a separate wallet held for a future, community-nominated children\u2019s charity. The 65% funds project operations and community-voted activities.',
     },
     {
       id: 'lore-true-name',
