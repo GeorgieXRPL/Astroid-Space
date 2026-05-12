@@ -151,16 +151,22 @@ export function getCharityWallets(): CharityWallet[] {
   // Legacy ALSAC-provided wallet, frozen as a permanent record.
   // Optional - only shown if the env var is set. Many deployments will
   // never have a legacy wallet at all.
+  //
+  // Display metric is `balance` (not cumulative inflow): the wallet is
+  // frozen with no outflows, so the live balance IS the historical
+  // donation total - and it's a single cheap RPC call, instead of
+  // paging hundreds of historical signatures (which times out on
+  // Vercel's serverless function budget against the public RPC).
   if (legacy) {
     wallets.push({
       kind: 'legacy',
       status: 'frozen',
       label: 'St. Jude (legacy ALSAC wallet)',
       description:
-        'The original wallet that received 25% of pump.fun creator fees before the switch to donate.gg. Frozen on-chain - no new fees route here. The balance is preserved as a permanent record of what was sent during this era.',
+        'The original wallet that received 25% of pump.fun creator fees before the switch to donate.gg. Frozen on-chain - no new fees route here, no sweeps out. The balance shown is the historical donation total, preserved on-chain as a permanent record.',
       address: legacy,
       splitPercent: 0,
-      displayMetric: 'cumulative-inflow',
+      displayMetric: 'balance',
     });
   }
 
@@ -508,6 +514,16 @@ export async function fetchBalances(
         reading.txCount = inflow.txCount;
         reading.lastSignature = inflow.lastSignature;
         if (inflow.staleAsOf) reading.staleAsOf = inflow.staleAsOf;
+
+        // Fallback: if the inflow scan got rate-limited / errored and
+        // returned zero, but the wallet currently holds SOL, show the
+        // live balance as a floor rather than reporting a misleading 0.
+        // The on-chain balance can never exceed historical inflow for a
+        // recipient-only wallet, so this is always a safe lower bound.
+        if (reading.inflowLamports === 0 && lamports > 0) {
+          reading.inflowLamports = lamports;
+          reading.inflowSol = lamports / 1e9;
+        }
       }
 
       return reading;
