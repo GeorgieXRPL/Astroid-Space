@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { siteConfig } from '../lib/config';
 import { TokenAddress } from './TokenAddress';
+import { TrackedOnStrip } from './TrackedOnStrip';
 
 export function Footer() {
   return (
@@ -147,6 +148,10 @@ export function Footer() {
         </div>
 
         <TokenAddress />
+
+        <div className="pt-6 mt-6 border-t border-white/5">
+          <TrackedOnStrip variant="inline" />
+        </div>
 
         <div className="pt-6 mt-6 border-t border-white/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs text-white/40">
           <div>

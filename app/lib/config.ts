@@ -41,6 +41,18 @@ export const siteConfig = {
     | 'mainnet-beta'
     | 'devnet',
 
+  // Public token-tracker listings. Defaults point at the live $ASTROID coin
+  // pages on each tracker. Env vars are still honoured so URLs can be
+  // rotated (e.g. if a tracker reslugs the coin) without a code change.
+  listings: {
+    coingecko:
+      process.env.NEXT_PUBLIC_COINGECKO_URL ??
+      'https://www.coingecko.com/en/coins/thespaceshibainu',
+    blockspot:
+      process.env.NEXT_PUBLIC_BLOCKSPOT_URL ??
+      'https://blockspot.io/coin/thespaceshibainu/',
+  },
+
   // Wallets
   projectWallet: process.env.NEXT_PUBLIC_PROJECT_WALLET ?? '',
   charityWallet: process.env.NEXT_PUBLIC_CHARITY_WALLET ?? '',

@@ -42,3 +42,10 @@ yarn-error.log*
 # OS
 .DS_Store
 Thumbs.db
+
+# Loose vendor brand assets dropped into the repo root for processing.
+# The processed copies live under public/listings/. Keep raw drop-ins out
+# of git so the root stays tidy.
+/CG-*.png
+/icon-full-color-*.png
+/logo-white-*.png
