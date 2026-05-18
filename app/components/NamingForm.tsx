@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { getStarField, type Star, STAR_STYLES } from '../lib/stars';
@@ -30,6 +30,16 @@ export function NamingForm({ initialDesignation }: NamingFormProps) {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
+  /**
+   * We only auto-pick a random star once when the page loads without a
+   * `?designation=` in the URL. If we ran that logic on every subsequent
+   * effect run, `pickRandom` would change whenever `/api/stars` finished
+   * loading (new `namedSet` → new callback identity) while `designation`
+   * was briefly empty — and the STAR-xxxxx field would snap back,
+   * feeling like “I can’t type my star name / code”.
+   */
+  const autoPickOnceEligible = useRef(!initialDesignation);
+
   useEffect(() => {
     let cancelled = false;
     fetch('/api/stars?limit=200')
@@ -55,9 +65,11 @@ export function NamingForm({ initialDesignation }: NamingFormProps) {
   }, [allStars, namedSet]);
 
   useEffect(() => {
-    if (!designation && !loadingNamed) {
-      pickRandom();
-    }
+    if (loadingNamed) return;
+    if (designation) return;
+    if (!autoPickOnceEligible.current) return;
+    pickRandom();
+    autoPickOnceEligible.current = false;
   }, [designation, loadingNamed, pickRandom]);
 
   const selected: Star | undefined = allStars.find((s) => s.id === designation);
