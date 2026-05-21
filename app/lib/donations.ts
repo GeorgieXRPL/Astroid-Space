@@ -559,6 +559,7 @@ export async function fetchBalances(
     accountBalances = await fetchWalletAccountBalances(connection, knownAddresses);
   } catch (err) {
     console.warn('[donations] batched balance fetch failed:', err);
+    throw err;
   }
 
   return Promise.all(

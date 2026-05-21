@@ -12,6 +12,7 @@
  * cache row read.
  */
 
+import { unstable_cache } from 'next/cache';
 import { NextResponse } from 'next/server';
 import {
   getCharityWallets,
@@ -21,9 +22,17 @@ import {
 } from '../../../lib/donations';
 
 export const dynamic = 'force-dynamic';
-export const revalidate = 30; // seconds
 
-export async function GET() {
+const DONATION_TOTALS_CACHE_SECONDS = 300;
+const DONATION_TOTALS_STALE_SECONDS = 3600;
+
+const cacheHeaders = {
+  'Cache-Control': `public, s-maxage=${DONATION_TOTALS_CACHE_SECONDS}, stale-while-revalidate=${DONATION_TOTALS_STALE_SECONDS}`,
+  'CDN-Cache-Control': `public, s-maxage=${DONATION_TOTALS_CACHE_SECONDS}, stale-while-revalidate=${DONATION_TOTALS_STALE_SECONDS}`,
+  'Vercel-CDN-Cache-Control': `public, s-maxage=${DONATION_TOTALS_CACHE_SECONDS}, stale-while-revalidate=${DONATION_TOTALS_STALE_SECONDS}`,
+};
+
+async function buildDonationTotals() {
   const wallets = getCharityWallets();
 
   // The "primary" charity wallet is always present in the registry as a
@@ -31,20 +40,20 @@ export async function GET() {
   // *known* address to actually fetch.
   const hasAnyAddress = wallets.some((w) => !!w.address);
   if (!hasAnyAddress) {
-    return NextResponse.json({
+    return {
       configured: false,
       wallets: [],
       totalCharitySol: 0,
       totalCharityLamports: 0,
       message:
         'No charity wallets configured. Set NEXT_PUBLIC_CHARITY_WALLET in .env.local to the donate.gg-controlled intake address.',
-    });
+    };
   }
 
   const readings = await fetchBalances(wallets);
   const totalLamports = totalCharityLamports(readings);
 
-  return NextResponse.json({
+  return {
     configured: true,
     wallets: readings.map((r) => ({
       kind: r.kind,
@@ -74,5 +83,16 @@ export async function GET() {
     totalCharitySol: totalLamports / 1e9,
     totalCharityLamports: totalLamports,
     fetchedAt: new Date().toISOString(),
-  });
+  };
+}
+
+const getCachedDonationTotals = unstable_cache(
+  buildDonationTotals,
+  ['donation-totals-v3'],
+  { revalidate: DONATION_TOTALS_CACHE_SECONDS }
+);
+
+export async function GET() {
+  const data = await getCachedDonationTotals();
+  return NextResponse.json(data, { headers: cacheHeaders });
 }
