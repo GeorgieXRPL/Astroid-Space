@@ -54,12 +54,20 @@ export function StatsBar() {
       <Stat
         label="Donated to Charity"
         value={
-          donations?.configured
-            ? `${donations.totalCharitySol.toFixed(4)} SOL`
-            : 'Pending setup'
+          donations
+            ? donations.configured
+              ? `${donations.totalCharitySol.toFixed(4)} SOL`
+              : 'Pending setup'
+            : '-'
         }
-        sub={donations?.configured ? 'legacy + active' : 'configure wallet'}
-        accent={donations?.configured}
+        sub={
+          donations
+            ? donations.configured
+              ? 'legacy + active'
+              : 'configure wallet'
+            : 'loading'
+        }
+        accent={!!donations?.configured}
       />
       <Stat
         label="Wishes & Drawings"

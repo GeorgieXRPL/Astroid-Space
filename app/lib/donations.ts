@@ -43,6 +43,8 @@ const USDC_MINT = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
 const USDC_DECIMALS = 6;
 const TOKEN_PROGRAM_ID = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA';
 const ASSOCIATED_TOKEN_PROGRAM_ID = 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL';
+const SPL_TOKEN_AMOUNT_OFFSET = 64;
+const SPL_TOKEN_AMOUNT_LENGTH = 8;
 
 // ----------------------------------------------------------------------------
 // Types
@@ -126,33 +128,43 @@ function getConnection(): Connection {
   return new Connection(url, 'confirmed');
 }
 
-async function fetchUsdcBalance(
-  connection: Connection,
-  owner: PublicKey
-): Promise<{ units: number; usdc: number }> {
-  try {
-    const [associatedTokenAccount] = PublicKey.findProgramAddressSync(
-      [
-        owner.toBuffer(),
-        new PublicKey(TOKEN_PROGRAM_ID).toBuffer(),
-        new PublicKey(USDC_MINT).toBuffer(),
-      ],
-      new PublicKey(ASSOCIATED_TOKEN_PROGRAM_ID)
-    );
-    const balance = await connection.getTokenAccountBalance(associatedTokenAccount);
-    const units = Number(balance.value.amount);
+function usdcAssociatedTokenAddress(owner: PublicKey): PublicKey {
+  return PublicKey.findProgramAddressSync(
+    [
+      owner.toBuffer(),
+      new PublicKey(TOKEN_PROGRAM_ID).toBuffer(),
+      new PublicKey(USDC_MINT).toBuffer(),
+    ],
+    new PublicKey(ASSOCIATED_TOKEN_PROGRAM_ID)
+  )[0];
+}
 
-    return {
-      units,
-      usdc: units / 10 ** USDC_DECIMALS,
-    };
-  } catch (err) {
-    if (err instanceof Error && err.message.includes('could not find account')) {
-      return { units: 0, usdc: 0 };
-    }
-    console.warn(`[donations] USDC balance fetch failed for ${owner.toBase58()}:`, err);
-    return { units: 0, usdc: 0 };
-  }
+function readSplTokenUnits(data: Buffer): number {
+  if (data.length < SPL_TOKEN_AMOUNT_OFFSET + SPL_TOKEN_AMOUNT_LENGTH) return 0;
+  return Number(data.readBigUInt64LE(SPL_TOKEN_AMOUNT_OFFSET));
+}
+
+async function fetchWalletAccountBalances(
+  connection: Connection,
+  addresses: string[]
+): Promise<Map<string, { lamports: number; usdcUnits: number }>> {
+  const result = new Map<string, { lamports: number; usdcUnits: number }>();
+  const pubkeys = addresses.map((address) => new PublicKey(address));
+  const usdcAtas = pubkeys.map(usdcAssociatedTokenAddress);
+
+  const accounts = await connection.getMultipleAccountsInfo([...pubkeys, ...usdcAtas]);
+  pubkeys.forEach((pubkey, index) => {
+    const address = pubkey.toBase58();
+    const walletAccount = accounts[index];
+    const usdcAccount = accounts[index + pubkeys.length];
+    const usdcUnits = usdcAccount ? readSplTokenUnits(usdcAccount.data) : 0;
+    result.set(address, {
+      lamports: walletAccount?.lamports ?? 0,
+      usdcUnits,
+    });
+  });
+
+  return result;
 }
 
 /** Quick base58 sanity check before we hand the string to PublicKey. */
@@ -538,21 +550,28 @@ export async function fetchBalances(
   wallets: CharityWallet[]
 ): Promise<WalletReading[]> {
   const connection = getConnection();
+  const knownAddresses = wallets
+    .map((w) => w.address)
+    .filter((address): address is string => !!address);
+  let accountBalances = new Map<string, { lamports: number; usdcUnits: number }>();
+
+  try {
+    accountBalances = await fetchWalletAccountBalances(connection, knownAddresses);
+  } catch (err) {
+    console.warn('[donations] batched balance fetch failed:', err);
+  }
 
   return Promise.all(
     wallets.map(async (w): Promise<WalletReading> => {
       if (!w.address) return emptyReading(w);
 
       // Live balance, every wallet, every time.
-      let lamports = 0;
-      const pubkey = new PublicKey(w.address);
-      try {
-        lamports = await connection.getBalance(pubkey);
-      } catch (err) {
-        console.warn(`[donations] balance fetch failed for ${w.address}:`, err);
-      }
-
-      const usdcBalance = await fetchUsdcBalance(connection, pubkey);
+      const balances = accountBalances.get(w.address) ?? {
+        lamports: 0,
+        usdcUnits: 0,
+      };
+      const lamports = balances.lamports;
+      const usdcUnits = balances.usdcUnits;
 
       const reading: WalletReading = {
         kind: w.kind,
@@ -565,8 +584,8 @@ export async function fetchBalances(
         retiredAt: w.retiredAt,
         lamports,
         sol: lamports / 1e9,
-        usdcUnits: usdcBalance.units,
-        usdc: usdcBalance.usdc,
+        usdcUnits,
+        usdc: usdcUnits / 10 ** USDC_DECIMALS,
       };
 
       // Cumulative inflow on top, only where we actually use it.
