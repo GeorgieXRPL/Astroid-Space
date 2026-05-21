@@ -20,6 +20,7 @@ import {
   donationLamports,
 } from '../../../lib/donations';
 
+export const dynamic = 'force-dynamic';
 export const revalidate = 30; // seconds
 
 export async function GET() {
