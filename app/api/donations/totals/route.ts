@@ -56,6 +56,8 @@ export async function GET() {
       retiredAt: r.retiredAt ?? null,
       lamports: r.lamports,
       sol: r.sol,
+      usdcUnits: r.usdcUnits,
+      usdc: r.usdc,
       // Inflow fields are sent unconditionally as `null` when not used,
       // so the client can branch on the presence of a number cleanly.
       inflowLamports: r.inflowLamports ?? null,

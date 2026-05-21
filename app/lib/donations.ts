@@ -34,6 +34,16 @@ import {
 } from '@solana/web3.js';
 import { supabase } from './db/supabaseClient';
 
+const ASTROID_TOKEN_MINT = '8NwtzwGm4CV8Hm4fJXR69ac1MxDYuSaN3A9HVyikpump';
+const ASTROID_DEFAULT_PRIMARY_CHARITY_WALLET =
+  '69gzuYrbVxZptyXnjcP2AxXVHKy4fW9wAbKF3U7nvit7';
+const ASTROID_DEFAULT_SECONDARY_CHARITY_WALLET =
+  '3Zrt93Zvt5fLoRifjk3zC9n6boo53tKUdEs2DwC58E8C';
+const USDC_MINT = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
+const USDC_DECIMALS = 6;
+const TOKEN_PROGRAM_ID = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA';
+const ASSOCIATED_TOKEN_PROGRAM_ID = 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL';
+
 // ----------------------------------------------------------------------------
 // Types
 // ----------------------------------------------------------------------------
@@ -87,6 +97,10 @@ export interface WalletReading {
   lamports: number;
   /** Same value, in SOL. */
   sol: number;
+  /** Current USDC token balance, in base units (0 if none/unfetchable). */
+  usdcUnits: number;
+  /** Same value, in USDC. */
+  usdc: number;
 
   // Only set when displayMetric === 'cumulative-inflow':
   /** Lifetime credits to this wallet, in lamports. */
@@ -110,6 +124,35 @@ function getConnection(): Connection {
     process.env.NEXT_PUBLIC_SOLANA_RPC_URL ||
     'https://api.mainnet-beta.solana.com';
   return new Connection(url, 'confirmed');
+}
+
+async function fetchUsdcBalance(
+  connection: Connection,
+  owner: PublicKey
+): Promise<{ units: number; usdc: number }> {
+  try {
+    const [associatedTokenAccount] = PublicKey.findProgramAddressSync(
+      [
+        owner.toBuffer(),
+        new PublicKey(TOKEN_PROGRAM_ID).toBuffer(),
+        new PublicKey(USDC_MINT).toBuffer(),
+      ],
+      new PublicKey(ASSOCIATED_TOKEN_PROGRAM_ID)
+    );
+    const balance = await connection.getTokenAccountBalance(associatedTokenAccount);
+    const units = Number(balance.value.amount);
+
+    return {
+      units,
+      usdc: units / 10 ** USDC_DECIMALS,
+    };
+  } catch (err) {
+    if (err instanceof Error && err.message.includes('could not find account')) {
+      return { units: 0, usdc: 0 };
+    }
+    console.warn(`[donations] USDC balance fetch failed for ${owner.toBase58()}:`, err);
+    return { units: 0, usdc: 0 };
+  }
 }
 
 /** Quick base58 sanity check before we hand the string to PublicKey. */
@@ -141,9 +184,22 @@ function readWalletEnv(name: string): string | null {
  * the caller's job.
  */
 export function getCharityWallets(): CharityWallet[] {
+  const isAstroidMint =
+    process.env.NEXT_PUBLIC_TOKEN_MINT?.trim() === ASTROID_TOKEN_MINT;
+  const astroidDefaults = isAstroidMint
+    ? {
+        primary: ASTROID_DEFAULT_PRIMARY_CHARITY_WALLET,
+        secondary: ASTROID_DEFAULT_SECONDARY_CHARITY_WALLET,
+      }
+    : null;
+
   const legacy = readWalletEnv('NEXT_PUBLIC_CHARITY_WALLET_LEGACY');
-  const primary = readWalletEnv('NEXT_PUBLIC_CHARITY_WALLET');
-  const secondary = readWalletEnv('NEXT_PUBLIC_CHARITY_WALLET_SECONDARY');
+  const primary =
+    readWalletEnv('NEXT_PUBLIC_CHARITY_WALLET') ?? astroidDefaults?.primary ?? null;
+  const secondary =
+    readWalletEnv('NEXT_PUBLIC_CHARITY_WALLET_SECONDARY') ??
+    astroidDefaults?.secondary ??
+    null;
   const community = readWalletEnv('NEXT_PUBLIC_COMMUNITY_WALLET');
 
   const wallets: CharityWallet[] = [];
@@ -466,6 +522,8 @@ function emptyReading(w: CharityWallet): WalletReading {
     retiredAt: w.retiredAt,
     lamports: 0,
     sol: 0,
+    usdcUnits: 0,
+    usdc: 0,
     ...(w.displayMetric === 'cumulative-inflow'
       ? { inflowLamports: 0, inflowSol: 0, txCount: 0, lastSignature: null }
       : {}),
@@ -487,11 +545,14 @@ export async function fetchBalances(
 
       // Live balance, every wallet, every time.
       let lamports = 0;
+      const pubkey = new PublicKey(w.address);
       try {
-        lamports = await connection.getBalance(new PublicKey(w.address));
+        lamports = await connection.getBalance(pubkey);
       } catch (err) {
         console.warn(`[donations] balance fetch failed for ${w.address}:`, err);
       }
+
+      const usdcBalance = await fetchUsdcBalance(connection, pubkey);
 
       const reading: WalletReading = {
         kind: w.kind,
@@ -504,23 +565,33 @@ export async function fetchBalances(
         retiredAt: w.retiredAt,
         lamports,
         sol: lamports / 1e9,
+        usdcUnits: usdcBalance.units,
+        usdc: usdcBalance.usdc,
       };
 
       // Cumulative inflow on top, only where we actually use it.
       if (w.displayMetric === 'cumulative-inflow') {
-        const inflow = await fetchCumulativeInflow(w.address);
-        reading.inflowLamports = inflow.lamports;
-        reading.inflowSol = inflow.lamports / 1e9;
-        reading.txCount = inflow.txCount;
-        reading.lastSignature = inflow.lastSignature;
-        if (inflow.staleAsOf) reading.staleAsOf = inflow.staleAsOf;
+        if (trySupabase()) {
+          const inflow = await fetchCumulativeInflow(w.address);
+          reading.inflowLamports = inflow.lamports;
+          reading.inflowSol = inflow.lamports / 1e9;
+          reading.txCount = inflow.txCount;
+          reading.lastSignature = inflow.lastSignature;
+          if (inflow.staleAsOf) reading.staleAsOf = inflow.staleAsOf;
+        } else {
+          // Without the cache table, a cold cumulative scan can time out on
+          // public RPC. Use the current balance as the honest lower bound.
+          reading.inflowLamports = lamports;
+          reading.inflowSol = lamports / 1e9;
+          reading.txCount = 0;
+          reading.lastSignature = null;
+        }
 
-        // Fallback: if the inflow scan got rate-limited / errored and
-        // returned zero, but the wallet currently holds SOL, show the
-        // live balance as a floor rather than reporting a misleading 0.
-        // The on-chain balance can never exceed historical inflow for a
-        // recipient-only wallet, so this is always a safe lower bound.
-        if (reading.inflowLamports === 0 && lamports > 0) {
+        // Fallback: if the inflow cache lags behind a recent fee claim, show
+        // the live balance as a floor rather than reporting a stale lower
+        // cumulative total. The on-chain balance can never exceed historical
+        // inflow for a recipient-only wallet, so this is a safe lower bound.
+        if ((reading.inflowLamports ?? 0) < lamports) {
           reading.inflowLamports = lamports;
           reading.inflowSol = lamports / 1e9;
         }
@@ -537,9 +608,10 @@ export async function fetchBalances(
 
 /** Lamports to display as "the donation total" for one wallet. */
 export function donationLamports(r: WalletReading): number {
-  return r.displayMetric === 'cumulative-inflow'
-    ? r.inflowLamports ?? 0
-    : r.lamports;
+  if (r.displayMetric === 'cumulative-inflow') {
+    return Math.max(r.inflowLamports ?? 0, r.lamports);
+  }
+  return r.lamports;
 }
 
 /**

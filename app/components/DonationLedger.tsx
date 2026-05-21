@@ -24,6 +24,8 @@ interface WalletReading {
   retiredAt: string | null;
   lamports: number;
   sol: number;
+  usdcUnits: number;
+  usdc: number;
   inflowLamports: number | null;
   inflowSol: number | null;
   txCount: number | null;
@@ -121,8 +123,11 @@ export function DonationLedger() {
 
 function WalletCard({ w }: { w: WalletReading }) {
   const isInflow = w.displayMetric === 'cumulative-inflow';
-  const headlineSol = isInflow ? w.inflowSol ?? 0 : w.sol;
+  const headlineSol = w.address ? w.donationSol : null;
   const liveBalanceSol = w.sol;
+  const usdcBalance = w.usdc ?? 0;
+  const showUsdcBalance =
+    w.address && (usdcBalance > 0 || w.kind === 'charity-secondary');
 
   return (
     <div className="glass-panel p-6">
@@ -157,9 +162,16 @@ function WalletCard({ w }: { w: WalletReading }) {
         {/* Headline number */}
         <div className="text-right shrink-0">
           <div className="font-display text-2xl text-white tabular">
-            {headlineSol.toFixed(4)}
+            {headlineSol === null ? 'Pending' : headlineSol.toFixed(4)}
           </div>
-          <div className="text-xs font-mono text-white/40">SOL</div>
+          <div className="text-xs font-mono text-white/40">
+            {headlineSol === null ? 'wallet' : 'SOL'}
+          </div>
+          {showUsdcBalance && (
+            <div className="mt-1 text-xs font-mono text-cosmos/80 tabular">
+              {usdcBalance.toFixed(6)} USDC
+            </div>
+          )}
         </div>
       </div>
 
