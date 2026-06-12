@@ -38,7 +38,7 @@ const ASTROID_TOKEN_MINT = '8NwtzwGm4CV8Hm4fJXR69ac1MxDYuSaN3A9HVyikpump';
 const ASTROID_DEFAULT_PRIMARY_CHARITY_WALLET =
   '69gzuYrbVxZptyXnjcP2AxXVHKy4fW9wAbKF3U7nvit7';
 const ASTROID_DEFAULT_SECONDARY_CHARITY_WALLET =
-  '3Zrt93Zvt5fLoRifjk3zC9n6boo53tKUdEs2DwC58E8C';
+  '8RjUHoN576v9tuVnyY7y73kASBCAHVwrF9WuJWVfsDN6';
 const USDC_MINT = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
 const USDC_DECIMALS = 6;
 const TOKEN_PROGRAM_ID = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA';
@@ -53,7 +53,7 @@ const SPL_TOKEN_AMOUNT_LENGTH = 8;
 export type WalletKind =
   | 'legacy'             // frozen pre-switch wallet, balance preserved
   | 'charity-primary'    // active 25% donate.gg-routed charity wallet
-  | 'charity-secondary'  // 10% future-charity holding tank
+  | 'charity-secondary'  // 10% Liv's Stargrace Foundation wallet
   | 'community';         // 65% community/operations wallet (off by default)
 
 export type WalletStatus =
@@ -251,10 +251,10 @@ export function getCharityWallets(): CharityWallet[] {
     displayMetric: 'cumulative-inflow',
   });
 
-  // Future-charity holding tank.
+  // Liv's Stargrace Foundation (10%).
   wallets.push({
     kind: 'charity-secondary',
-    status: secondary ? 'pending' : 'pending',
+    status: secondary ? 'active' : 'pending',
     label: 'Liv\u2019s Stargrace Foundation (10%)',
     description:
       "Receives 10% of pump.fun creator fees at fee-claim time. Routed to Liv's Stargrace Foundation (EIN 42-2375208), a 501(c)(3) honoring Liv Perrotto's legacy - supporting families facing pediatric cancer, inspiring children through space exploration, and providing opportunities for Christian education. Donations are delivered via The Giving Block.",
