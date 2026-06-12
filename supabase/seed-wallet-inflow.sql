@@ -19,8 +19,8 @@ INSERT INTO public.wallet_inflow_cache (
 )
 VALUES (
   '69gzuYrbVxZptyXnjcP2AxXVHKy4fW9wAbKF3U7nvit7',
-  734314400,
-  8,
+  10979729221,
+  97,
   '5kjbZ4btUE1gssL7pYnjf3tPhy55cSDV14VvwtaM2T8ZSmxZKnHe9o2yruXM2pkioToczbJUYPKkr8zhNUPM1hAd',
   now()
 )

@@ -51,12 +51,13 @@ const ASTROID_VERIFIED_INFLOWS: Record<
   { lamports: number; txCount: number; lastSignature: string }
 > = {
   [ASTROID_DEFAULT_PRIMARY_CHARITY_WALLET]: {
-    lamports: 734_314_400, // 0.734314400 SOL across 8 fee-claim deposits
-    txCount: 8,
+    lamports: 10_979_729_221, // 10.979729221 SOL across 97 fee-claim deposits
+    txCount: 97,
     lastSignature:
       '5kjbZ4btUE1gssL7pYnjf3tPhy55cSDV14VvwtaM2T8ZSmxZKnHe9o2yruXM2pkioToczbJUYPKkr8zhNUPM1hAd',
   },
 };
+const WSOL_MINT = 'So11111111111111111111111111111111111111112';
 const USDC_MINT = 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v';
 const USDC_DECIMALS = 6;
 const TOKEN_PROGRAM_ID = 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA';
@@ -443,18 +444,35 @@ function creditLamportsFromTx(
   const meta = tx.meta;
   if (!meta) return 0;
 
+  let credited = 0;
+
   const staticKeys = tx.transaction.message
     .getAccountKeys({ accountKeysFromLookups: meta.loadedAddresses })
     .keySegments()
     .flat();
   const idx = staticKeys.findIndex((k) => k.toBase58() === target);
-  if (idx < 0) return 0;
+  if (idx >= 0) {
+    const pre = meta.preBalances[idx];
+    const post = meta.postBalances[idx];
+    if (typeof pre === 'number' && typeof post === 'number') {
+      const delta = post - pre;
+      if (delta > 0) credited += delta;
+    }
+  }
 
-  const pre = meta.preBalances[idx];
-  const post = meta.postBalances[idx];
-  if (typeof pre !== 'number' || typeof post !== 'number') return 0;
-  const delta = post - pre;
-  return delta > 0 ? delta : 0;
+  // Count wrapped-SOL deposits too (donate.gg sweeps often move WSOL onward).
+  for (const postBalance of meta.postTokenBalances ?? []) {
+    if (postBalance.mint !== WSOL_MINT || postBalance.owner !== target) continue;
+    const preBalance = meta.preTokenBalances?.find(
+      (row) => row.accountIndex === postBalance.accountIndex
+    );
+    const preAmount = BigInt(preBalance?.uiTokenAmount?.amount ?? '0');
+    const postAmount = BigInt(postBalance.uiTokenAmount?.amount ?? '0');
+    const delta = postAmount - preAmount;
+    if (delta > 0n) credited += Number(delta);
+  }
+
+  return credited;
 }
 
 /**
@@ -560,7 +578,7 @@ function getRpcCachedInflow(address: string): Promise<InflowReading> {
         throw err;
       }
     },
-    ['wallet-inflow-rpc-v2', address],
+    ['wallet-inflow-rpc-v3', address],
     { revalidate: INFLOW_RPC_CACHE_SECONDS }
   )();
 }
