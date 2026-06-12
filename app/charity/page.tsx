@@ -131,18 +131,63 @@ export default function CharityPage() {
         {/* Other splits */}
         <div className="glass-panel p-6 sm:p-8 space-y-5">
           <div>
-            <div className="eyebrow mb-2">10% &middot; Future children&apos;s charity</div>
+            <div className="eyebrow mb-2">10% &middot; Liv&apos;s Stargrace Foundation</div>
             <h3 className="font-display text-lg text-white mb-2">
-              Held in a separate wallet pending recipient
+              Routed via The Giving Block
             </h3>
-            <p className="text-sm text-white/60 leading-relaxed">
+            <p className="text-sm text-white/60 leading-relaxed mb-4">
               An additional 10% of creator fees routes to a dedicated wallet
-              reserved for a future, community-nominated children&apos;s
-              charity. Funds accumulate there; they aren&apos;t spent in the
-              meantime. The recipient is selected through the nomination
-              process below and only confirmed after they consent in
-              writing.
+              for{' '}
+              <strong className="text-white">Liv&apos;s Stargrace Foundation</strong>
+              {' '}- honoring Liv&apos;s courage, curiosity, and faith by
+              supporting families facing pediatric cancer, inspiring children
+              through space exploration, and providing opportunities for
+              Christian education.
             </p>
+            <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs font-mono text-white/50 leading-relaxed">
+              <div>
+                <dt className="text-white/30 uppercase tracking-[0.18em] mb-1">
+                  Tax ID (EIN)
+                </dt>
+                <dd className="text-white/70">42-2375208</dd>
+              </div>
+              <div>
+                <dt className="text-white/30 uppercase tracking-[0.18em] mb-1">
+                  Status
+                </dt>
+                <dd className="text-white/70">501(c)(3)</dd>
+              </div>
+              <div>
+                <dt className="text-white/30 uppercase tracking-[0.18em] mb-1">
+                  Donate
+                </dt>
+                <dd>
+                  <a
+                    href="https://thegivingblock.com/donate/livs-stargrace-foundation/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-cosmos hover:text-white"
+                  >
+                    The Giving Block &#8599;
+                  </a>
+                </dd>
+              </div>
+              <div>
+                <dt className="text-white/30 uppercase tracking-[0.18em] mb-1">
+                  Social
+                </dt>
+                <dd>
+                  <a
+                    href="https://x.com/liv_stargrace"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-cosmos hover:text-white"
+                  >
+                    @liv_stargrace &#8599;
+                  </a>
+                </dd>
+              </div>
+            </dl>
           </div>
 
           <div className="pt-5 border-t border-white/5">

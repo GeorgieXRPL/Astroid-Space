@@ -84,13 +84,13 @@ export const FRIENDS: Friend[] = [
     position: [-0.4, 1.2],
   },
   {
-    name: 'Rebecca Perrotto\u2019s Charity for Liv',
+    name: 'Liv\u2019s Stargrace Foundation',
     category: 'kids-charity',
     blurb:
-      'A dedicated charity initiative honoring Liv. We\u2019re holding a place for it on the sky while it gets organized.',
+      'Honors Liv\u2019s courage and faith by supporting families facing pediatric cancer, inspiring kids through space exploration, and funding Christian education.',
+    url: 'https://thegivingblock.com/donate/livs-stargrace-foundation/',
     marker: '\u2728',
     position: [1.4, 0.6],
-    status: 'Not currently live',
   },
   {
     name: 'Pump.fun',

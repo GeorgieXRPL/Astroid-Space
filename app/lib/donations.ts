@@ -255,9 +255,9 @@ export function getCharityWallets(): CharityWallet[] {
   wallets.push({
     kind: 'charity-secondary',
     status: secondary ? 'pending' : 'pending',
-    label: 'Future children\u2019s charity (10%)',
+    label: 'Liv\u2019s Stargrace Foundation (10%)',
     description:
-      'A separate wallet reserved for a future community-nominated children\u2019s charity. Funds accumulate here until a recipient is selected through the nomination process and confirms the routing in writing. Held, not spent, in the meantime.',
+      "Receives 10% of pump.fun creator fees at fee-claim time. Routed to Liv's Stargrace Foundation (EIN 42-2375208), a 501(c)(3) honoring Liv Perrotto's legacy - supporting families facing pediatric cancer, inspiring children through space exploration, and providing opportunities for Christian education. Donations are delivered via The Giving Block.",
     address: secondary,
     splitPercent: 10,
     displayMetric: 'balance',
