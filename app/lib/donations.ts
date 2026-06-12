@@ -27,6 +27,7 @@
  * `wallet_inflow_cache` in `supabase/schema.sql`.
  */
 
+import { unstable_cache } from 'next/cache';
 import {
   Connection,
   PublicKey,
@@ -288,6 +289,7 @@ export function getCharityWallets(): CharityWallet[] {
 
 /** How long a cached inflow reading is considered fresh. */
 const INFLOW_CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
+const INFLOW_RPC_CACHE_SECONDS = INFLOW_CACHE_TTL_MS / 1000;
 
 interface CacheRow {
   address: string;
@@ -375,9 +377,30 @@ async function fetchNewSignatures(
   return all;
 }
 
+function creditLamportsFromTx(
+  tx: NonNullable<Awaited<ReturnType<Connection['getTransaction']>>>,
+  target: string
+): number {
+  const meta = tx.meta;
+  if (!meta) return 0;
+
+  const staticKeys = tx.transaction.message
+    .getAccountKeys({ accountKeysFromLookups: meta.loadedAddresses })
+    .keySegments()
+    .flat();
+  const idx = staticKeys.findIndex((k) => k.toBase58() === target);
+  if (idx < 0) return 0;
+
+  const pre = meta.preBalances[idx];
+  const post = meta.postBalances[idx];
+  if (typeof pre !== 'number' || typeof post !== 'number') return 0;
+  const delta = post - pre;
+  return delta > 0 ? delta : 0;
+}
+
 /**
  * Sum positive lamport deltas for `address` across the given transactions.
- * Each tx is fetched individually; failures are skipped (best-effort).
+ * Fetches in modest batches; failures are skipped (best-effort).
  */
 async function sumInflowFromSignatures(
   connection: Connection,
@@ -387,44 +410,72 @@ async function sumInflowFromSignatures(
   let lamports = 0;
   let counted = 0;
   const target = pubkey.toBase58();
+  const BATCH = 20;
 
-  // Process in modest concurrency to be polite to the public RPC.
-  const CONCURRENCY = 4;
-  for (let i = 0; i < signatures.length; i += CONCURRENCY) {
-    const chunk = signatures.slice(i, i + CONCURRENCY);
-    const settled = await Promise.allSettled(
-      chunk.map((s) =>
-        connection.getTransaction(s.signature, {
-          maxSupportedTransactionVersion: 0,
-        })
-      )
-    );
-    for (const r of settled) {
-      if (r.status !== 'fulfilled' || !r.value) continue;
-      const tx = r.value;
-      const meta = tx.meta;
-      if (!meta) continue;
+  for (let i = 0; i < signatures.length; i += BATCH) {
+    const chunk = signatures.slice(i, i + BATCH);
+    const sigs = chunk.map((s) => s.signature);
 
-      // Resolve account keys, including any from address-table lookups.
-      const staticKeys = tx.transaction.message
-        .getAccountKeys({ accountKeysFromLookups: meta.loadedAddresses })
-        .keySegments()
-        .flat();
-      const idx = staticKeys.findIndex((k) => k.toBase58() === target);
-      if (idx < 0) continue;
+    let txs: (Awaited<ReturnType<Connection['getTransaction']>> | null)[];
+    try {
+      txs = await connection.getTransactions(sigs, {
+        maxSupportedTransactionVersion: 0,
+      });
+    } catch {
+      const settled = await Promise.allSettled(
+        sigs.map((signature) =>
+          connection.getTransaction(signature, {
+            maxSupportedTransactionVersion: 0,
+          })
+        )
+      );
+      txs = settled.map((r) => (r.status === 'fulfilled' ? r.value : null));
+    }
 
-      const pre = meta.preBalances[idx];
-      const post = meta.postBalances[idx];
-      if (typeof pre !== 'number' || typeof post !== 'number') continue;
-      const delta = post - pre;
-      if (delta > 0) {
-        lamports += delta;
+    for (const tx of txs) {
+      if (!tx) continue;
+      const credited = creditLamportsFromTx(tx, target);
+      if (credited > 0) {
+        lamports += credited;
         counted += 1;
       }
     }
   }
 
   return { lamports, counted };
+}
+
+type InflowReading = {
+  lamports: number;
+  txCount: number;
+  lastSignature: string | null;
+  staleAsOf?: string;
+};
+
+/** Full historical scan used when Supabase is not configured. */
+async function scanCumulativeInflowFromRpc(address: string): Promise<InflowReading> {
+  const connection = getConnection();
+  const pubkey = new PublicKey(address);
+  const signatures = await fetchNewSignatures(connection, pubkey, null);
+  const { lamports, counted } = await sumInflowFromSignatures(
+    connection,
+    pubkey,
+    signatures
+  );
+
+  return {
+    lamports,
+    txCount: counted,
+    lastSignature: signatures[0]?.signature ?? null,
+  };
+}
+
+function getRpcCachedInflow(address: string): Promise<InflowReading> {
+  return unstable_cache(
+    () => scanCumulativeInflowFromRpc(address),
+    ['wallet-inflow-rpc', address],
+    { revalidate: INFLOW_RPC_CACHE_SECONDS }
+  )();
 }
 
 /**
@@ -435,14 +486,16 @@ async function sumInflowFromSignatures(
  * total back. On RPC failure, returns the cached value with `staleAsOf`
  * set so the UI can surface the stale state.
  */
-export async function fetchCumulativeInflow(
-  address: string
-): Promise<{
-  lamports: number;
-  txCount: number;
-  lastSignature: string | null;
-  staleAsOf?: string;
-}> {
+export async function fetchCumulativeInflow(address: string): Promise<InflowReading> {
+  if (!trySupabase()) {
+    try {
+      return await getRpcCachedInflow(address);
+    } catch (err) {
+      console.warn(`[donations] RPC inflow scan failed for ${address}:`, err);
+      return { lamports: 0, txCount: 0, lastSignature: null };
+    }
+  }
+
   const cached = await readCacheRow(address);
   const now = Date.now();
   const lastUpdate = cached ? Date.parse(cached.updated_at) : 0;
@@ -591,21 +644,12 @@ export async function fetchBalances(
 
       // Cumulative inflow on top, only where we actually use it.
       if (w.displayMetric === 'cumulative-inflow') {
-        if (trySupabase()) {
-          const inflow = await fetchCumulativeInflow(w.address);
-          reading.inflowLamports = inflow.lamports;
-          reading.inflowSol = inflow.lamports / 1e9;
-          reading.txCount = inflow.txCount;
-          reading.lastSignature = inflow.lastSignature;
-          if (inflow.staleAsOf) reading.staleAsOf = inflow.staleAsOf;
-        } else {
-          // Without the cache table, a cold cumulative scan can time out on
-          // public RPC. Use the current balance as the honest lower bound.
-          reading.inflowLamports = lamports;
-          reading.inflowSol = lamports / 1e9;
-          reading.txCount = 0;
-          reading.lastSignature = null;
-        }
+        const inflow = await fetchCumulativeInflow(w.address);
+        reading.inflowLamports = inflow.lamports;
+        reading.inflowSol = inflow.lamports / 1e9;
+        reading.txCount = inflow.txCount;
+        reading.lastSignature = inflow.lastSignature;
+        if (inflow.staleAsOf) reading.staleAsOf = inflow.staleAsOf;
 
         // Fallback: if the inflow cache lags behind a recent fee claim, show
         // the live balance as a floor rather than reporting a stale lower

@@ -88,7 +88,7 @@ async function buildDonationTotals() {
 
 const getCachedDonationTotals = unstable_cache(
   buildDonationTotals,
-  ['donation-totals-v3'],
+  ['donation-totals-v4'],
   { revalidate: DONATION_TOTALS_CACHE_SECONDS }
 );
 

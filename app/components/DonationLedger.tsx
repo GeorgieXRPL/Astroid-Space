@@ -101,8 +101,9 @@ export function DonationLedger() {
           <span className="text-cosmos">SOL</span>
         </div>
         <div className="mt-3 text-sm text-white/50 max-w-md mx-auto leading-relaxed">
-          Combined across the original ALSAC wallet (frozen, record-only) and
-          the active donate.gg-routed St. Jude intake.
+          Combined lifetime donations across the original ALSAC wallet (frozen,
+          record-only) and the active donate.gg-routed St. Jude intake. Pass-through
+          wallets count total received, not what&apos;s sitting there after sweeps.
         </div>
         {data.fetchedAt && (
           <div className="mt-2 text-xs font-mono text-white/30 tabular">
@@ -165,7 +166,7 @@ function WalletCard({ w }: { w: WalletReading }) {
             {headlineSol === null ? 'Pending' : headlineSol.toFixed(4)}
           </div>
           <div className="text-xs font-mono text-white/40">
-            {headlineSol === null ? 'wallet' : 'SOL'}
+            {headlineSol === null ? 'wallet' : isInflow ? 'SOL donated' : 'SOL'}
           </div>
           {showUsdcBalance && (
             <div className="mt-1 text-xs font-mono text-cosmos/80 tabular">
@@ -198,7 +199,9 @@ function WalletCard({ w }: { w: WalletReading }) {
               onward. Show it as a sub-line so the difference is legible. */}
           {w.status === 'active' && (
             <div className="text-[11px] font-mono text-white/30 tracking-wider">
-              live balance {liveBalanceSol.toFixed(4)} SOL
+              {liveBalanceSol < (headlineSol ?? 0) - 0.0000001
+                ? `live balance ${liveBalanceSol.toFixed(4)} SOL (swept onward)`
+                : `live balance ${liveBalanceSol.toFixed(4)} SOL`}
             </div>
           )}
           {w.staleAsOf && (
