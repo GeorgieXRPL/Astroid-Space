@@ -27,7 +27,6 @@
  * `wallet_inflow_cache` in `supabase/schema.sql`.
  */
 
-import { unstable_cache } from 'next/cache';
 import {
   Connection,
   PublicKey,
@@ -307,7 +306,6 @@ export function getCharityWallets(): CharityWallet[] {
 
 /** How long a cached inflow reading is considered fresh. */
 const INFLOW_CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
-const INFLOW_RPC_CACHE_SECONDS = INFLOW_CACHE_TTL_MS / 1000;
 const INFLOW_RPC_BATCH_SIZE = 8;
 const INFLOW_RPC_BATCH_DELAY_MS = 350;
 const INFLOW_RPC_BATCH_RETRIES = 3;
@@ -545,42 +543,18 @@ type InflowReading = {
   staleAsOf?: string;
 };
 
-/** Full historical scan used when Supabase is not configured. */
-async function scanCumulativeInflowFromRpc(address: string): Promise<InflowReading> {
-  const connection = getConnection();
-  const pubkey = new PublicKey(address);
-  const signatures = await fetchNewSignatures(connection, pubkey, null);
-  const { lamports, counted } = await sumInflowFromSignatures(
-    connection,
-    pubkey,
-    signatures
-  );
-
-  return mergeInflowWithFloor(
-    {
-      lamports,
-      txCount: counted,
-      lastSignature: signatures[0]?.signature ?? null,
-    },
-    getVerifiedInflowFloor(address)
-  );
-}
-
-function getRpcCachedInflow(address: string): Promise<InflowReading> {
-  return unstable_cache(
-    async () => {
-      try {
-        return await scanCumulativeInflowFromRpc(address);
-      } catch (err) {
-        console.warn(`[donations] RPC inflow scan failed for ${address}:`, err);
-        const floor = getVerifiedInflowFloor(address);
-        if (floor) return floor;
-        throw err;
-      }
-    },
-    ['wallet-inflow-rpc-v3', address],
-    { revalidate: INFLOW_RPC_CACHE_SECONDS }
-  )();
+/** Seed the Supabase checkpoint from a verified Solscan floor. */
+async function seedCacheFromFloor(
+  address: string,
+  floor: InflowReading
+): Promise<void> {
+  await writeCacheRow({
+    address,
+    lamports: floor.lamports,
+    tx_count: floor.txCount,
+    last_signature: floor.lastSignature,
+    updated_at: new Date().toISOString(),
+  });
 }
 
 /**
@@ -594,17 +568,21 @@ function getRpcCachedInflow(address: string): Promise<InflowReading> {
 export async function fetchCumulativeInflow(address: string): Promise<InflowReading> {
   const floor = getVerifiedInflowFloor(address);
 
+  // Without Supabase, never block on a cold full-history RPC scan (that can
+  // take minutes and exceeds serverless timeouts). Serve the verified floor.
   if (!trySupabase()) {
-    try {
-      return await getRpcCachedInflow(address);
-    } catch (err) {
-      console.warn(`[donations] RPC inflow scan failed for ${address}:`, err);
-      if (floor) return floor;
-      return { lamports: 0, txCount: 0, lastSignature: null };
-    }
+    if (floor) return floor;
+    return { lamports: 0, txCount: 0, lastSignature: null };
   }
 
   const cached = await readCacheRow(address);
+
+  // Bootstrap the incremental cache from the verified floor so refreshes only
+  // scan signatures newer than the checkpoint, not the full history.
+  if (!cached && floor) {
+    await seedCacheFromFloor(address, floor);
+    return floor;
+  }
   const now = Date.now();
   const lastUpdate = cached ? Date.parse(cached.updated_at) : 0;
   const isFresh = cached && now - lastUpdate < INFLOW_CACHE_TTL_MS;

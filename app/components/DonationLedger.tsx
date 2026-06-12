@@ -46,22 +46,48 @@ interface DonationData {
 
 export function DonationLedger() {
   const [data, setData] = useState<DonationData | null>(null);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
+    let cancelled = false;
+
     const fetchData = () =>
       fetch('/api/donations/totals')
-        .then((r) => r.json())
-        .then(setData)
-        .catch(() => {});
+        .then((r) => {
+          if (!r.ok) throw new Error(`donations/totals ${r.status}`);
+          return r.json();
+        })
+        .then((payload) => {
+          if (cancelled) return;
+          setData(payload);
+          setError(false);
+        })
+        .catch(() => {
+          if (!cancelled) setError(true);
+        });
+
     fetchData();
     const interval = setInterval(fetchData, 30000);
-    return () => clearInterval(interval);
+    return () => {
+      cancelled = true;
+      clearInterval(interval);
+    };
   }, []);
 
   if (!data) {
     return (
       <div className="glass-panel p-12 text-center text-white/40">
-        Loading on-chain balances&hellip;
+        {error ? (
+          <>
+            <p className="mb-2">Couldn&apos;t load on-chain balances.</p>
+            <p className="text-xs font-mono text-white/30">
+              The request timed out or failed. It should recover automatically
+              &mdash; refresh the page in a moment.
+            </p>
+          </>
+        ) : (
+          <>Loading on-chain balances&hellip;</>
+        )}
       </div>
     );
   }
