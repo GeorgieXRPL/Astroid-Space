@@ -122,6 +122,14 @@ export interface WalletReading {
   /** Same value, in USDC. */
   usdc: number;
 
+  /**
+   * Persisted high-water mark, in lamports - the largest donation total ever
+   * observed for this wallet. Set for every charity-bound wallet (i.e. not the
+   * community/operations wallet) so the headline can't visibly reset after a
+   * sweep/drain. Folded into `donationLamports()`.
+   */
+  peakLamports?: number;
+
   // Only set when displayMetric === 'cumulative-inflow':
   /** Lifetime credits to this wallet, in lamports. */
   inflowLamports?: number;
@@ -139,11 +147,79 @@ export interface WalletReading {
 // RPC helpers
 // ----------------------------------------------------------------------------
 
-function getConnection(): Connection {
-  const url =
-    process.env.NEXT_PUBLIC_SOLANA_RPC_URL ||
-    'https://api.mainnet-beta.solana.com';
-  return new Connection(url, 'confirmed');
+/**
+ * Public mainnet RPC. Kept only as a last-resort fallback - it aggressively
+ * rate-limits (HTTP 429) and is not viable for the historical signature scan.
+ */
+const PUBLIC_RPC_FALLBACK = 'https://api.mainnet-beta.solana.com';
+
+/**
+ * Ordered list of RPC endpoints to try, best first.
+ *
+ *   NEXT_PUBLIC_SOLANA_RPC_URL - primary endpoint (existing var).
+ *   SOLANA_RPC_URLS            - optional comma-separated fallbacks. Server-only
+ *                                (no NEXT_PUBLIC prefix) so a keyed Helius /
+ *                                QuickNode / Alchemy URL never ships to the
+ *                                browser.
+ *
+ * The public RPC is always appended last so the site still functions with no
+ * configuration, just without reliable historical scans.
+ */
+function getRpcEndpoints(): string[] {
+  const endpoints: string[] = [];
+
+  const primary = process.env.NEXT_PUBLIC_SOLANA_RPC_URL?.trim();
+  if (primary) endpoints.push(primary);
+
+  const fallbacks = process.env.SOLANA_RPC_URLS?.trim();
+  if (fallbacks) {
+    for (const url of fallbacks.split(',')) {
+      const trimmed = url.trim();
+      if (trimmed) endpoints.push(trimmed);
+    }
+  }
+
+  endpoints.push(PUBLIC_RPC_FALLBACK);
+
+  // De-dupe while preserving order.
+  return [...new Set(endpoints)];
+}
+
+let cachedConnections: Connection[] | null = null;
+
+/** All configured connections, in preference order. Memoised per process. */
+function getConnections(): Connection[] {
+  if (!cachedConnections) {
+    cachedConnections = getRpcEndpoints().map(
+      (url) => new Connection(url, 'confirmed')
+    );
+  }
+  return cachedConnections;
+}
+
+/**
+ * Run an RPC call against each configured endpoint in turn, returning the
+ * first success. Only throws if *every* endpoint fails. This is what keeps a
+ * rate-limited primary RPC from blanking the live ledger or stalling the
+ * historical inflow scan.
+ */
+async function withRpcFailover<T>(
+  fn: (connection: Connection) => Promise<T>
+): Promise<T> {
+  const connections = getConnections();
+  let lastError: unknown = new Error('No Solana RPC endpoints configured');
+
+  for (const connection of connections) {
+    try {
+      return await fn(connection);
+    } catch (err) {
+      lastError = err;
+    }
+  }
+
+  throw lastError instanceof Error
+    ? lastError
+    : new Error('All Solana RPC endpoints failed');
 }
 
 function usdcAssociatedTokenAddress(owner: PublicKey): PublicKey {
@@ -270,6 +346,13 @@ export function getCharityWallets(): CharityWallet[] {
   });
 
   // Liv's Stargrace Foundation (10%).
+  //
+  // Display metric is `cumulative-inflow`, not `balance`: this is a
+  // pass-through wallet - The Giving Block sweeps the SOL onward and converts
+  // it for the foundation, so the live balance drops toward zero after each
+  // sweep. The honest "donated to date" number is the lifetime sum of credits
+  // to the wallet, which survives every sweep. (Same treatment as the St. Jude
+  // intake above.)
   wallets.push({
     kind: 'charity-secondary',
     status: secondary ? 'active' : 'pending',
@@ -278,7 +361,7 @@ export function getCharityWallets(): CharityWallet[] {
       "Receives 10% of pump.fun creator fees at fee-claim time. Routed to Liv's Stargrace Foundation (EIN 42-2375208), a 501(c)(3) honoring Liv Perrotto's legacy - supporting families facing pediatric cancer, inspiring children through space exploration, and providing opportunities for Christian education. Donations are delivered via The Giving Block.",
     address: secondary,
     splitPercent: 10,
-    displayMetric: 'balance',
+    displayMetric: 'cumulative-inflow',
   });
 
   // Community / operations wallet - kept off the public ledger by default.
@@ -405,6 +488,71 @@ async function writeCacheRow(row: CacheRow): Promise<void> {
   }
 }
 
+/**
+ * Persisted high-water mark.
+ *
+ * Records the largest donation total ever observed for a wallet so the
+ * headline never drops after a pass-through wallet is swept/drained, even if
+ * a later inflow scan is incomplete or the RPC is unavailable. The candidate
+ * is the max of the cumulative-inflow scan, the verified floor, and the
+ * current live balance - every one of which is a valid *lower bound* of true
+ * lifetime inflow (you can't hold more than was ever credited), so this only
+ * guards against visible resets and never overcounts.
+ *
+ * Persistence lives in `wallet_inflow_cache.peak_lamports`. Without Supabase
+ * there's no cross-request memory to fall back on, so we return the candidate
+ * unchanged. Fully defensive: any error (e.g. the column hasn't been migrated
+ * yet) degrades silently to prior behaviour.
+ */
+async function applyPeakFloor(
+  address: string,
+  candidateLamports: number
+): Promise<number> {
+  const sb = trySupabase();
+  if (!sb) return candidateLamports;
+
+  try {
+    const { data, error } = await sb
+      .from('wallet_inflow_cache')
+      .select('peak_lamports')
+      .eq('address', address)
+      .maybeSingle();
+    if (error) return candidateLamports;
+
+    if (data) {
+      const storedPeak = Number(
+        (data as { peak_lamports?: number | null }).peak_lamports ?? 0
+      );
+      if (candidateLamports > storedPeak) {
+        // Bump the mark. Deliberately a plain UPDATE so we don't touch the
+        // cumulative columns or `updated_at` (which gates the inflow scan).
+        await sb
+          .from('wallet_inflow_cache')
+          .update({ peak_lamports: candidateLamports })
+          .eq('address', address);
+        return candidateLamports;
+      }
+      return Math.max(storedPeak, candidateLamports);
+    }
+
+    // No row yet (the inflow scan hasn't created one - e.g. it failed on a
+    // cold start). Create a peak-only placeholder with a stale `updated_at`
+    // so the cumulative scan still runs on the next pass; a fresh timestamp
+    // here would masquerade as a real checkpoint and stall scanning.
+    await sb.from('wallet_inflow_cache').insert({
+      address,
+      lamports: 0,
+      tx_count: 0,
+      last_signature: null,
+      peak_lamports: candidateLamports,
+      updated_at: new Date(0).toISOString(),
+    });
+    return candidateLamports;
+  } catch {
+    return candidateLamports;
+  }
+}
+
 /** Page back through signatures until we hit `until` or run out. */
 async function fetchNewSignatures(
   connection: Connection,
@@ -478,17 +626,21 @@ function creditLamportsFromTx(
  * Fetches in modest batches; failures are skipped (best-effort).
  */
 async function fetchTransactionsWithRetry(
-  connection: Connection,
   signatures: string[]
 ): Promise<(Awaited<ReturnType<Connection['getTransaction']>> | null)[]> {
   for (let attempt = 0; attempt < INFLOW_RPC_BATCH_RETRIES; attempt++) {
     try {
-      return await connection.getTransactions(signatures, {
-        maxSupportedTransactionVersion: 0,
-      });
+      return await withRpcFailover((connection) =>
+        connection.getTransactions(signatures, {
+          maxSupportedTransactionVersion: 0,
+        })
+      );
     } catch (err) {
       if (attempt === INFLOW_RPC_BATCH_RETRIES - 1) {
-        console.warn('[donations] batched getTransactions failed:', err);
+        console.warn(
+          '[donations] batched getTransactions failed on all endpoints:',
+          err
+        );
       } else {
         await sleep(500 * (attempt + 1));
       }
@@ -497,16 +649,17 @@ async function fetchTransactionsWithRetry(
 
   const settled = await Promise.allSettled(
     signatures.map((signature) =>
-      connection.getTransaction(signature, {
-        maxSupportedTransactionVersion: 0,
-      })
+      withRpcFailover((connection) =>
+        connection.getTransaction(signature, {
+          maxSupportedTransactionVersion: 0,
+        })
+      )
     )
   );
   return settled.map((r) => (r.status === 'fulfilled' ? r.value : null));
 }
 
 async function sumInflowFromSignatures(
-  connection: Connection,
   pubkey: PublicKey,
   signatures: ConfirmedSignatureInfo[]
 ): Promise<{ lamports: number; counted: number }> {
@@ -517,7 +670,7 @@ async function sumInflowFromSignatures(
   for (let i = 0; i < signatures.length; i += INFLOW_RPC_BATCH_SIZE) {
     const chunk = signatures.slice(i, i + INFLOW_RPC_BATCH_SIZE);
     const sigs = chunk.map((s) => s.signature);
-    const txs = await fetchTransactionsWithRetry(connection, sigs);
+    const txs = await fetchTransactionsWithRetry(sigs);
 
     for (const tx of txs) {
       if (!tx) continue;
@@ -598,12 +751,9 @@ export async function fetchCumulativeInflow(address: string): Promise<InflowRead
 
   // Need a refresh. Pull new signatures and add to the running total.
   try {
-    const connection = getConnection();
     const pubkey = new PublicKey(address);
-    const newSigs = await fetchNewSignatures(
-      connection,
-      pubkey,
-      cached?.last_signature ?? null
+    const newSigs = await withRpcFailover((connection) =>
+      fetchNewSignatures(connection, pubkey, cached?.last_signature ?? null)
     );
 
     if (newSigs.length === 0) {
@@ -624,7 +774,6 @@ export async function fetchCumulativeInflow(address: string): Promise<InflowRead
     }
 
     const { lamports: addedLamports, counted } = await sumInflowFromSignatures(
-      connection,
       pubkey,
       newSigs
     );
@@ -692,16 +841,20 @@ function emptyReading(w: CharityWallet): WalletReading {
 export async function fetchBalances(
   wallets: CharityWallet[]
 ): Promise<WalletReading[]> {
-  const connection = getConnection();
   const knownAddresses = wallets
     .map((w) => w.address)
     .filter((address): address is string => !!address);
   let accountBalances = new Map<string, { lamports: number; usdcUnits: number }>();
 
   try {
-    accountBalances = await fetchWalletAccountBalances(connection, knownAddresses);
+    accountBalances = await withRpcFailover((connection) =>
+      fetchWalletAccountBalances(connection, knownAddresses)
+    );
   } catch (err) {
-    console.warn('[donations] batched balance fetch failed:', err);
+    console.warn(
+      '[donations] batched balance fetch failed on all RPC endpoints:',
+      err
+    );
     throw err;
   }
 
@@ -743,15 +896,32 @@ export async function fetchBalances(
         reading.txCount = inflow.txCount;
         reading.lastSignature = inflow.lastSignature;
         if (inflow.staleAsOf) reading.staleAsOf = inflow.staleAsOf;
+      }
 
-        // Fallback: if the inflow cache lags behind a recent fee claim, show
-        // the live balance as a floor rather than reporting a stale lower
-        // cumulative total. Never let this drop below the verified floor.
+      // High-water mark, for every charity-bound wallet (not community/ops,
+      // which legitimately spends down and should show live holdings).
+      //
+      // The candidate is the max of every trustworthy lower bound we have:
+      // the scanned/cached cumulative inflow (when applicable), the verified
+      // Solscan floor, and the live balance (a wallet can't hold more than
+      // was ever credited). Persisting the peak means the headline never
+      // resets after a sweep/drain, even if a later scan is incomplete or
+      // the RPC is down. Degrades to the candidate when Supabase isn't set.
+      if (w.kind !== 'community') {
         const verifiedFloor = getVerifiedInflowFloor(w.address)?.lamports ?? 0;
-        const liveFloor = Math.max(lamports, verifiedFloor);
-        if ((reading.inflowLamports ?? 0) < liveFloor) {
-          reading.inflowLamports = liveFloor;
-          reading.inflowSol = liveFloor / 1e9;
+        const candidate = Math.max(
+          reading.inflowLamports ?? 0,
+          lamports,
+          verifiedFloor
+        );
+        const peak = await applyPeakFloor(w.address, candidate);
+        reading.peakLamports = peak;
+
+        // Keep the cumulative-inflow headline in lock-step with the peak so
+        // the per-wallet inflow copy and the donation total agree.
+        if (w.displayMetric === 'cumulative-inflow') {
+          reading.inflowLamports = peak;
+          reading.inflowSol = peak / 1e9;
         }
       }
 
@@ -766,10 +936,13 @@ export async function fetchBalances(
 
 /** Lamports to display as "the donation total" for one wallet. */
 export function donationLamports(r: WalletReading): number {
-  if (r.displayMetric === 'cumulative-inflow') {
-    return Math.max(r.inflowLamports ?? 0, r.lamports);
-  }
-  return r.lamports;
+  const base =
+    r.displayMetric === 'cumulative-inflow'
+      ? Math.max(r.inflowLamports ?? 0, r.lamports)
+      : r.lamports;
+  // The persisted high-water mark guards charity-bound wallets against a
+  // visible reset after a sweep/drain. It's never set for community/ops.
+  return Math.max(base, r.peakLamports ?? 0);
 }
 
 /**

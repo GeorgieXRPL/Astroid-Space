@@ -99,14 +99,27 @@ CREATE INDEX IF NOT EXISTS rejection_log_at_idx ON public.rejection_log (rejecte
 --
 -- Bigint for lamports because 1 SOL == 1e9 lamports - any non-trivial
 -- balance overflows a 32-bit int quickly.
+--
+-- `peak_lamports` is a persisted high-water mark: the largest donation total
+-- ever observed for the wallet (the max of the cumulative inflow scan, the
+-- verified floor, and any live balance ever seen). It's a valid *lower bound*
+-- of true lifetime inflow - peak live balance can never exceed total credits -
+-- so it never overcounts, it only stops the headline number from visibly
+-- resetting after a pass-through wallet is swept/drained.
 -- ---------------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS public.wallet_inflow_cache (
   address         TEXT PRIMARY KEY,
   lamports        BIGINT NOT NULL DEFAULT 0,
   tx_count        INTEGER NOT NULL DEFAULT 0,
   last_signature  TEXT,
+  peak_lamports   BIGINT NOT NULL DEFAULT 0,
   updated_at      TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- Idempotent migration for projects whose table predates the high-water mark.
+-- Safe to re-run; no-op once the column exists.
+ALTER TABLE public.wallet_inflow_cache
+  ADD COLUMN IF NOT EXISTS peak_lamports BIGINT NOT NULL DEFAULT 0;
 
 -- ---------------------------------------------------------------------------
 -- Row-level security: deny everything to anon/authenticated.

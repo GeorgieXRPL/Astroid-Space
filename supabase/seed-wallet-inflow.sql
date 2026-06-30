@@ -15,6 +15,7 @@ INSERT INTO public.wallet_inflow_cache (
   lamports,
   tx_count,
   last_signature,
+  peak_lamports,
   updated_at
 )
 VALUES (
@@ -22,10 +23,13 @@ VALUES (
   10979729221,
   97,
   '5kjbZ4btUE1gssL7pYnjf3tPhy55cSDV14VvwtaM2T8ZSmxZKnHe9o2yruXM2pkioToczbJUYPKkr8zhNUPM1hAd',
+  10979729221,
   now()
 )
 ON CONFLICT (address) DO UPDATE SET
   lamports = EXCLUDED.lamports,
   tx_count = EXCLUDED.tx_count,
   last_signature = EXCLUDED.last_signature,
+  -- Never lower the high-water mark on re-run.
+  peak_lamports = GREATEST(public.wallet_inflow_cache.peak_lamports, EXCLUDED.peak_lamports),
   updated_at = EXCLUDED.updated_at;
