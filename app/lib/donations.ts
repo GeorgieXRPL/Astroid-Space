@@ -35,25 +35,44 @@ import {
 import { supabase } from './db/supabaseClient';
 
 const ASTROID_TOKEN_MINT = '8NwtzwGm4CV8Hm4fJXR69ac1MxDYuSaN3A9HVyikpump';
+const ASTROID_DEFAULT_LEGACY_CHARITY_WALLET =
+  '5JYdcUmRXNYxGKNpS3iBSZWJGkP2m7r5nqUqKfBLfsJB';
 const ASTROID_DEFAULT_PRIMARY_CHARITY_WALLET =
   '69gzuYrbVxZptyXnjcP2AxXVHKy4fW9wAbKF3U7nvit7';
 const ASTROID_DEFAULT_SECONDARY_CHARITY_WALLET =
   '8RjUHoN576v9tuVnyY7y73kASBCAHVwrF9WuJWVfsDN6';
 
 /**
- * Verified cumulative SOL credits for pass-through wallets, reconciled against
- * Solscan on 2026-06-12. Used as a floor when the public RPC rate-limits a
- * cold historical scan. Supabase incremental cache takes over once configured.
+ * Verified cumulative SOL credits for the charity-bound wallets, reconciled
+ * against a full on-chain signature scan on 2026-07-01. These are the lifetime
+ * totals *received* by each wallet - the honest "donations to date" figure -
+ * regardless of funds later swept onward (the legacy and St. Jude intakes have
+ * both been largely drained; their live balances are near zero).
+ *
+ * Used as a floor when a cold historical scan is rate-limited; the Supabase
+ * incremental cache takes over and keeps climbing once configured.
  */
 const ASTROID_VERIFIED_INFLOWS: Record<
   string,
   { lamports: number; txCount: number; lastSignature: string }
 > = {
-  [ASTROID_DEFAULT_PRIMARY_CHARITY_WALLET]: {
-    lamports: 10_979_729_221, // 10.979729221 SOL across 97 fee-claim deposits
-    txCount: 97,
+  [ASTROID_DEFAULT_LEGACY_CHARITY_WALLET]: {
+    lamports: 66_937_225_814, // 66.937225814 SOL across 201 fee deposits (since swept onward)
+    txCount: 201,
     lastSignature:
-      '5kjbZ4btUE1gssL7pYnjf3tPhy55cSDV14VvwtaM2T8ZSmxZKnHe9o2yruXM2pkioToczbJUYPKkr8zhNUPM1hAd',
+      '2pJNFtHpbxWXJcnA2W7WtBuFc2EFRSMz2TkZFnbkXWYG3qSNyUfVhPnDJbawN2XaSk171FyDeoMmJjvHZV9y1vvR',
+  },
+  [ASTROID_DEFAULT_PRIMARY_CHARITY_WALLET]: {
+    lamports: 16_670_625_412, // 16.670625412 SOL across 160 fee-claim deposits
+    txCount: 160,
+    lastSignature:
+      '5L4JmHWunEzQNZ7xSEVqB4JeZmKJX8CAJsRF1GQdjCTzqjthN93mWrd1eJ62ytFN3T1TRw6EsdKYEVDigTs6LNCB',
+  },
+  [ASTROID_DEFAULT_SECONDARY_CHARITY_WALLET]: {
+    lamports: 3_766_412_761, // 3.766412761 SOL across 9 fee-claim deposits
+    txCount: 9,
+    lastSignature:
+      '12DdWMx59o5PAJsogEHJeCva3SsadJBU8mwr2jten6awZV4X9ojjmxxRP5YxCTEWvXeKm2pxbB9RFAqNbYexeaJ',
   },
 };
 const WSOL_MINT = 'So11111111111111111111111111111111111111112';
@@ -310,25 +329,26 @@ export function getCharityWallets(): CharityWallet[] {
 
   const wallets: CharityWallet[] = [];
 
-  // Legacy ALSAC-provided wallet, frozen as a permanent record.
+  // Legacy ALSAC-provided wallet. No new fees route here (retired after the
+  // donate.gg switch), but it is NOT a static accumulator: the funds it
+  // received were forwarded on to charity, so its live balance is near zero.
+  // Display metric is therefore `cumulative-inflow` - the lifetime sum of
+  // credits it ever received - which is the honest record of donations from
+  // that earlier era. Showing the residual balance would drastically
+  // under-report what actually flowed through it.
+  //
   // Optional - only shown if the env var is set. Many deployments will
   // never have a legacy wallet at all.
-  //
-  // Display metric is `balance` (not cumulative inflow): the wallet is
-  // frozen with no outflows, so the live balance IS the historical
-  // donation total - and it's a single cheap RPC call, instead of
-  // paging hundreds of historical signatures (which times out on
-  // Vercel's serverless function budget against the public RPC).
   if (legacy) {
     wallets.push({
       kind: 'legacy',
       status: 'frozen',
       label: 'St. Jude (legacy ALSAC wallet)',
       description:
-        'The original wallet that received 25% of pump.fun creator fees before the switch to donate.gg. Frozen on-chain - no new fees route here, no sweeps out. The balance shown is the historical donation total, preserved on-chain as a permanent record.',
+        'The original wallet that received 25% of pump.fun creator fees before the switch to donate.gg. No new fees route here now, and the funds it received were forwarded on to charity - so its live balance is near zero. The number shown is the lifetime total routed through it, preserved on-chain as a permanent record of donations from that earlier era.',
       address: legacy,
       splitPercent: 0,
-      displayMetric: 'balance',
+      displayMetric: 'cumulative-inflow',
     });
   }
 

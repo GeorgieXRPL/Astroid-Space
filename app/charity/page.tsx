@@ -216,11 +216,12 @@ export default function CharityPage() {
           <p className="text-sm text-white/60 leading-relaxed">
             Before the donate.gg routing went live, 25% of creator fees
             routed to a separate Solana wallet originally provided by ALSAC.
-            That wallet is now frozen - no new fees arrive there - but its
-            balance is preserved on-chain forever as a permanent record of
-            donations sent during that earlier era. We keep it on this page
-            for transparency: erasing it would erase part of the project&apos;s
-            on-chain history.
+            No new fees arrive there now, and the SOL it received was
+            forwarded on to charity - so its live balance is near zero. The
+            figure we show is the <em>lifetime total routed through it</em>,
+            recorded on-chain as a permanent record of donations sent during
+            that earlier era. We keep it on this page for transparency:
+            erasing it would erase part of the project&apos;s on-chain history.
           </p>
         </div>
       </div>
