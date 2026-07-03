@@ -33,10 +33,14 @@ export default function LearnPage() {
           A 20-minute mini-curriculum.
         </h2>
         <p className="text-white/75 leading-relaxed mb-4">
-          Blockchain is starting to appear in school curricula in New Zealand
-          and elsewhere - alongside coding, online safety, and digital
-          citizenship. This page is a starting point you can use at the
-          kitchen table, in a classroom, or as homework reading.
+          Coding, online safety, and digital citizenship are already part of
+          school curricula in many countries. Blockchain itself is still rare
+          in classrooms, though a few places have added it directly - El
+          Salvador teaches a &ldquo;Bitcoin Diploma&rdquo; in its public
+          schools, and Buenos Aires, Argentina has brought Ethereum and
+          blockchain into high-school lessons. This page is a starting point
+          you can use at the kitchen table, in a classroom, or as homework
+          reading.
         </p>
         <ul className="grid sm:grid-cols-3 gap-3 text-sm">
           <li className="rounded-lg border border-white/10 p-4">
