@@ -10,41 +10,82 @@ export default function HomePage() {
     <>
       {/* ==================== HERO ==================== */}
       <section className="relative">
-        <div className="absolute inset-0 h-[80vh] min-h-[640px]">
+        <div className="absolute inset-0 h-[min(72vh,720px)] min-h-[520px]">
           <HeroScene interactive={false} autoRotate />
           <div className="absolute inset-0 bg-gradient-to-b from-space-950/40 via-transparent to-space-950" />
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 pb-32 min-h-[80vh] flex flex-col">
-          <div className="flex-1 flex flex-col justify-center max-w-2xl">
-            <div className="eyebrow mb-4">A charity-first project · est. 2026</div>
-            <h1 className="font-display text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.05] mb-6">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 pt-8 sm:pt-12 pb-10 sm:pb-14 min-h-[min(72vh,720px)] flex flex-col">
+          <div className="max-w-2xl">
+            <div className="eyebrow mb-3">A charity-first project · est. 2026</div>
+            <h1 className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.05] mb-4">
               Astroid.{' '}
-              <span className="block text-white/60 mt-2">
+              <span className="block text-white/60 mt-1.5">
                 Starlike. Drawn by a kid. Helping kids.
               </span>
             </h1>
-            <p className="text-lg text-white/70 leading-relaxed max-w-xl mb-8">
+            <p className="text-base sm:text-lg text-white/70 leading-relaxed max-w-xl mb-6">
               <em className="not-italic text-white">Astroid</em>, from Greek{' '}
               <em>ἀστήρ</em> (star) + <em>-oid</em> (like). 25% of pump.fun
               creator fees auto-route through donate.gg to St. Jude
-              Children&apos;s Research Hospital - no human in the loop. Name
-              a star, write a wish, color in Astroid the Space Shiba.
+              Children&apos;s Research Hospital - no human in the loop.
             </p>
             <div className="flex flex-wrap items-center gap-3">
               <Link href="/name-a-star" className="btn-primary">
                 Name a star
                 <span aria-hidden>→</span>
               </Link>
-              <Link href="/charity" className="btn-secondary">
-                See the donations
+              <Link href="/wishes" className="btn-secondary">
+                Add a wish
               </Link>
             </div>
+            <Link
+              href="/charity"
+              className="mt-4 inline-flex text-sm text-white/50 hover:text-white transition-colors"
+            >
+              See the donations
+              <span aria-hidden className="ml-1">→</span>
+            </Link>
           </div>
 
-          <div className="mt-12">
+          <div className="mt-8 sm:mt-auto sm:pt-10">
             <StatsBar />
           </div>
+        </div>
+      </section>
+
+      {/* ==================== THINGS TO DO ==================== */}
+      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+        <div className="text-center mb-10 sm:mb-12">
+          <div className="eyebrow mb-3">Things to do here</div>
+          <h2 className="font-display text-3xl sm:text-5xl font-bold text-white tracking-tight">
+            Free and kid-safe.{' '}
+            <span className="text-white/50">Pick one.</span>
+          </h2>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-4">
+          <ActionCard
+            tag="01"
+            title="Name a star"
+            description="Pick one of 200 stars in the Astroid sky. Give it a name. Get a printable certificate. The naming is forever."
+            href="/name-a-star"
+            cta="Name one"
+          />
+          <ActionCard
+            tag="02"
+            title="Write a wish"
+            description="A short message - for someone, for the world, for nothing in particular. Light moderation, then it floats on the Wish Wall."
+            href="/wishes"
+            cta="Add a wish"
+          />
+          <ActionCard
+            tag="03"
+            title="Color Astroid"
+            description="Print Liv's drawing, color it in, send it back. We feature your version in the gallery."
+            href="/coloring"
+            cta="Get the page"
+          />
         </div>
       </section>
 
@@ -121,41 +162,6 @@ export default function HomePage() {
 
       {/* ==================== TRACKED ON ==================== */}
       <TrackedOnStrip variant="panel" />
-
-      {/* ==================== THINGS TO DO ==================== */}
-      <section className="relative max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
-        <div className="text-center mb-16">
-          <div className="eyebrow mb-3">Things to do here</div>
-          <h2 className="font-display text-3xl sm:text-5xl font-bold text-white tracking-tight">
-            Free and kid-safe.{' '}
-            <span className="text-white/50">Pick one.</span>
-          </h2>
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-4">
-          <ActionCard
-            tag="01"
-            title="Name a star"
-            description="Pick one of 200 stars in the Astroid sky. Give it a name. Get a printable certificate. The naming is forever."
-            href="/name-a-star"
-            cta="Name one"
-          />
-          <ActionCard
-            tag="02"
-            title="Write a wish"
-            description="A short message - for someone, for the world, for nothing in particular. Light moderation, then it floats on the Wish Wall."
-            href="/wishes"
-            cta="Add a wish"
-          />
-          <ActionCard
-            tag="03"
-            title="Color Astroid"
-            description="Print Liv's drawing, color it in, send it back. We feature your version in the gallery."
-            href="/coloring"
-            cta="Get the page"
-          />
-        </div>
-      </section>
 
       {/* ==================== HOW IT WORKS ==================== */}
       <section className="relative max-w-5xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
